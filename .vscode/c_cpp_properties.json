@@ -1,0 +1,39 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            // "includePath": [
+            //     "e:/four_leg_dog/SIZU_TASK/**",
+            //     "${workspaceFolder}/APP",
+            //     "${workspaceFolder}/BSP"
+            // ],
+            "compileCommands": "${workspaceFolder}/build/Debug/compile_commands.json",
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "windowsSdkVersion": "10.0.26100.0",
+            "compilerPathInCppPropertiesJson": "D:/vscodedownload/Arm-GNU-Toolchian/bin/arm-none-eabi-gcc.exe",
+            "compilerArgs": [
+                "-mcpu=cortex-m4",
+                "-mthumb",
+                "-mfloat-abi=hard",
+                "-mfpu=fpv4-sp-d16",
+                "-DUSE_HAL_DRIVER",
+                "-DSTM32F427xx",
+                "-DARM_MATH_CM4"
+            ],
+            "cStandard": "gnu11",
+            "cppStandard": "gnu++17",
+            "intelliSenseMode": "gcc-x86",
+            "mergeConfigurations": false,
+            "recursiveIncludes": {},
+            "compilerPath": "D:/vscodedownload/Arm-GNU-Toolchian/bin/arm-none-eabi-gcc.exe",
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true
+            }
+        }
+    ],
+    "version": 4
+}

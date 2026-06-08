@@ -1,0 +1,80 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        // {
+        //     "label": "Download ST-Link",
+        //     "type": "shell",
+        //     "command": "openocd",
+        //     "args": [
+        //         "-f",
+        //         "openocd_stlink.cfg",
+        //         "-c",
+        //         "program build/Debug/SIZU_TASK.elf verify reset exit"
+        //     ],
+        //     "options": {
+        //         "cwd": "${workspaceFolder}"
+        //     },
+        //     "group": "build",
+        //     "presentation": {
+        //         "echo": true,
+        //         "reveal": "always"
+        //     },
+        //     "problemMatcher": []
+        // },
+        // {
+        //     "label": "Download J-Link",
+        //     "type": "shell",
+        //     "command": "D:\\JLink\\JLink_V872a\\JLink.exe",
+        //     //"command": "JLink",
+        //     "args": [
+        //         "-CommanderScript",
+        //         "flash.jlink"
+        //     ],
+        //     "options": {
+        //         "cwd": "${workspaceFolder}"
+        //     },
+        //     "group": "build",
+        //     "presentation": {
+        //         "echo": true,
+        //         "reveal": "always"
+        //     },
+        //     "problemMatcher": []
+        // },
+        {
+            "label": "Download DAP",
+            "type": "shell",
+            "command": "openocd",
+            "args": [
+                "-f",
+                "openocd_dap.cfg",
+                "-c",
+                "program build/Debug/SIZU_TASK.elf verify reset exit"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always"
+            },
+            "problemMatcher": []
+        },
+        // {
+        //     "label": "Launch Ozone",
+        //     "type": "shell",
+        //     "options": {
+        //         "cwd": "${workspaceFolder}"
+        //     },
+        //     "command": "${workspaceFolder}/RSCF_A.jdebug",
+        //     "args": [],
+        //     "group": "none",
+        //     "presentation": {
+        //         "echo": true,
+        //         "reveal": "always",
+        //         "focus": false,
+        //         "panel": "new"
+        //     }
+        // }
+    ]
+}
