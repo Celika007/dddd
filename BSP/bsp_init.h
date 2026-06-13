@@ -1,10 +1,9 @@
 #ifndef BSP_INIT_h
 #define BSP_INIT_h
 
-#include "bsp_init.h"
+
 #include "bsp_log.h"
 #include "bsp_dwt.h"
-//#include "bsp_usb.h"
 #include "bsp_pwm.h"
 #include "bsp_can.h"
 #include "bsp_tim.h"
@@ -15,12 +14,7 @@
  * @note 其他实例型的外设如CAN和串口会在注册实例的时候自动初始化,不注册不初始化
   */
 // 
-void BSPInit()
-{
-    DWT_Init(480);
-    BSPLogInit();
-}
+void BSPInit();
 
-
-#endif // !BSP_INIT_h
+#endif 
 

@@ -137,6 +137,11 @@ void Rotation_processing(void);
   ********************************************************************/
 void Saber_imu_data_analysis(uint8_t Data[57]);
 
+/**
+  * @brief 解析最新一帧惯导数据，由姿态控制任务调用
+  */
+void IMU_ParseLatestFrame(void);
+
 /**********************************************************************
   * @ 函数名  ： IMU_USART6_Init
   * @ 功能说明： 使用 BSP USART 注册 USART6 并启动 DMA+空闲接收

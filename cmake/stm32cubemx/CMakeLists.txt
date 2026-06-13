@@ -40,7 +40,6 @@ set(MX_Include_Dirs
     ${CMAKE_CURRENT_SOURCE_DIR}/../../Modules/imu
     ${CMAKE_CURRENT_SOURCE_DIR}/../../Modules/unicomm
     ${CMAKE_CURRENT_SOURCE_DIR}/../../Modules/daemon
-    
     ${CMAKE_CURRENT_SOURCE_DIR}/../../Modules/motor
     ${CMAKE_CURRENT_SOURCE_DIR}/../../Modules/motor/DJImotor
     ${CMAKE_CURRENT_SOURCE_DIR}/../../TASK/MotorControl_task
@@ -62,6 +61,7 @@ set(MX_Application_Src
     ${CMAKE_CURRENT_SOURCE_DIR}/../../Core/Src/syscalls.c
     ${CMAKE_CURRENT_SOURCE_DIR}/../../startup_stm32f427xx.s
     ${CMAKE_CURRENT_SOURCE_DIR}/../../APP/action/action.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../BSP/bsp_init.c
     ${CMAKE_CURRENT_SOURCE_DIR}/../../BSP/can/bsp_can.c
     ${CMAKE_CURRENT_SOURCE_DIR}/../../BSP/dwt/bsp_dwt.c
     ${CMAKE_CURRENT_SOURCE_DIR}/../../BSP/log/bsp_log.c

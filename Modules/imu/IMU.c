@@ -31,12 +31,25 @@ int IMU_init_flag = 0;
 
 /* USART6 实例指针，用于在回调中访问接收缓冲 */
 static USARTInstance *imu_usart_instance = NULL;
+static uint8_t imu_latest_frame[Saber_Data_rxbuffer_size] = {0};
+static volatile uint8_t imu_latest_seq = 0;
+static uint8_t imu_parsed_seq = 0;
 
-/* 惯导串口接收回调：从 BSP 接收缓冲拷贝至模块缓冲并解析 */
+/* 惯导串口接收回调：仅缓存最新完整帧 */
 static void IMU_USART_Callback(void)
 {
-    memcpy(Saber_Data_rxbuffer, imu_usart_instance->recv_buff, Saber_Data_rxbuffer_size);
-    Saber_imu_data_analysis(Saber_Data_rxbuffer);
+    if (imu_usart_instance == NULL)
+    {
+        return;
+    }
+
+    if (imu_usart_instance->recv_len != Saber_Data_rxbuffer_size)
+    {
+        return;
+    }
+
+    memcpy(imu_latest_frame, imu_usart_instance->recv_buff, Saber_Data_rxbuffer_size);
+    imu_latest_seq++;
 }
 
 /********************************自定义函数************************************/
@@ -171,6 +184,23 @@ void Saber_imu_data_analysis(uint8_t Data[57])
 
 	/*加速度数据从机器坐标系转换为世界坐标系*/
 	Rotation_processing();
+}
+
+void IMU_ParseLatestFrame(void)
+{
+    uint8_t local_seq = imu_latest_seq;
+
+    if (local_seq == imu_parsed_seq)
+    {
+        return;
+    }
+
+    __disable_irq();
+    memcpy(Saber_Data_rxbuffer, imu_latest_frame, Saber_Data_rxbuffer_size);
+    imu_parsed_seq = local_seq;
+    __enable_irq();
+
+    Saber_imu_data_analysis(Saber_Data_rxbuffer);
 }
 
 /**********************************************************************

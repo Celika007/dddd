@@ -30,6 +30,7 @@
 #include "MotorControl_task.h"
 #include "IMU.h"
 #include "unicomm.h"
+#include "bsp_init.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -105,6 +106,7 @@ int main(void)
   MX_USART1_UART_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
+  BSPInit();
   (void)LeftMotorInit();
   (void)RightMotorInit();
   IMU_USART6_Init();

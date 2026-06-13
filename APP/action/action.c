@@ -15,34 +15,34 @@ static int arrival_report_sent = 0;
 DetachedParam state_detached_params[] =
 {   // {stance_height, step_length, up_amp, down_amp, flight_percent, freq}
     { // RUN
-        {18, 12, 6, 0.0, 0.4, 2.6},
-        {18, 12, 6, 0.0, 0.4, 2.6},
-        {18, 12, 6, 0.0, 0.4, 2.6},
-        {18, 12, 6, 0.0, 0.4, 2.6}
+        {18, 12, 6, 0.0, 0.4, 1.8},
+        {18, 12, 6, 0.0, 0.4, 1.8},
+        {18, 12, 6, 0.0, 0.4, 1.8},
+        {18, 12, 6, 0.0, 0.4, 1.8}
     },
     { // STAND
-        {18, 12, 6, 0.0, 0.0, 2.0},
-        {18, 12, 6, 0.0, 0.0, 2.0},
-        {18, 12, 6, 0.0, 0.0, 2.0},
-        {18, 12, 6, 0.0, 0.0, 2.0}
+        {18, 12, 6, 0.0, 0.5, 2.0},
+        {18, 12, 6, 0.0, 0.5, 2.0},
+        {18, 12, 6, 0.0, 0.5, 2.0},
+        {18, 12, 6, 0.0, 0.5, 2.0}
     },
     { // GRAB
-        {13, 12, 6, 0.0, 0.0, 2.0},
-        {13, 12, 6, 0.0, 0.0, 2.0},
-        {13, 12, 6, 0.0, 0.0, 2.0},
-        {13, 12, 6, 0.0, 0.0, 2.0}
+        {13, 12, 6, 0.0, 0.5, 2.0},
+        {13, 12, 6, 0.0, 0.5, 2.0},
+        {13, 12, 6, 0.0, 0.5, 2.0},
+        {13, 12, 6, 0.0, 0.5, 2.0}
     },
     { // LEFT_TURN
-        {18, 2, 6, 0.0, 0.5, 2.6}, /* TODO: fill left-turn detached params */
-        {18, 2, 6, 0.0, 0.5, 2.6}, /* TODO: fill left-turn detached params */
-        {18, 2, 6, 0.0, 0.5, 2.6}, /* TODO: fill left-turn detached params */
-        {18, 2, 6, 0.0, 0.5, 2.6}  /* TODO: fill left-turn detached params */
+        {1, 2, 6, 0.0, 0.5, 2.6}, /* TODO: fill left-turn detached params */
+        {1, 2, 6, 0.0, 0.5, 2.6}, /* TODO: fill left-turn detached params */
+        {1, 2, 6, 0.0, 0.5, 2.6}, /* TODO: fill left-turn detached params */
+        {1, 2, 6, 0.0, 0.5, 2.6}  /* TODO: fill left-turn detached params */
     },
     { // RIGHT_TURN
-        {18, 2, 6, 0.0, 0.5, 2.6}, /* TODO: fill right-turn detached params */
-        {18, 2, 6, 0.0, 0.5, 2.6}, /* TODO: fill right-turn detached params */
-        {18, 2, 6, 0.0, 0.5, 2.6}, /* TODO: fill right-turn detached params */
-        {18, 2, 6, 0.0, 0.5, 2.6}  /* TODO: fill right-turn detached params */
+        {1, 2, 6, 0.0, 0.5, 2.6}, /* TODO: fill right-turn detached params */
+        {1, 2, 6, 0.0, 0.5, 2.6}, /* TODO: fill right-turn detached params */
+        {1, 2, 6, 0.0, 0.5, 2.6}, /* TODO: fill right-turn detached params */
+        {1, 2, 6, 0.0, 0.5, 2.6}  /* TODO: fill right-turn detached params */
     },
 };
 
@@ -116,6 +116,8 @@ void Action_ApplyRunYawCorrection(DetachedParam *run_params)
     current_yaw = Saber_DATA.Saber_imu_eluer.ELUER_YAW_now;
     err_yaw = Action_AngularErrorDeg(current_yaw, target_yaw);
     correction_offset = RUN_YAW_CORRECTION_GAIN * fabsf(err_yaw);
+
+    //fix_flag
 
     if (err_yaw > 0.0f)
     {

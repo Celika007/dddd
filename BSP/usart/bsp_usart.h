@@ -48,6 +48,7 @@ typedef struct
 {
     uint8_t recv_buff[USART_RXBUFF_LIMIT]; /* 预先定义的最大缓冲区大小 */
     uint8_t recv_buff_size;                /* 模块接收一包数据的大小 */
+    uint16_t recv_len;                     /* 本次实际接收的数据长度 */
     UART_HandleTypeDef *usart_handle;      /* 实例对应的USART句柄 */
     usart_module_callback module_callback; /* 解析收到的数据的回调函数 */
 } USARTInstance;

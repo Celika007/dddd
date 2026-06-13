@@ -2,6 +2,21 @@
 #include "general_def.h"
 #include "bsp_dwt.h"
 #include "bsp_log.h"
+#include "motor_def.h"
+
+#include "usart.h"
+#include <stdio.h>
+#include <string.h>
+
+#define PID_DEBUG_UART              (&huart7)
+#define PID_DEBUG_MOTOR_INDEX       0U      // 调试第几个电机，先用 0
+#define PID_DEBUG_SEND_DIV          4U      // 每 4 次控制发送 1 次，5ms任务下约20ms发一次
+
+static uint32_t pid_debug_send_cnt = 0;
+static char pid_debug_buf[128];
+
+
+#define ANGLE_TO_SPEED_MAX 10000
 
 static uint8_t idx = 0; // register idx,是该文件的全局电机索引,在注册时使用
 /* DJI电机的实例,此处仅保存指针,内存的分配将通过电机实例初始化时通过malloc()进行 */
@@ -167,6 +182,12 @@ static void DecodeDJIMotor(CANInstance *_instance)
     // 解析数据并对电流和速度进行滤波,电机的反馈报文具体格式见电机说明手册
     measure->last_ecd = measure->ecd;
     measure->ecd = ((uint16_t)rxbuff[0]) << 8 | rxbuff[1];
+    if (!measure->first_data_received)
+    {
+        measure->base_ecd = measure->ecd;
+        measure->last_ecd = measure->ecd;
+        measure->total_round = 0;
+    }
     measure->angle_single_round = ECD_ANGLE_COEF_DJI * (float)measure->ecd - motor->measure.base_ecd * ECD_ANGLE_COEF_DJI;
 //    measure->speed_aps = (1.0f - SPEED_SMOOTH_COEF) * measure->speed_aps +
 //                         RPM_2_ANGLE_PER_SEC * SPEED_SMOOTH_COEF * (float)((int16_t)(rxbuff[2] << 8 | rxbuff[3]));
@@ -313,47 +334,106 @@ void DJIMotorControl()
         if (motor_setting->motor_reverse_flag == MOTOR_DIRECTION_REVERSE)
             pid_ref *= -1; // 设置反转
 
-        // pid_ref会顺次通过被启用的闭环充当数据的载体
-        // 计算位置环,只有启用位置环且外层闭环为位置时会计算速度环输出
-        if ((motor_setting->close_loop_type & ANGLE_LOOP) && motor_setting->outer_loop_type == ANGLE_LOOP)
+        if ((motor_setting->close_loop_type & ANGLE_LOOP) &&
+            motor_setting->outer_loop_type == ANGLE_LOOP)
         {
-            if (motor_setting->angle_feedback_source == OTHER_FEED)
-                pid_measure = *motor_controller->other_angle_feedback_ptr;
-            else
-                //pid_measure = measure->angle_single_round; // MOTOR_FEED,对total angle闭环,防止在边界处出现突跃
-                pid_measure = measure->total_angle;
-            // 更新pid_ref进入下一个环
+            pid_measure = (motor_setting->angle_feedback_source == OTHER_FEED) ?
+                            *motor_controller->other_angle_feedback_ptr :
+                            measure->total_angle;
+
             pid_ref = PIDCalculate(&motor_controller->angle_PID, pid_measure, pid_ref);
-            if(abs(pid_ref) > 20.0f) // 位置环输出限幅,防止速度环积分过大
-            {
-                if(pid_ref > 0)
-                    pid_ref = 1000.0f;
-                else
-                    pid_ref = -1000.0f;
-            }
+            LIMIT_MIN_MAX(pid_ref, -ANGLE_TO_SPEED_MAX, ANGLE_TO_SPEED_MAX);
         }
 
-        // 计算速度环,(外层闭环为速度或位置)且(启用速度环)时会计算速度环
-        if ((motor_setting->close_loop_type & SPEED_LOOP) && (motor_setting->outer_loop_type & (ANGLE_LOOP | SPEED_LOOP)))
+        if (motor_setting->close_loop_type & SPEED_LOOP)
         {
             if (motor_setting->feedforward_flag & SPEED_FEEDFORWARD)
                 pid_ref += *motor_controller->speed_feedforward_ptr;
 
-            if (motor_setting->speed_feedback_source == OTHER_FEED)
-                pid_measure = *motor_controller->other_speed_feedback_ptr;
-            else // MOTOR_FEED
-                pid_measure = measure->speed_rpm;
-            // 更新pid_ref进入下一个环
+            pid_measure = (motor_setting->speed_feedback_source == OTHER_FEED) ?
+                            *motor_controller->other_speed_feedback_ptr :
+                            measure->speed_rpm;
+
             pid_ref = PIDCalculate(&motor_controller->speed_PID, pid_measure, pid_ref);
         }
 
-        // 计算电流环,目前只要启用了电流环就计算,不管外层闭环是什么,并且电流只有电机自身传感器的反馈
-        if (motor_setting->feedforward_flag & CURRENT_FEEDFORWARD)
-            pid_ref += *motor_controller->current_feedforward_ptr;
         if (motor_setting->close_loop_type & CURRENT_LOOP)
         {
-            pid_ref = PIDCalculate(&motor_controller->current_PID, measure->real_current, pid_ref);
+            if (motor_setting->feedforward_flag & CURRENT_FEEDFORWARD)
+                pid_ref += *motor_controller->current_feedforward_ptr;
+
+            pid_ref = PIDCalculate(&motor_controller->current_PID,
+                                    measure->real_current, pid_ref);
         }
+        // // pid_ref会顺次通过被启用的闭环充当数据的载体
+        // // 计算位置环,只有启用位置环且外层闭环为位置时会计算速度环输出
+        // if ((motor_setting->close_loop_type & ANGLE_LOOP) && motor_setting->outer_loop_type == ANGLE_LOOP)
+        // {
+        //     if (motor_setting->angle_feedback_source == OTHER_FEED)
+        //         pid_measure = *motor_controller->other_angle_feedback_ptr;
+        //     else
+        //         //pid_measure = measure->angle_single_round; // MOTOR_FEED,对total angle闭环,防止在边界处出现突跃
+        //         pid_measure = measure->total_angle;
+        //     // 更新pid_ref进入下一个环
+        //     pid_ref = PIDCalculate(&motor_controller->angle_PID, pid_measure, pid_ref);
+        //     if(abs(pid_ref) > 10000.0f) // 位置环输出限幅,防止速度环积分过大
+        //     {
+        //         if(pid_ref > 0)
+        //             pid_ref = 10000.0f;
+        //         else
+        //             pid_ref = -10000.0f;
+        //     }
+        // }
+
+        // // 计算速度环,(外层闭环为速度或位置)且(启用速度环)时会计算速度环
+        // if ((motor_setting->close_loop_type & SPEED_LOOP) && (motor_setting->outer_loop_type & (ANGLE_LOOP | SPEED_LOOP)))
+        // {
+        //     if (motor_setting->feedforward_flag & SPEED_FEEDFORWARD)
+        //         pid_ref += *motor_controller->speed_feedforward_ptr;
+
+        //     if (motor_setting->speed_feedback_source == OTHER_FEED)
+        //         pid_measure = *motor_controller->other_speed_feedback_ptr;
+        //     else // MOTOR_FEED
+        //         pid_measure = measure->speed_rpm;
+        //     // 更新pid_ref进入下一个环
+        //     pid_ref = PIDCalculate(&motor_controller->speed_PID, pid_measure, pid_ref);
+        // }
+
+        // // 计算电流环,目前只要启用了电流环就计算,不管外层闭环是什么,并且电流只有电机自身传感器的反馈
+        // if (motor_setting->feedforward_flag & CURRENT_FEEDFORWARD)
+        //     pid_ref += *motor_controller->current_feedforward_ptr;
+        // if (motor_setting->close_loop_type & CURRENT_LOOP)
+        // {
+        //     pid_ref = PIDCalculate(&motor_controller->current_PID, measure->real_current, pid_ref);
+        // }
+
+        if (i == PID_DEBUG_MOTOR_INDEX)
+          {
+              pid_debug_send_cnt++;
+              if (pid_debug_send_cnt >= PID_DEBUG_SEND_DIV)
+              {
+                  pid_debug_send_cnt = 0;
+
+                  int len = snprintf(pid_debug_buf,
+                                     sizeof(pid_debug_buf),
+                                     "%.3f,%.3f,%.3f,%.3f,%.3f,%.3f\r\n",
+                                     motor_controller->angle_PID.Ref,
+                                     motor_controller->angle_PID.Measure,
+                                     motor_controller->angle_PID.Output,
+                                     motor_controller->speed_PID.Ref,
+                                     motor_controller->speed_PID.Measure,
+                                     motor_controller->speed_PID.Output);
+
+                  if (len > 0)
+                  {
+                      HAL_UART_Transmit(PID_DEBUG_UART,
+                                        (uint8_t *)pid_debug_buf,
+                                        (uint16_t)len,
+                                        10);
+                  }
+              }
+          }
+
 
         if (motor_setting->feedback_reverse_flag == FEEDBACK_DIRECTION_REVERSE)
             pid_ref *= -1;

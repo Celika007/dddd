@@ -1,6 +1,7 @@
 #include "PostureControl_task.h"
 #include "MotorControl_task.h"
 #include "action.h"
+#include "IMU.h"
 #include "FreeRTOS.h"
 #include "cmsis_os.h"
 
@@ -47,6 +48,11 @@ int start_flag = 0;
 
 static TickType_t startup_tick = 0;
 static uint8_t startup_tick_initialized = 0;
+
+DJIMotorInstance* _g_left_motor[4]={0};
+DJIMotorInstance* _g_right_motor[4]={0};
+
+static void StandByStartPosition(void);
 
 static int IsMotionState(enum States current_state)
 {
@@ -118,7 +124,7 @@ void PostureControl_task(const void* argument)
     for(;;)
     {
         PostureControl();
-        osDelayUntil(&LastWakeTime,5);
+        osDelayUntil(&LastWakeTime,8);
     }
 }
 
@@ -126,6 +132,8 @@ void PostureControl()
 {
     DetachedParam turn_params;
     int motion_blocked = 0;
+
+    IMU_ParseLatestFrame();
 
     UpdateStartupState();
     UpdateStartFlag();
@@ -149,12 +157,10 @@ void PostureControl()
         turn_params = state_detached_params[state];
         Action_ApplyRunYawCorrection(&turn_params);
         detached_params = turn_params;
-        gait_detached(detached_params,0.0,0.0,0.5,0.5);
+        gait_detached(detached_params,0.0,0.5,0.0,0.5);
         break;
     case STAND:
-
-        detached_params=state_detached_params[state];
-        gait_detached(detached_params,0.0,0.0,0.0,0.0);
+        StandByStartPosition();
         break;
     case GRAB:
 
@@ -166,14 +172,14 @@ void PostureControl()
         turn_params = state_detached_params[state];
         ApplyTurnStepLength(&turn_params, 1);
         detached_params = turn_params;
-        gait_detached(detached_params,0.0,0.0,0.5,0.5);
+        gait_detached(detached_params,0.0,0.5,0.0,0.5);
         break;
     case RIGHT_TURN:
 
         turn_params = state_detached_params[state];
         ApplyTurnStepLength(&turn_params, 0);
         detached_params = turn_params;
-        gait_detached(detached_params,0.0,0.0,0.5,0.5);
+        gait_detached(detached_params,0.0,0.5,0.0,0.5);
         break;
     case STOP:
 
@@ -186,6 +192,20 @@ void PostureControl()
     default:
         break;
     }
+}
+
+static void StandByStartPosition(void)
+{
+    DJIMotorSetRef(RightGetMotor(0), START_POS1 * ReductionAndAngleRatio);
+    DJIMotorSetRef(RightGetMotor(1), START_POS2 * ReductionAndAngleRatio);
+    DJIMotorSetRef(LeftGetMotor(0), START_POS3 * ReductionAndAngleRatio);
+    DJIMotorSetRef(LeftGetMotor(1), START_POS4 * ReductionAndAngleRatio);
+    DJIMotorSetRef(LeftGetMotor(2), START_POS5 * ReductionAndAngleRatio);
+    DJIMotorSetRef(LeftGetMotor(3), START_POS6 * ReductionAndAngleRatio);
+    DJIMotorSetRef(RightGetMotor(2), START_POS7 * ReductionAndAngleRatio);
+    DJIMotorSetRef(RightGetMotor(3), START_POS8 * ReductionAndAngleRatio);
+
+    IsMotoReadyOrNot = IsReady;
 }
 
 void gait_detached(DetachedParam d_params, float leg0_offset, float leg1_offset, float leg2_offset, float leg3_offset)
@@ -202,6 +222,9 @@ void gait_detached(DetachedParam d_params, float leg0_offset, float leg1_offset,
 
     if (_leg_active[3] == YES)
         CoupledMoveLeg(t, d_params.detached_params_3, leg3_offset, 3);
+
+    IsMotoReadyOrNot = IsReady; // 数据填充完毕
+    //vTaskDelay(50);
 }
 
 /**
@@ -253,6 +276,12 @@ void CycloidTrajectory(float t, GaitParams params, float gait_offset)
 
     // 定义步长
     stepLength = params.step_length + params.step_length_offset;
+
+    if(state==RUN)
+    {
+        params.step_length = 1.5f;
+    }
+
     // 从参数结构体中获取频率
     FREQ = params.freq + params.freq_offset;
 
@@ -279,8 +308,14 @@ void CycloidTrajectory(float t, GaitParams params, float gait_offset)
         foot_x = stepLength - (stepLength * ((2 * PI * (gp - flightPercent) / (1 - flightPercent)) - sin((2 * PI * (gp - flightPercent) / (1 - flightPercent)))) / (2 * PI)) ;
         foot_y = 0 + stanceHeight + downAMP * sin(PI * (gp - flightPercent) / (1.0 - flightPercent));
     }
-    
-    if(state==RUN)
+
+    if(state == STAND||state == GRAB)
+    {
+        foot_x=0;
+        foot_y=stanceHeight;
+    }
+
+    else if(state==RUN)
     {
         if (gp <= flightPercent) // 足端摆动相
         {
@@ -315,6 +350,7 @@ void CycloidTrajectory(float t, GaitParams params, float gait_offset)
             foot_y = stanceHeight + downAMP * sin(PI * supportPhase);
         }
     }
+    
 }
 
 void CartesianToTheta(void)
@@ -337,14 +373,14 @@ void CartesianToTheta(void)
     a2 = r2 + n;
 
     
-        theta1 = 90 - a1 + START_POS1;
-        theta2 = 90 - a2 + START_POS2;
-        theta3 = -90 + a2 + START_POS3;
-        theta4 = -90 + a1 + START_POS4;
-        theta5 = -90 + a2 + START_POS5;
-        theta6 = -90 + a1 + START_POS6;
-        theta7 = 90 - a1 + START_POS7;
-        theta8 = 90 - a2 + START_POS8;
+    theta1 = 90 - a1 + START_POS1;
+    theta2 = 90 - a2 + START_POS2;
+    theta3 = -90 + a2 + START_POS3;
+    theta4 = -90 + a1 + START_POS4;
+    theta5 = -90 + a2 + START_POS5;
+    theta6 = -90 + a1 + START_POS6;
+    theta7 = 90 - a1 + START_POS7;
+    theta8 = 90 - a2 + START_POS8;
     
 }
 
@@ -380,5 +416,5 @@ void SetCoupledPosition(int LegId)
         DJIMotorSetRef(RightGetMotor(3),temp_theta8);
     }
 
-    IsMotoReadyOrNot = IsReady; // 数据填充完毕
+    
 }

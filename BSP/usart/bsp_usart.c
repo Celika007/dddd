@@ -161,6 +161,7 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
             /*如果回调函数不为空，则调用回调函数*/
             if (usart_instance[i]->module_callback != NULL)
             {
+                usart_instance[i]->recv_len = Size;
                 usart_instance[i]->module_callback();
                 /*接收结束后清空缓冲区，对于变长数据是必要的*/
                 memset(usart_instance[i]->recv_buff, 0, Size);
