@@ -2,250 +2,107 @@
 
 ## Overview
 
-- Navigation coordinates are updated by `Modules/unicomm/unicomm.c`:
+- Upper computer commands are received on `UART8` and parsed in `Modules/unicomm/unicomm.c`.
+- The parser now accepts line-based ASCII frames:
+
+```text
+RCPickUpBoxes\n
+RCplace=0,3,count=3\n
+RCNAV;seq=1;stamp_ms=1710000000123;cur_valid=1;cur_frame=map;cur_x=123.000;cur_y=42.000;cur_z=0.000;cur_yaw=0.000;goal_valid=1;goal_frame=map;goal_x=300.000;goal_y=200.000;goal_z=0.000;goal_yaw=0.000\n
+```
+
+- `PostureControl()` calls `ActionProcessNavigation()` once per control cycle.
+
+## State Mapping
+
+- `RCPickUpBoxes` sets `state = GRAB`
+- `RCplace=...` sets `state = STAND`
+- `RCNAV;...` updates:
   - `current_x`
   - `current_y`
   - `target_x`
   - `target_y`
-- Yaw for navigation now uses single-turn IMU yaw:
-  - `Saber_DATA.Saber_imu_eluer.ELUER_YAW_now`
-- The control loop entry is `PostureControl()` in `TASK/PostureControl_task/PostureControl_task.c`.
-- `PostureControl()` calls `ActionProcessNavigation()` once every control period.
+  - `upstream_current_yaw`
+  - `upstream_goal_yaw`
+  - `nav_current_valid`
+  - `nav_goal_valid`
 
-## State Usage
+## Coordinate And Yaw Rules
 
-Navigation-related states in `APP/action/action.h`:
+- Upper-computer navigation coordinates now use:
+  - forward is `+y`
+  - left is `+x`
+- Upper-computer yaw now uses:
+  - `0°` -> facing `+y`
+  - `90°` -> facing `+x`
+  - `-90°` -> facing `-x`
+  - `180°/-180°` -> facing `-y`
+  - counterclockwise is positive
+
+- Goal yaw used by navigation:
 
 ```c
-RUN = 0,
-STAND = 1,
-GRAB = 2,
-LEFT_TURN = 3,
-RIGHT_TURN = 4,
-STOP = 5,
-REALSE = 6,
+target_yaw = upstream_goal_yaw;
 ```
 
-Current behavior:
+- If fused yaw is enabled, upstream current yaw uses the same sign convention:
 
-- `RUN`: normal gait
-- `STAND`: reached target
-- `LEFT_TURN`: turning left
-- `RIGHT_TURN`: turning right
-- `GRAB`, `STOP`, `REALSE`: navigation logic returns immediately and does not overwrite state
+```c
+up_yaw = upstream_current_yaw;
+```
 
-## Startup Gating
+- All yaw comparisons are normalized into `[-180, 180]`.
 
-- `state` is initialized to `REALSE` in `TASK/PostureControl_task/PostureControl_task.c`.
-- During the first `2000 ms` after boot, `PostureControl()` forces `state = REALSE`.
-- After the `2000 ms` startup window expires, `REALSE` automatically transitions to `STAND`.
-- `start_flag` is initialized to `0`.
-- `start_flag = 1` when `state == STAND`.
-- `start_flag = 0` when `state == REALSE` or `state == STOP`.
-- `RUN`, `GRAB`, `LEFT_TURN`, and `RIGHT_TURN` only execute when `start_flag == 1`.
-- If a motion state is requested while `start_flag == 0`, `PostureControl()` forces the state back to `STAND` before executing gait logic.
+## Navigation Decision Order
 
-## Position Thresholds
+Navigation does nothing when `state` is `GRAB`, `STOP`, or `REALSE`.
 
-- Arrival threshold:
-  - `abs(current_x - target_x) < 10`
-  - `abs(current_y - target_y) < 10`
-- Turn-complete threshold:
-  - `abs(yaw error) < 2 deg`
+Decision priority:
 
-When both arrival conditions are met:
+1. If `nav_current_valid == 0` or `nav_goal_valid == 0`, hold `STAND`
+2. Compare yaw first
+3. Only when yaw is aligned, compare position
 
-- `state = STAND`
+Yaw alignment threshold:
+
+```c
+abs(normalize(actual_yaw - target_yaw)) <= 2.0f
+```
+
+When yaw is not aligned:
+
+- `actual_yaw > target_yaw` -> `RIGHT_TURN`
+- `actual_yaw < target_yaw` -> `LEFT_TURN`
+
+Position arrival threshold:
+
+```c
+abs(current_x - target_x) < 8.0f &&
+abs(current_y - target_y) < 8.0f
+```
+
+Where:
+
+- `current_x - target_x`: left/right error
+- `current_y - target_y`: forward/backward error
+
+When yaw is aligned:
+
+- position reached -> `STAND`
+- position not reached -> `RUN`
+
+When target position is reached:
+
 - `UniComm_SendArrival()` sends `RCArrivalMX` once
-
-## Turn Trigger Logic
-
-The turn trigger uses `ELUER_YAW_now`, whose expected range is `-180 ~ 180`.
-
-### Yaw near 0 deg
-
-Condition:
-
-```c
-abs(yaw - 0) <= 2
-```
-
-And:
-
-```c
-abs(current_x - target_x) < 10
-```
-
-Direction:
-
-- `current_x - target_x > 0` -> left turn
-- `current_x - target_x < 0` -> right turn
-
-### Yaw near 180 deg
-
-Condition:
-
-- `[178, 180]`
-- `[-180, -178]`
-
-Implemented by normalized angular error against `180 deg`.
-
-And:
-
-```c
-abs(current_x - target_x) < 10
-```
-
-Direction:
-
-- `current_x - target_x > 0` -> right turn
-- `current_x - target_x < 0` -> left turn
-
-### Yaw near 90 deg
-
-Condition:
-
-```c
-abs(yaw - 90) <= 2
-```
-
-And:
-
-```c
-abs(current_y - target_y) < 10
-```
-
-Direction:
-
-- `current_y - target_y > 0` -> right turn
-- `current_y - target_y < 0` -> left turn
-
-### Yaw near -90 deg
-
-Condition:
-
-```c
-abs(yaw + 90) <= 2
-```
-
-And:
-
-```c
-abs(current_y - target_y) < 10
-```
-
-Direction:
-
-- `current_y - target_y > 0` -> left turn
-- `current_y - target_y < 0` -> right turn
-
-## Turn Counters And Target Yaw
-
-The old `left_flag/right_flag` logic has been removed.
-
-Navigation now uses:
-
-- `left_count`
-- `right_count`
-
-Update rule:
-
-- When a new left turn is triggered:
-  - `left_count += 1`
-- When a new right turn is triggered:
-  - `right_count += 1`
-
-Target yaw is calculated from cumulative counts:
-
-```c
-raw_target_yaw = -90 * left_count + 90 * right_count
-```
-
-Then normalized into `[-180, 180]` before storing in `target_yaw`.
-
-Examples:
-
-- `left_count = 1, right_count = 0` -> `target_yaw = -90`
-- `left_count = 2, right_count = 0` -> `target_yaw = -180`
-- `left_count = 3, right_count = 0` -> normalized `target_yaw = 90`
-
-## Turn Completion
-
-When the robot is already in `LEFT_TURN` or `RIGHT_TURN`:
-
-- Navigation does not re-evaluate trigger direction.
-- It only checks whether current yaw is close enough to `target_yaw`.
-
-Completion rule:
-
-```c
-abs(normalized(current_yaw - target_yaw)) < 2
-```
-
-When satisfied:
-
-- `state = RUN`
 
 ## Run Yaw Correction
 
-`RUN` state now applies yaw-based step-length correction before calling `gait_detached(...)`.
+- `RUN` state still supports yaw-based step-length correction
+- correction uses fused current yaw vs. current navigation goal yaw
+- `RUN_YAW_CORRECTION_GAIN` remains `0.0f`, so this path is wired but disabled by default
 
-Yaw error uses the same normalized shortest-path calculation as turn completion:
+## Notes
 
-```c
-err_yaw = normalize(current_yaw - target_yaw)
-```
-
-This keeps the `180 deg` / `-180 deg` boundary safe.
-
-Per control cycle:
-
-- All four `step_length_offset` values are reset to `0`
-- If `err_yaw < 0`:
-  - `detached_params_0.step_length_offset = RUN_YAW_CORRECTION_GAIN * abs(err_yaw)`
-  - `detached_params_3.step_length_offset = RUN_YAW_CORRECTION_GAIN * abs(err_yaw)`
-- If `err_yaw > 0`:
-  - `detached_params_1.step_length_offset = RUN_YAW_CORRECTION_GAIN * abs(err_yaw)`
-  - `detached_params_2.step_length_offset = RUN_YAW_CORRECTION_GAIN * abs(err_yaw)`
-- If `err_yaw == 0`:
-  - all four offsets remain `0`
-
-Default gain:
-
-```c
-#define RUN_YAW_CORRECTION_GAIN 0.0f
-```
-
-So the correction path is wired in, but disabled until the gain is tuned.
-
-## Angle Handling
-
-`APP/action/action.c` contains angle helpers:
-
-- `Action_NormalizeYaw180(float yaw)`
-  - Normalizes any angle to `[-180, 180]`
-- `Action_AngularErrorDeg(float current_yaw, float expected_yaw)`
-  - Returns shortest signed angular error in `[-180, 180]`
-- `Action_IsYawNear(float yaw, float center)`
-  - Checks whether yaw is within `+-2 deg` of the target window center
-
-This is what makes the `180 deg` boundary safe across both `180` and `-180`.
-
-## Gait Parameters
-
-`state_detached_params[]` still contains:
-
-- `RUN`
-- `STAND`
-- `GRAB`
-- `LEFT_TURN`
-- `RIGHT_TURN`
-
-The left-turn and right-turn gait entries are still placeholders with `TODO` comments.
-
-## Known Remaining Issues
-
-These are intentionally not changed in this revision:
-
-- `_leg_active[4]` behavior is unchanged
-- `UniComm_SendArrival()` is still blocking
+- Old `SIN...ZU`, `RCGRABMX`, and `RCPUTDOWNMX` parsing has been removed
+- Old quadrant-based turn trigger logic has been removed
+- `target_yaw` now means the current navigation goal yaw for debug output

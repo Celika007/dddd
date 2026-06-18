@@ -3,10 +3,14 @@
 
 #include <stdint.h>
 
-extern int32_t current_x;
-extern int32_t current_y;
-extern int32_t target_x;
-extern int32_t target_y;
+extern float current_x;
+extern float current_y;
+extern float target_x;
+extern float target_y;
+extern float upstream_current_yaw;
+extern float upstream_goal_yaw;
+extern uint8_t nav_current_valid;
+extern uint8_t nav_goal_valid;
 
 void UniComm_UART8_Init(void);
 void UniComm_SendArrival(void);

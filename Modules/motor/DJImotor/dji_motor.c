@@ -12,6 +12,7 @@
 #define PID_DEBUG_MOTOR_INDEX       0U      // 调试第几个电机，先用 0
 #define PID_DEBUG_SEND_DIV          4U      // 每 4 次控制发送 1 次，5ms任务下约20ms发一次
 
+static const uint8_t pid_debug_enable = 0U;
 static uint32_t pid_debug_send_cnt = 0;
 static char pid_debug_buf[128];
 
@@ -407,7 +408,7 @@ void DJIMotorControl()
         //     pid_ref = PIDCalculate(&motor_controller->current_PID, measure->real_current, pid_ref);
         // }
 
-        if (i == PID_DEBUG_MOTOR_INDEX)
+        if (pid_debug_enable && i == PID_DEBUG_MOTOR_INDEX)
           {
               pid_debug_send_cnt++;
               if (pid_debug_send_cnt >= PID_DEBUG_SEND_DIV)

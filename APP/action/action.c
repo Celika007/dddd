@@ -6,8 +6,6 @@
 #include "unicomm.h"
 
 DetachedParam detached_params;
-int left_count = 0;
-int right_count = 0;
 float target_yaw = 0.0f;
 
 static int arrival_report_sent = 0;
@@ -33,22 +31,22 @@ DetachedParam state_detached_params[] =
         {13, 12, 6, 0.0, 0.5, 2.0}
     },
     { // LEFT_TURN
-        {1, 2, 6, 0.0, 0.5, 2.6}, /* TODO: fill left-turn detached params */
-        {1, 2, 6, 0.0, 0.5, 2.6}, /* TODO: fill left-turn detached params */
-        {1, 2, 6, 0.0, 0.5, 2.6}, /* TODO: fill left-turn detached params */
-        {1, 2, 6, 0.0, 0.5, 2.6}  /* TODO: fill left-turn detached params */
+        {17, 2.5, 5.5, 0.0, 0.4, 2.0},
+        {17, 2.5, 5.5, 0.0, 0.4, 2.0},
+        {17, 2.5, 5.5, 0.0, 0.4, 2.0},
+        {17, 2.5, 5.5, 0.0, 0.4, 2.0}
     },
     { // RIGHT_TURN
-        {1, 2, 6, 0.0, 0.5, 2.6}, /* TODO: fill right-turn detached params */
-        {1, 2, 6, 0.0, 0.5, 2.6}, /* TODO: fill right-turn detached params */
-        {1, 2, 6, 0.0, 0.5, 2.6}, /* TODO: fill right-turn detached params */
-        {1, 2, 6, 0.0, 0.5, 2.6}  /* TODO: fill right-turn detached params */
+        {17, 2.5, 5.5, 0.0, 0.4, 2.0},
+        {17, 2.5, 5.5, 0.0, 0.4, 2.0},
+        {17, 2.5, 5.5, 0.0, 0.4, 2.0},
+        {17, 2.5, 5.5, 0.0, 0.4, 2.0}
     },
 };
 
-static int Action_IsWithinThreshold(int32_t delta, int32_t threshold)
+static int Action_IsWithinThreshold(float delta, float threshold)
 {
-    return abs(delta) < threshold;
+    return fabsf(delta) < threshold;
 }
 
 static float Action_NormalizeYaw180(float yaw)
@@ -71,35 +69,46 @@ static float Action_AngularErrorDeg(float current_yaw, float expected_yaw)
     return Action_NormalizeYaw180(current_yaw - expected_yaw);
 }
 
-static int Action_IsYawNear(float yaw, float center)
+static float Action_DegToRad(float degree)
 {
-    return fabsf(Action_AngularErrorDeg(yaw, center)) <= NAV_YAW_FINISH_THRESHOLD_DEG;
+    return degree * (float)(3.14159265358979323846 / 180.0);
 }
 
-static void Action_UpdateTurnTargetYaw(void)
+static float Action_RadToDeg(float radian)
 {
-    float raw_target_yaw = -90.0f * left_count + 90.0f * right_count;
-
-    target_yaw = Action_NormalizeYaw180(raw_target_yaw);
+    return radian * (float)(180.0 / 3.14159265358979323846);
 }
 
-static void Action_StartLeftTurn(void)
+static float Action_CircularMeanDeg(float yaw_a, float yaw_b)
 {
-    left_count += 1;
-    Action_UpdateTurnTargetYaw();
-    state = LEFT_TURN;
+    float vector_x = cosf(Action_DegToRad(yaw_a)) + cosf(Action_DegToRad(yaw_b));
+    float vector_y = sinf(Action_DegToRad(yaw_a)) + sinf(Action_DegToRad(yaw_b));
+
+    if (fabsf(vector_x) < 1e-6f && fabsf(vector_y) < 1e-6f)
+    {
+        return Action_NormalizeYaw180(yaw_a);
+    }
+
+    return Action_NormalizeYaw180(Action_RadToDeg(atan2f(vector_y, vector_x)));
 }
 
-static void Action_StartRightTurn(void)
+static float Action_GetNavigationGoalYaw(void)
 {
-    right_count += 1;
-    Action_UpdateTurnTargetYaw();
-    state = RIGHT_TURN;
+    return Action_NormalizeYaw180(upstream_goal_yaw);
+}
+
+static float Action_GetFusedCurrentYaw(void)
+{
+    float imu_yaw = Action_NormalizeYaw180(Saber_DATA.Saber_imu_eluer.ELUER_YAW_now);
+    float upstream_yaw = Action_NormalizeYaw180(upstream_current_yaw);
+
+    return Action_CircularMeanDeg(imu_yaw, upstream_yaw);
 }
 
 void Action_ApplyRunYawCorrection(DetachedParam *run_params)
 {
     float current_yaw;
+    float goal_yaw;
     float err_yaw;
     float correction_offset;
 
@@ -113,11 +122,16 @@ void Action_ApplyRunYawCorrection(DetachedParam *run_params)
     run_params->detached_params_2.step_length_offset = 0.0f;
     run_params->detached_params_3.step_length_offset = 0.0f;
 
-    current_yaw = Saber_DATA.Saber_imu_eluer.ELUER_YAW_now;
-    err_yaw = Action_AngularErrorDeg(current_yaw, target_yaw);
-    correction_offset = RUN_YAW_CORRECTION_GAIN * fabsf(err_yaw);
+    if (!nav_current_valid || !nav_goal_valid)
+    {
+        return;
+    }
 
-    //fix_flag
+    // current_yaw = Action_GetFusedCurrentYaw();
+    current_yaw = Saber_DATA.Saber_imu_eluer.ELUER_YAW_now;
+    goal_yaw = Action_GetNavigationGoalYaw();
+    err_yaw = Action_AngularErrorDeg(current_yaw, goal_yaw);
+    correction_offset = RUN_YAW_CORRECTION_GAIN * fabsf(err_yaw);
 
     if (err_yaw > 0.0f)
     {
@@ -133,14 +147,45 @@ void Action_ApplyRunYawCorrection(DetachedParam *run_params)
 
 void ActionProcessNavigation(void)
 {
-    int32_t dx = current_x - target_x;
-    int32_t dy = current_y - target_y;
-    float current_yaw = Saber_DATA.Saber_imu_eluer.ELUER_YAW_now;
+    float dx;
+    float dy;
+    float current_yaw;
+    float yaw_error;
 
     if (state == GRAB || state == STOP || state == REALSE)
     {
         return;
     }
+
+    if (!nav_current_valid || !nav_goal_valid)
+    {
+        arrival_report_sent = 0;
+        target_yaw = 0.0f;
+        state = STAND;
+        return;
+    }
+
+    // current_yaw = Action_GetFusedCurrentYaw();
+    current_yaw = Saber_DATA.Saber_imu_eluer.ELUER_YAW_now;
+    target_yaw = Action_GetNavigationGoalYaw();
+    yaw_error = Action_AngularErrorDeg(current_yaw, target_yaw);
+
+    if (yaw_error > NAV_YAW_FINISH_THRESHOLD_DEG)
+    {
+        arrival_report_sent = 0;
+        state = RIGHT_TURN;
+        return;
+    }
+
+    if (yaw_error < -NAV_YAW_FINISH_THRESHOLD_DEG)
+    {
+        arrival_report_sent = 0;
+        state = LEFT_TURN;
+        return;
+    }
+
+    dx = current_x - target_x;
+    dy = current_y - target_y;
 
     if (Action_IsWithinThreshold(dx, NAV_ARRIVAL_THRESHOLD_CM) &&
         Action_IsWithinThreshold(dy, NAV_ARRIVAL_THRESHOLD_CM))
@@ -155,72 +200,7 @@ void ActionProcessNavigation(void)
     }
 
     arrival_report_sent = 0;
-
-    if (state == LEFT_TURN || state == RIGHT_TURN)
-    {
-        if (fabsf(Action_AngularErrorDeg(current_yaw, target_yaw)) < NAV_YAW_FINISH_THRESHOLD_DEG)
-        {
-            state = RUN;
-        }
-        return;
-    }
-
     state = RUN;
-
-    if (Action_IsYawNear(current_yaw, 0.0f) &&
-        Action_IsWithinThreshold(dx, NAV_ARRIVAL_THRESHOLD_CM))
-    {
-        if (dx > 0)
-        {
-            Action_StartLeftTurn();
-        }
-        else if (dx < 0)
-        {
-            Action_StartRightTurn();
-        }
-        return;
-    }
-
-    if (Action_IsYawNear(current_yaw, 180.0f) &&
-        Action_IsWithinThreshold(dx, NAV_ARRIVAL_THRESHOLD_CM))
-    {
-        if (dx > 0)
-        {
-            Action_StartRightTurn();
-        }
-        else if (dx < 0)
-        {
-            Action_StartLeftTurn();
-        }
-        return;
-    }
-
-    if (Action_IsYawNear(current_yaw, 90.0f) &&
-        Action_IsWithinThreshold(dy, NAV_ARRIVAL_THRESHOLD_CM))
-    {
-        if (dy > 0)
-        {
-            Action_StartRightTurn();
-        }
-        else if (dy < 0)
-        {
-            Action_StartLeftTurn();
-        }
-        return;
-    }
-
-    if (Action_IsYawNear(current_yaw, -90.0f) &&
-        Action_IsWithinThreshold(dy, NAV_ARRIVAL_THRESHOLD_CM))
-    {
-        if (dy > 0)
-        {
-            Action_StartLeftTurn();
-        }
-        else if (dy < 0)
-        {
-            Action_StartRightTurn();
-        }
-    }
 }
 
 void DOWN(void)

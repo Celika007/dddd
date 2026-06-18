@@ -13,7 +13,7 @@
 #define START_POS7 -18
 #define START_POS8 140
 
-#define NAV_ARRIVAL_THRESHOLD_CM 10
+#define NAV_ARRIVAL_THRESHOLD_CM 8.0f
 #define NAV_YAW_FINISH_THRESHOLD_DEG 2.0f
 #define TURN_GAIN 1.0f
 #define RUN_YAW_CORRECTION_GAIN 0.0f
@@ -65,8 +65,6 @@ extern DetachedParam detached_params;
 extern DetachedParam state_detached_params[];
 extern enum States state;
 extern int start_flag;
-extern int left_count;
-extern int right_count;
 extern float target_yaw;
 
 void DOWN(void);

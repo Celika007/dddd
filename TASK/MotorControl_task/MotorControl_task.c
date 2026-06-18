@@ -52,6 +52,45 @@ void MotorControl_task(const void* argument)
             }
         }
 
+        if(state==LEFT_TURN)
+        {
+            for(int i=0;i<LEFT_MOTOR_COUNT;i++)
+            {
+                g_left_motor[i]->motor_controller.angle_PID.Kp=5.0f;
+                g_left_motor[i]->motor_controller.speed_PID.Kp=7.0f;
+                g_left_motor[i]->motor_controller.angle_PID.MaxOut=6000;
+                g_left_motor[i]->motor_controller.speed_PID.MaxOut=8000;
+            }
+            for(int i=0;i<RIGHT_MOTOR_COUNT;i++)
+            {
+                g_right_motor[i]->motor_controller.angle_PID.Kp=5.0f;
+                g_right_motor[i]->motor_controller.speed_PID.Kp=7.0f;
+                g_right_motor[i]->motor_controller.angle_PID.MaxOut=6000;
+                g_right_motor[i]->motor_controller.speed_PID.MaxOut=10000;
+                g_right_motor[2]->motor_controller.speed_PID.MaxOut=10000;
+                g_right_motor[3]->motor_controller.speed_PID.MaxOut=10000;
+            }
+        }
+
+        if(state==RIGHT_TURN)
+        {
+            for(int i=0;i<LEFT_MOTOR_COUNT;i++)
+            {
+                g_left_motor[i]->motor_controller.angle_PID.Kp=5.0f;
+                g_left_motor[i]->motor_controller.speed_PID.Kp=7.0f;
+                g_left_motor[i]->motor_controller.angle_PID.MaxOut=6000;
+                g_left_motor[i]->motor_controller.speed_PID.MaxOut=7000;
+            }
+            for(int i=0;i<RIGHT_MOTOR_COUNT;i++)
+            {
+                g_right_motor[i]->motor_controller.angle_PID.Kp=5.0f;
+                g_right_motor[i]->motor_controller.speed_PID.Kp=7.0f;
+                g_right_motor[i]->motor_controller.angle_PID.MaxOut=6000;
+                g_right_motor[i]->motor_controller.speed_PID.MaxOut=7000;
+            }
+        }
+        
+
         if(IsMotoReadyOrNot == IsReady)
         {
             DJIMotorControl();

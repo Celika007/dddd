@@ -1,6 +1,7 @@
 #include "unicomm.h"
 
 #include <limits.h>
+#include <math.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -8,200 +9,210 @@
 #include "bsp_usart.h"
 #include "usart.h"
 
-#define UNICOMM_RX_BUFFER_SIZE 64U
+#define UNICOMM_RX_BUFFER_SIZE 255U
 #define UNICOMM_ARRIVAL_FRAME "RCArrivalMX"
 
-int32_t current_x = 0;
-int32_t current_y = 0;
-int32_t target_x = 0;
-int32_t target_y = 0;
+float current_x = 0.0f;
+float current_y = 0.0f;
+float target_x = 0.0f;
+float target_y = 0.0f;
+float upstream_current_yaw = 0.0f;
+float upstream_goal_yaw = 0.0f;
+uint8_t nav_current_valid = 0U;
+uint8_t nav_goal_valid = 0U;
 
 static USARTInstance *unicomm_usart_instance = NULL;
+static char unicomm_line_buffer[UNICOMM_RX_BUFFER_SIZE + 1U];
+static size_t unicomm_line_length = 0U;
+static uint8_t unicomm_line_overflow = 0U;
 
-static size_t UniComm_BoundedStrnLen(const char *str, size_t max_len)
+static const char *UniComm_FindFieldValue(const char *line, const char *key)
 {
-    size_t len = 0;
+    const size_t key_len = strlen(key);
+    const char *cursor = line;
 
-    while (len < max_len && str[len] != '\0')
+    while ((cursor = strstr(cursor, key)) != NULL)
     {
-        ++len;
-    }
-
-    return len;
-}
-
-static int UniComm_ExtractFramePayload(const uint8_t *buffer,
-                                       size_t buffer_size,
-                                       const char *header,
-                                       const char *tail,
-                                       char *payload,
-                                       size_t payload_size)
-{
-    size_t data_len = UniComm_BoundedStrnLen((const char *)buffer, buffer_size);
-    size_t header_len = strlen(header);
-    size_t tail_len = strlen(tail);
-    size_t i = 0;
-
-    if (payload_size == 0U || data_len < (header_len + tail_len))
-    {
-        return 0;
-    }
-
-    while ((i + header_len) <= data_len)
-    {
-        if (memcmp(&buffer[i], header, header_len) == 0)
+        if (cursor == line || cursor[-1] == ';')
         {
-            size_t payload_start = i + header_len;
-            size_t j = payload_start;
-
-            while ((j + tail_len) <= data_len)
-            {
-                if (memcmp(&buffer[j], tail, tail_len) == 0)
-                {
-                    size_t payload_len = j - payload_start;
-
-                    if ((payload_len + 1U) > payload_size)
-                    {
-                        return 0;
-                    }
-
-                    memcpy(payload, &buffer[payload_start], payload_len);
-                    payload[payload_len] = '\0';
-                    return 1;
-                }
-
-                ++j;
-            }
-
-            return 0;
+            return cursor + key_len;
         }
 
-        ++i;
+        cursor += key_len;
     }
 
-    return 0;
+    return NULL;
 }
 
-static int UniComm_ParseInt32(const char **cursor, const char *prefix, int32_t *value)
+static int UniComm_ParseIntField(const char *line, const char *key, int *value)
 {
-    const size_t prefix_len = strlen(prefix);
-    const char *start;
+    const char *start = UniComm_FindFieldValue(line, key);
     char *end = NULL;
     long parsed;
 
-    if (strncmp(*cursor, prefix, prefix_len) != 0)
+    if (start == NULL)
     {
         return 0;
     }
 
-    start = *cursor + prefix_len;
     parsed = strtol(start, &end, 10);
-    if (end == start || parsed < INT32_MIN || parsed > INT32_MAX)
+    if (end == start || parsed < INT_MIN || parsed > INT_MAX)
     {
         return 0;
     }
 
-    *value = (int32_t)parsed;
-    *cursor = end;
+    if (*end != ';' && *end != '\0')
+    {
+        return 0;
+    }
+
+    *value = (int)parsed;
     return 1;
 }
 
-static int UniComm_ParsePositionPayload(const char *payload,
-                                        int32_t *new_current_x,
-                                        int32_t *new_current_y,
-                                        int32_t *new_target_x,
-                                        int32_t *new_target_y)
+static int UniComm_ParseFloatField(const char *line, const char *key, float *value)
 {
-    const char *cursor = payload;
+    const char *start = UniComm_FindFieldValue(line, key);
+    char *end = NULL;
+    float parsed;
 
-    if (!UniComm_ParseInt32(&cursor, "N{X:", new_current_x))
+    if (start == NULL)
     {
         return 0;
     }
 
-    if (!UniComm_ParseInt32(&cursor, ",Y:", new_current_y))
+    parsed = strtof(start, &end);
+    if (end == start || !isfinite(parsed))
     {
         return 0;
     }
 
-    if (!UniComm_ParseInt32(&cursor, "},T{X:", new_target_x))
+    if (*end != ';' && *end != '\0')
     {
         return 0;
     }
 
-    if (!UniComm_ParseInt32(&cursor, ",Y:", new_target_y))
-    {
-        return 0;
-    }
-
-    if (strcmp(cursor, "}") != 0)
-    {
-        return 0;
-    }
-
+    *value = parsed;
     return 1;
 }
 
-static void UniComm_HandlePositionFrame(const char *payload)
+static void UniComm_HandleNavFrame(const char *line)
 {
-    int32_t new_current_x;
-    int32_t new_current_y;
-    int32_t new_target_x;
-    int32_t new_target_y;
+    int current_valid_value;
+    int goal_valid_value;
+    float new_current_x;
+    float new_current_y;
+    float new_target_x;
+    float new_target_y;
+    float new_upstream_current_yaw;
+    float new_upstream_goal_yaw;
 
-    if (UniComm_ParsePositionPayload(payload,
-                                     &new_current_x,
-                                     &new_current_y,
-                                     &new_target_x,
-                                     &new_target_y))
+    if (!UniComm_ParseIntField(line, "cur_valid=", &current_valid_value) ||
+        !UniComm_ParseIntField(line, "goal_valid=", &goal_valid_value) ||
+        !UniComm_ParseFloatField(line, "cur_x=", &new_current_x) ||
+        !UniComm_ParseFloatField(line, "cur_y=", &new_current_y) ||
+        !UniComm_ParseFloatField(line, "goal_x=", &new_target_x) ||
+        !UniComm_ParseFloatField(line, "goal_y=", &new_target_y) ||
+        !UniComm_ParseFloatField(line, "cur_yaw=", &new_upstream_current_yaw) ||
+        !UniComm_ParseFloatField(line, "goal_yaw=", &new_upstream_goal_yaw))
     {
-        current_x = new_current_x;
-        current_y = new_current_y;
-        target_x = new_target_x;
-        target_y = new_target_y;
+        return;
     }
+
+    nav_current_valid = current_valid_value != 0 ? 1U : 0U;
+    nav_goal_valid = goal_valid_value != 0 ? 1U : 0U;
+    current_x = new_current_x;
+    current_y = new_current_y;
+    target_x = new_target_x;
+    target_y = new_target_y;
+    upstream_current_yaw = new_upstream_current_yaw;
+    upstream_goal_yaw = new_upstream_goal_yaw;
 }
 
-static void UniComm_HandleActionFrame(const char *payload)
+static void UniComm_ProcessLine(const char *line)
 {
-    if (strcmp(payload, "GRAB") == 0)
+    if (line[0] == '\0')
+    {
+        return;
+    }
+
+    if (strcmp(line, "RCPickUpBoxes") == 0)
     {
         state = GRAB;
+        return;
     }
-    else if (strcmp(payload, "PUTDOWN") == 0)
+
+    if (strncmp(line, "RCplace=", 8) == 0)
     {
         state = STAND;
+        return;
+    }
+
+    if (strncmp(line, "RCNAV;", 6) == 0)
+    {
+        UniComm_HandleNavFrame(line);
+    }
+}
+
+static void UniComm_ProcessIncomingBytes(const uint8_t *buffer, size_t data_len)
+{
+    size_t i;
+
+    for (i = 0U; i < data_len; ++i)
+    {
+        char current_char = (char)buffer[i];
+
+        if (current_char == '\r')
+        {
+            continue;
+        }
+
+        if (current_char == '\n')
+        {
+            if (!unicomm_line_overflow)
+            {
+                unicomm_line_buffer[unicomm_line_length] = '\0';
+                UniComm_ProcessLine(unicomm_line_buffer);
+            }
+
+            unicomm_line_length = 0U;
+            unicomm_line_overflow = 0U;
+            continue;
+        }
+
+        if (unicomm_line_overflow)
+        {
+            continue;
+        }
+
+        if (unicomm_line_length >= UNICOMM_RX_BUFFER_SIZE)
+        {
+            unicomm_line_length = 0U;
+            unicomm_line_overflow = 1U;
+            continue;
+        }
+
+        unicomm_line_buffer[unicomm_line_length++] = current_char;
     }
 }
 
 static void UniComm_UART8_Callback(void)
 {
-    char payload[UNICOMM_RX_BUFFER_SIZE];
-
     if (unicomm_usart_instance == NULL)
     {
         return;
     }
 
-    if (UniComm_ExtractFramePayload(unicomm_usart_instance->recv_buff,
-                                    UNICOMM_RX_BUFFER_SIZE,
-                                    "SI",
-                                    "ZU",
-                                    payload,
-                                    sizeof(payload)))
+    if (unicomm_usart_instance->recv_len > 0U)
     {
-        UniComm_HandlePositionFrame(payload);
+        HAL_UART_Transmit(&huart7,
+                          unicomm_usart_instance->recv_buff,
+                          unicomm_usart_instance->recv_len,
+                          20);
     }
 
-    if (UniComm_ExtractFramePayload(unicomm_usart_instance->recv_buff,
-                                    UNICOMM_RX_BUFFER_SIZE,
-                                    "RC",
-                                    "MX",
-                                    payload,
-                                    sizeof(payload)))
-    {
-        UniComm_HandleActionFrame(payload);
-    }
+    UniComm_ProcessIncomingBytes(unicomm_usart_instance->recv_buff,
+                                 unicomm_usart_instance->recv_len);
 }
 
 void UniComm_UART8_Init(void)

@@ -103,8 +103,8 @@ static void ApplyTurnStepLength(DetachedParam *turn_params, int is_left_turn)
 
     if (is_left_turn)
     {
-        turn_params->detached_params_0.step_length = inner_step;
-        turn_params->detached_params_3.step_length = TURN_GAIN * fabsf(turn_params->detached_params_3.step_length);
+        turn_params->detached_params_0.step_length = inner_step*1.2;
+        turn_params->detached_params_3.step_length = TURN_GAIN * fabsf(turn_params->detached_params_3.step_length)*1.2;
         turn_params->detached_params_1.step_length = -outer_step;
         turn_params->detached_params_2.step_length = -TURN_GAIN * fabsf(turn_params->detached_params_2.step_length);
     }
@@ -123,6 +123,12 @@ void PostureControl_task(const void* argument)
     LastWakeTime = xTaskGetTickCount();
     for(;;)
     {
+
+        char buffer[100];  // 缓冲区大小按需调整
+        int length;
+        length = snprintf(buffer, sizeof(buffer), "%d,%d,%d\r\n",state,(int)target_yaw,(int)Saber_DATA.Saber_imu_eluer.ELUER_YAW_now);
+        HAL_UART_Transmit(&huart8, (uint8_t *)buffer, length,20);
+
         PostureControl();
         osDelayUntil(&LastWakeTime,8);
     }
@@ -277,6 +283,7 @@ void CycloidTrajectory(float t, GaitParams params, float gait_offset)
     // 定义步长
     stepLength = params.step_length + params.step_length_offset;
 
+    //调试代码
     if(state==RUN)
     {
         params.step_length = 1.5f;
@@ -315,7 +322,7 @@ void CycloidTrajectory(float t, GaitParams params, float gait_offset)
         foot_y=stanceHeight;
     }
 
-    else if(state==RUN)
+    else if(state==RUN || state==LEFT_TURN ||state ==RIGHT_TURN)
     {
         if (gp <= flightPercent) // 足端摆动相
         {
