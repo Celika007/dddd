@@ -1,0 +1,600 @@
+{
+	"artifacts" : 
+	[
+		{
+			"path" : "cmake/stm32cubemx/CMakeFiles/FreeRTOS.dir/./__/__/Middlewares/Third_Party/FreeRTOS/Source/croutine.c.obj"
+		},
+		{
+			"path" : "cmake/stm32cubemx/CMakeFiles/FreeRTOS.dir/./__/__/Middlewares/Third_Party/FreeRTOS/Source/event_groups.c.obj"
+		},
+		{
+			"path" : "cmake/stm32cubemx/CMakeFiles/FreeRTOS.dir/./__/__/Middlewares/Third_Party/FreeRTOS/Source/list.c.obj"
+		},
+		{
+			"path" : "cmake/stm32cubemx/CMakeFiles/FreeRTOS.dir/./__/__/Middlewares/Third_Party/FreeRTOS/Source/queue.c.obj"
+		},
+		{
+			"path" : "cmake/stm32cubemx/CMakeFiles/FreeRTOS.dir/./__/__/Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c.obj"
+		},
+		{
+			"path" : "cmake/stm32cubemx/CMakeFiles/FreeRTOS.dir/./__/__/Middlewares/Third_Party/FreeRTOS/Source/tasks.c.obj"
+		},
+		{
+			"path" : "cmake/stm32cubemx/CMakeFiles/FreeRTOS.dir/./__/__/Middlewares/Third_Party/FreeRTOS/Source/timers.c.obj"
+		},
+		{
+			"path" : "cmake/stm32cubemx/CMakeFiles/FreeRTOS.dir/./__/__/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.c.obj"
+		},
+		{
+			"path" : "cmake/stm32cubemx/CMakeFiles/FreeRTOS.dir/./__/__/Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.c.obj"
+		},
+		{
+			"path" : "cmake/stm32cubemx/CMakeFiles/FreeRTOS.dir/./__/__/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c.obj"
+		},
+		{
+			"path" : "cmake/stm32cubemx/CMakeFiles/FreeRTOS.dir/./__/__/Middlewares/Third_Party/SEGGRE/RTT/SEGGER_RTT.c.obj"
+		},
+		{
+			"path" : "cmake/stm32cubemx/CMakeFiles/FreeRTOS.dir/./__/__/Middlewares/Third_Party/SEGGRE/RTT/SEGGER_RTT_printf.c.obj"
+		},
+		{
+			"path" : "cmake/stm32cubemx/CMakeFiles/FreeRTOS.dir/./__/__/Middlewares/Third_Party/SEGGRE/RTT/SEGGER_RTT_ASM_ARMv7M.S.obj"
+		}
+	],
+	"backtrace" : 1,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_library",
+			"target_link_libraries",
+			"target_sources"
+		],
+		"files" : 
+		[
+			"cmake/stm32cubemx/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 152,
+				"parent" : 0
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 154,
+				"parent" : 0
+			},
+			{
+				"command" : 2,
+				"file" : 0,
+				"line" : 153,
+				"parent" : 0
+			}
+		]
+	},
+	"codemodelVersion" : 
+	{
+		"major" : 2,
+		"minor" : 10
+	},
+	"compileDependencies" : 
+	[
+		{
+			"backtrace" : 2,
+			"id" : "stm32cubemx::@768a070a0fe75716b479"
+		}
+	],
+	"compileGroups" : 
+	[
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : " -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -fdata-sections -ffunction-sections -O0 -g3 -std=gnu11"
+				}
+			],
+			"defines" : 
+			[
+				{
+					"backtrace" : 2,
+					"define" : "ARM_MATH_CM4"
+				},
+				{
+					"backtrace" : 2,
+					"define" : "DEBUG"
+				},
+				{
+					"backtrace" : 2,
+					"define" : "STM32F427xx"
+				},
+				{
+					"backtrace" : 2,
+					"define" : "USE_HAL_DRIVER"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../Core/Inc"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../Drivers/STM32F4xx_HAL_Driver/Inc"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../Middlewares/Third_Party/FreeRTOS/Source/include"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../Middlewares/Third_Party/SEGGRE/RTT"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../Middlewares/Third_Party/SEGGRE/RTT/Config"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../Middlewares/ST/ARM/DSP/Inc"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../Drivers/CMSIS/Device/ST/STM32F4xx/Include"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../Drivers/CMSIS/Include"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../APP/action"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../BSP"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../BSP/can"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../BSP/dwt"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../BSP/log"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../BSP/pwm"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../BSP/tim"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../BSP/usart"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../Modules"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../Modules/algorithm"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../Modules/algorithm/coordinate_system"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../Modules/algorithm/crc"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../Modules/algorithm/kalman"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../Modules/algorithm/linear_algebra"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../Modules/algorithm/pid"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../Modules/imu"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../Modules/unicomm"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../Modules/daemon"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../Modules/motor"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../Modules/motor/DJImotor"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../TASK/MotorControl_task"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../TASK/PostureControl_task"
+				}
+			],
+			"language" : "C",
+			"languageStandard" : 
+			{
+				"backtraces" : 
+				[
+					1
+				],
+				"standard" : "11"
+			},
+			"sourceIndexes" : 
+			[
+				0,
+				1,
+				2,
+				3,
+				4,
+				5,
+				6,
+				7,
+				8,
+				9,
+				10,
+				11
+			]
+		},
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : " -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -x assembler-with-cpp -MMD -MP -g"
+				}
+			],
+			"defines" : 
+			[
+				{
+					"backtrace" : 2,
+					"define" : "ARM_MATH_CM4"
+				},
+				{
+					"backtrace" : 2,
+					"define" : "DEBUG"
+				},
+				{
+					"backtrace" : 2,
+					"define" : "STM32F427xx"
+				},
+				{
+					"backtrace" : 2,
+					"define" : "USE_HAL_DRIVER"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../Core/Inc"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../Drivers/STM32F4xx_HAL_Driver/Inc"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../Middlewares/Third_Party/FreeRTOS/Source/include"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../Middlewares/Third_Party/SEGGRE/RTT"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../Middlewares/Third_Party/SEGGRE/RTT/Config"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../Middlewares/ST/ARM/DSP/Inc"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../Drivers/CMSIS/Device/ST/STM32F4xx/Include"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../Drivers/CMSIS/Include"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../APP/action"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../BSP"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../BSP/can"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../BSP/dwt"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../BSP/log"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../BSP/pwm"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../BSP/tim"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../BSP/usart"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../Modules"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../Modules/algorithm"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../Modules/algorithm/coordinate_system"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../Modules/algorithm/crc"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../Modules/algorithm/kalman"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../Modules/algorithm/linear_algebra"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../Modules/algorithm/pid"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../Modules/imu"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../Modules/unicomm"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../Modules/daemon"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../Modules/motor"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../Modules/motor/DJImotor"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../TASK/MotorControl_task"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../TASK/PostureControl_task"
+				}
+			],
+			"language" : "ASM",
+			"sourceIndexes" : 
+			[
+				13
+			]
+		}
+	],
+	"id" : "FreeRTOS::@768a070a0fe75716b479",
+	"interfaceCompileDependencies" : 
+	[
+		{
+			"backtrace" : 2,
+			"id" : "stm32cubemx::@768a070a0fe75716b479"
+		}
+	],
+	"interfaceLinkLibraries" : 
+	[
+		{
+			"backtrace" : 2,
+			"id" : "stm32cubemx::@768a070a0fe75716b479"
+		}
+	],
+	"linkLibraries" : 
+	[
+		{
+			"backtrace" : 2,
+			"id" : "stm32cubemx::@768a070a0fe75716b479"
+		}
+	],
+	"name" : "FreeRTOS",
+	"paths" : 
+	{
+		"build" : "cmake/stm32cubemx",
+		"source" : "cmake/stm32cubemx"
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "Source Files",
+			"sourceIndexes" : 
+			[
+				0,
+				1,
+				2,
+				3,
+				4,
+				5,
+				6,
+				7,
+				8,
+				9,
+				10,
+				11
+			]
+		},
+		{
+			"name" : "Header Files",
+			"sourceIndexes" : 
+			[
+				12
+			]
+		},
+		{
+			"name" : "",
+			"sourceIndexes" : 
+			[
+				13
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 3,
+			"compileGroupIndex" : 0,
+			"path" : "Middlewares/Third_Party/FreeRTOS/Source/croutine.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 3,
+			"compileGroupIndex" : 0,
+			"path" : "Middlewares/Third_Party/FreeRTOS/Source/event_groups.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 3,
+			"compileGroupIndex" : 0,
+			"path" : "Middlewares/Third_Party/FreeRTOS/Source/list.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 3,
+			"compileGroupIndex" : 0,
+			"path" : "Middlewares/Third_Party/FreeRTOS/Source/queue.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 3,
+			"compileGroupIndex" : 0,
+			"path" : "Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 3,
+			"compileGroupIndex" : 0,
+			"path" : "Middlewares/Third_Party/FreeRTOS/Source/tasks.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 3,
+			"compileGroupIndex" : 0,
+			"path" : "Middlewares/Third_Party/FreeRTOS/Source/timers.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 3,
+			"compileGroupIndex" : 0,
+			"path" : "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 3,
+			"compileGroupIndex" : 0,
+			"path" : "Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 3,
+			"compileGroupIndex" : 0,
+			"path" : "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 3,
+			"compileGroupIndex" : 0,
+			"path" : "Middlewares/Third_Party/SEGGRE/RTT/SEGGER_RTT.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 3,
+			"compileGroupIndex" : 0,
+			"path" : "Middlewares/Third_Party/SEGGRE/RTT/SEGGER_RTT_printf.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 3,
+			"path" : "Middlewares/Third_Party/SEGGRE/RTT/Config/SEGGER_RTT_Conf.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 3,
+			"compileGroupIndex" : 1,
+			"path" : "Middlewares/Third_Party/SEGGRE/RTT/SEGGER_RTT_ASM_ARMv7M.S",
+			"sourceGroupIndex" : 2
+		}
+	],
+	"type" : "OBJECT_LIBRARY"
+}

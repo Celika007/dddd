@@ -1,4 +1,4 @@
-# IMU USART6 接收与解析逻辑 Review
+# IMU USART6 接收与解析逻辑评审
 
 ## 1. 当前实现概览
 
@@ -240,7 +240,7 @@ memset(usart_instance[i]->recv_buff, 0, Size);
 
 如果后续确认所有模块都不依赖“接收后清零缓冲区”，可以考虑去掉底层 `memset`，进一步缩短串口接收回调时间。
 
-## 10. Review 结论
+## 10. 评审结论
 
 当前实现的核心特征是：
 

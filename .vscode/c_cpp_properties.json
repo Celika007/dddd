@@ -2,11 +2,26 @@
     "configurations": [
         {
             "name": "Win32",
-            // "includePath": [
-            //     "e:/four_leg_dog/SIZU_TASK/**",
-            //     "${workspaceFolder}/APP",
-            //     "${workspaceFolder}/BSP"
-            // ],
+            "includePath": [
+                "${workspaceFolder}/Core/Inc",
+                "${workspaceFolder}/Drivers/STM32F4xx_HAL_Driver/Inc",
+                "${workspaceFolder}/Drivers/STM32F4xx_HAL_Driver/Inc/Legacy",
+                "${workspaceFolder}/Drivers/CMSIS/Device/ST/STM32F4xx/Include",
+                "${workspaceFolder}/Drivers/CMSIS/Include",
+                "${workspaceFolder}/Middlewares/Third_Party/FreeRTOS/Source/include",
+                "${workspaceFolder}/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS",
+                "${workspaceFolder}/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F",
+                "${workspaceFolder}/Middlewares/Third_Party/SEGGRE/RTT",
+                "${workspaceFolder}/Middlewares/Third_Party/SEGGRE/RTT/Config",
+                "${workspaceFolder}/Middlewares/ST/ARM/DSP/Inc",
+                "${workspaceFolder}/APP/action",
+                "${workspaceFolder}/BSP",
+                "${workspaceFolder}/BSP/**",
+                "${workspaceFolder}/Modules",
+                "${workspaceFolder}/Modules/**",
+                "${workspaceFolder}/TASK/MotorControl_task",
+                "${workspaceFolder}/TASK/PostureControl_task"
+            ],
             "compileCommands": "${workspaceFolder}/build/Debug/compile_commands.json",
             "defines": [
                 "_DEBUG",
@@ -14,7 +29,6 @@
                 "_UNICODE"
             ],
             "windowsSdkVersion": "10.0.26100.0",
-            "compilerPathInCppPropertiesJson": "D:/vscodedownload/Arm-GNU-Toolchian/bin/arm-none-eabi-gcc.exe",
             "compilerArgs": [
                 "-mcpu=cortex-m4",
                 "-mthumb",
@@ -26,10 +40,11 @@
             ],
             "cStandard": "gnu11",
             "cppStandard": "gnu++17",
-            "intelliSenseMode": "gcc-x86",
+            "intelliSenseMode": "windows-gcc-arm",
             "mergeConfigurations": false,
             "recursiveIncludes": {},
-            "compilerPath": "D:/vscodedownload/Arm-GNU-Toolchian/bin/arm-none-eabi-gcc.exe",
+            "compilerPathInCppPropertiesJson": "D:/worktools/arm-none-eabi-gdb/bin/arm-none-eabi-gcc.exe",
+            "compilerPath": "D:/worktools/arm-none-eabi-gdb/bin/arm-none-eabi-gcc.exe",
             "browse": {
                 "limitSymbolsToIncludedHeaders": true
             }

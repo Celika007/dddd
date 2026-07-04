@@ -2,7 +2,7 @@
 
 <p align='right'>neozng1@hnu.edu.cn</p>
 
-# 请注意使用CAN设备的时候务必保证总线只接入了2个终端电阻！开发板一般都有一个，6020电机、c620/c610电调、LK电机也都有终端电阻，注意把多于2个的全部断开（通过拨码）
+# 请注意使用 CAN 设备的时候务必保证总线只接入了 2 个终端电阻！开发板一般都有一个，6020 电机、C620/C610 电调、LK 电机也都有终端电阻，注意把多于 2 个的全部断开（通过拨码）
 
 ## 使用说明
 
@@ -17,11 +17,11 @@
 
 ```c
 
-#define MX_REGISTER_DEVICE_CNT 12  // maximum number of device can be registered to CAN service, this number depends on the load of CAN bus.
-#define MX_CAN_FILTER_CNT (4 * 14) // temporarily useless
+#define MX_REGISTER_DEVICE_CNT 12  // CAN 服务可注册的最大设备数量，取决于 CAN 总线负载
+#define MX_CAN_FILTER_CNT (4 * 14) // 暂时未使用
 #define DEVICE_CAN_CNT 2           // CAN1,CAN2
 
-/* can instance typedef, every module registered to CAN should have this variable */
+/* CAN 实例类型定义，每个注册到 CAN 的模块都应拥有该变量 */
 typedef struct _
 {
     CAN_HandleTypeDef *can_handle; // can句柄
@@ -33,7 +33,7 @@ typedef struct _
     uint32_t rx_id;                // 接收id
     uint8_t rx_len;                // 接收长度,可能为0-8
     // 接收的回调函数,用于解析接收到的数据
-    void (*can_module_callback)(struct _ *); // callback needs an instance to tell among registered ones
+    void (*can_module_callback)(struct _ *); // 回调需要传入实例，用于区分已注册对象
     void *id;                                // 使用can外设的模块指针(即id指向的模块拥有此can实例,是父子关系)
 } CANInstance;
 

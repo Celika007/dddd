@@ -29,6 +29,7 @@
 /* USER CODE BEGIN Includes */
 #include "MotorControl_task.h"
 #include "IMU.h"
+#include "action.h"
 #include "unicomm.h"
 #include "bsp_init.h"
 /* USER CODE END Includes */
@@ -103,14 +104,14 @@ int main(void)
   MX_UART7_Init();
   MX_USART6_UART_Init();
   MX_USART3_UART_Init();
-  MX_USART1_UART_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
   BSPInit();
   (void)LeftMotorInit();
   (void)RightMotorInit();
   IMU_USART6_Init();
-  UniComm_UART8_Init();
+  UniComm_UART7_Init();
+  Action_UART8DebugInit();
   /* USER CODE END 2 */
 
   /* Call init function for freertos objects (in cmsis_os2.c) */

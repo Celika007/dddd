@@ -19,7 +19,7 @@ deltaT=DWT_GetDeltaT(&cnt);
 float start,end;
 start=DWT_DetTimeline_ms();
 
-// some proc to go... 
+// 需要计时的处理过程
 for(uint8_t i=0;i<10;i++)
  foo();
 
@@ -50,5 +50,5 @@ end = DWT_DetTimeline_ms()-start;
                 Function3(your,param);
                  // something more
                  );
-    // my_func_dt can be used for other purpose then;
+    // my_func_dt 后续可用于其他用途
 ```

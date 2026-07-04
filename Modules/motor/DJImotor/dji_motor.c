@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#define PID_DEBUG_UART              (&huart7)
+#define PID_DEBUG_UART              (&huart8)
 #define PID_DEBUG_MOTOR_INDEX       0U      // 调试第几个电机，先用 0
 #define PID_DEBUG_SEND_DIV          4U      // 每 4 次控制发送 1 次，5ms任务下约20ms发一次
 
@@ -425,12 +425,11 @@ void DJIMotorControl()
                                      motor_controller->speed_PID.Measure,
                                      motor_controller->speed_PID.Output);
 
-                  if (len > 0)
+                  if (len > 0 && HAL_UART_GetState(PID_DEBUG_UART) == HAL_UART_STATE_READY)
                   {
-                      HAL_UART_Transmit(PID_DEBUG_UART,
-                                        (uint8_t *)pid_debug_buf,
-                                        (uint16_t)len,
-                                        10);
+                      HAL_UART_Transmit_DMA(PID_DEBUG_UART,
+                                            (uint8_t *)pid_debug_buf,
+                                            (uint16_t)len);
                   }
               }
           }

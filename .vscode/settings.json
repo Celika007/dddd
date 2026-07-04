@@ -1,4 +1,7 @@
 {
     "files.autoGuessEncoding": true,
-    "files.encoding": "utf8"
+    "files.encoding": "utf8",
+    "terminal.integrated.env.windows": {
+        "Path": "C:\\Program Files\\CMake\\bin;${env:LOCALAPPDATA}\\Microsoft\\WinGet\\Packages\\Ninja-build.Ninja_Microsoft.Winget.Source_8wekyb3d8bbwe;${env:Path}"
+    }
 }

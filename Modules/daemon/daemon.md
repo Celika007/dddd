@@ -1,19 +1,19 @@
-# daemon
+# 守护模块
 
 <p align='right'>neozng1@hnu.edu.cn</p>
 
-用于监测模块和应用运行情况的module(和官方代码中的deteck task作用相同)
+用于监测模块和应用运行情况的 module（和官方代码中的 detect task 作用相同）。
 
 ## 使用范例
 
-要使用该module，则包含`daemon.h`的头文件，并在使用daemon的文件中保留一个daemon的指针。
+要使用该 module，则包含 `daemon.h` 的头文件，并在使用 daemon 的文件中保留一个 daemon 指针。
 
 初始化的时候，要传入以下参数：
 
 ```c
 typedef struct
 {
-    uint16_t reload_count;     // 实际上这是app唯一需要设置的值?
+    uint16_t reload_count;     // 实际上这是 app 唯一需要设置的值？
     offline_callback callback; // 异常处理函数,当模块发生异常时会被调用
     void *owner_id;            // id取拥有daemon的实例的地址,如DJIMotorInstance*,cast成void*类型
 } Daemon_Init_Config_s;

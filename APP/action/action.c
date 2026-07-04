@@ -1,14 +1,119 @@
 #include "action.h"
 
 #include <math.h>
+#include <stdio.h>
+#include <string.h>
 
+#include "bsp_usart.h"
+#include "FreeRTOS.h"
 #include "IMU.h"
+#include "cmsis_os.h"
 #include "unicomm.h"
+#include "usart.h"
+
+#define ACTION_SETTLE_MS 500U
+#define ACTION_WALK_STEP_MS 500U
+#define ACTION_TURN_30_MS 300U
+#define ACTION_TURN_60_MS 600U
+#define ACTION_TURN_120_MS 1200U
+#define ACTION_TURN_255_MS 2550U
+#define ACTION_DEFAULT_RUN_MS 1500U
+#define ACTION_DEBUG_RX_BUFFER_SIZE 128U
+#define ACTION_DEBUG_LINE_BUFFER_SIZE 128U
+#define ACTION_DEBUG_LOG_MIN_INTERVAL_MS 100U
+#define ACTION_DEBUG_LOG_MAX_INTERVAL_MS 1000U
+#define ACTION_DEBUG_STEP_LENGTH_DELTA 1.0f
+#define ACTION_DEBUG_AMP_DELTA 0.1f
+#define ACTION_DEBUG_STANCE_HEIGHT_DELTA 1.0f
+#define ACTION_DEBUG_FREQ_DELTA 0.1f
+#define ACTION_DEBUG_FLIGHT_PERCENT_DELTA 0.05f
+
+typedef enum
+{
+    ACTION_SERIAL_BOOT_STAND = 0,
+    ACTION_SERIAL_APPROACH,
+    ACTION_SERIAL_SETTLE,
+    ACTION_SERIAL_EXECUTE,
+    ACTION_SERIAL_DONE,
+} ActionSerialPhase_e;
+
+typedef enum
+{
+    ACTION_SCRIPT_STAND = 0,
+    ACTION_SCRIPT_RUN,
+    ACTION_SCRIPT_LEFT_TURN,
+    ACTION_SCRIPT_RIGHT_TURN,
+} ActionScriptState_e;
+
+typedef enum
+{
+    ACTION_DEBUG_PARAM_STEP_LENGTH = 0,
+    ACTION_DEBUG_PARAM_UP_AMP,
+    ACTION_DEBUG_PARAM_DOWN_AMP,
+    ACTION_DEBUG_PARAM_STANCE_HEIGHT,
+    ACTION_DEBUG_PARAM_FREQ,
+    ACTION_DEBUG_PARAM_FLIGHT_PERCENT,
+} ActionDebugParam_e;
+
+typedef struct
+{
+    ActionScriptState_e state;
+    uint32_t duration_ms;
+} ActionScriptStep_s;
 
 DetachedParam detached_params;
 float target_yaw = 0.0f;
 
-static int arrival_report_sent = 0;
+static ActionSerialPhase_e action_serial_phase = ACTION_SERIAL_BOOT_STAND;
+static uint32_t action_seen_frame_seq = 0U;
+static uint8_t action_expected_tag_id = 0U;
+static uint8_t action_active_tag_id = 0U;
+static TickType_t action_phase_start_tick = 0U;
+static const ActionScriptStep_s *action_script = NULL;
+static uint8_t action_script_len = 0U;
+static uint8_t action_script_index = 0U;
+static char action_active_code[UNICOMM_ACTION_CODE_MAX_LEN + 1U] = {0};
+
+#if ACTION_RECORD_UART8_ENABLE
+static USARTInstance *action_debug_uart8_instance = NULL;
+static char action_debug_line[ACTION_DEBUG_LINE_BUFFER_SIZE];
+static size_t action_debug_line_len = 0U;
+static char action_record_tx_buffer[ACTION_RECORD_TX_BUF_SIZE];
+static uint32_t action_walk_done = 0U;
+static float action_last_base_phase = 0.0f;
+static uint8_t action_walk_phase_valid = 0U;
+static TickType_t action_record_last_tx_tick = 0U;
+static uint8_t action_debug_hold_realse = 0U;
+static float action_imu_base_roll = 0.0f;
+static float action_imu_base_pitch = 0.0f;
+static float action_imu_base_yaw = 0.0f;
+#endif
+
+static const ActionScriptStep_s action_script_weave[] = {
+    {ACTION_SCRIPT_RIGHT_TURN, ACTION_TURN_60_MS},
+    {ACTION_SCRIPT_RUN, ACTION_WALK_STEP_MS * 4U},
+    {ACTION_SCRIPT_RIGHT_TURN, ACTION_TURN_120_MS},
+    {ACTION_SCRIPT_RUN, ACTION_WALK_STEP_MS * 8U},
+    {ACTION_SCRIPT_LEFT_TURN, ACTION_TURN_120_MS},
+    {ACTION_SCRIPT_RUN, ACTION_WALK_STEP_MS * 8U},
+    {ACTION_SCRIPT_RIGHT_TURN, ACTION_TURN_255_MS},
+    {ACTION_SCRIPT_RUN, ACTION_WALK_STEP_MS * 3U},
+    {ACTION_SCRIPT_RIGHT_TURN, ACTION_TURN_255_MS},
+    {ACTION_SCRIPT_RUN, ACTION_WALK_STEP_MS * 8U},
+    {ACTION_SCRIPT_LEFT_TURN, ACTION_TURN_120_MS},
+    {ACTION_SCRIPT_RUN, ACTION_WALK_STEP_MS * 4U},
+    {ACTION_SCRIPT_RIGHT_TURN, ACTION_TURN_30_MS},
+    {ACTION_SCRIPT_STAND, ACTION_SETTLE_MS},
+};
+
+static const ActionScriptStep_s action_script_default[] = {
+    {ACTION_SCRIPT_RUN, ACTION_DEFAULT_RUN_MS},
+    {ACTION_SCRIPT_STAND, ACTION_SETTLE_MS},
+};
+
+static const ActionScriptStep_s action_script_stand_only[] = {
+    {ACTION_SCRIPT_STAND, ACTION_SETTLE_MS},
+};
 
 DetachedParam state_detached_params[] =
 {   // {stance_height, step_length, up_amp, down_amp, flight_percent, freq}
@@ -42,11 +147,549 @@ DetachedParam state_detached_params[] =
         {17, 2.5, 5.5, 0.0, 0.4, 2.0},
         {17, 2.5, 5.5, 0.0, 0.4, 2.0}
     },
+    { // IN_PLACE, AKANE obstacle-course debug state
+        {18, 0, 6, 0.0, 0.5, 2.0},
+        {18, 0, 6, 0.0, 0.5, 2.0},
+        {18, 0, 6, 0.0, 0.5, 2.0},
+        {18, 0, 6, 0.0, 0.5, 2.0}
+    },
 };
 
 static int Action_IsWithinThreshold(float delta, float threshold)
 {
     return fabsf(delta) < threshold;
+}
+
+static const char *Action_StateName(enum States action_state)
+{
+    switch (action_state)
+    {
+    case RUN:
+        return "RUN";
+    case STAND:
+        return "STAND";
+    case GRAB:
+        return "GRAB";
+    case LEFT_TURN:
+        return "LEFT_TURN";
+    case RIGHT_TURN:
+        return "RIGHT_TURN";
+    case IN_PLACE:
+        return "IN_PLACE";
+    case STOP:
+        return "STOP";
+    case REALSE:
+        return "REALSE";
+    default:
+        return "UNKNOWN";
+    }
+}
+
+static uint8_t Action_IsGaitParamState(enum States action_state)
+{
+    return action_state == RUN ||
+           action_state == STAND ||
+           action_state == GRAB ||
+           action_state == LEFT_TURN ||
+           action_state == RIGHT_TURN ||
+           action_state == IN_PLACE;
+}
+
+static uint8_t Action_IsAkaneMotionState(enum States action_state)
+{
+    return action_state == RUN ||
+           action_state == LEFT_TURN ||
+           action_state == RIGHT_TURN ||
+           action_state == IN_PLACE;
+}
+
+static enum States Action_GetParamState(void)
+{
+    if (Action_IsGaitParamState(state))
+    {
+        return state;
+    }
+
+    return STAND;
+}
+
+static GaitParams *Action_GetPrimaryGaitParams(enum States action_state)
+{
+    if (!Action_IsGaitParamState(action_state))
+    {
+        action_state = STAND;
+    }
+
+    return &state_detached_params[action_state].detached_params_0;
+}
+
+static uint8_t Action_StringEquals(const char *lhs, const char *rhs);
+
+#if ACTION_RECORD_UART8_ENABLE
+static uint8_t Action_Uart8TxReady(void)
+{
+    return huart8.gState == HAL_UART_STATE_READY;
+}
+
+static void ActionDebug_CaptureImuBase(void)
+{
+    action_imu_base_roll = Saber_DATA.Saber_imu_eluer.ELUER_ROLL;
+    action_imu_base_pitch = Saber_DATA.Saber_imu_eluer.ELUER_PITCH;
+    action_imu_base_yaw = Saber_DATA.Saber_imu_eluer.ELUER_YAW_now;
+}
+
+static float ActionDebug_ClampFloat(float value, float min_value, float max_value)
+{
+    if (value < min_value)
+    {
+        return min_value;
+    }
+
+    if (value > max_value)
+    {
+        return max_value;
+    }
+
+    return value;
+}
+
+static void ActionDebug_AdjustOneParam(GaitParams *params, ActionDebugParam_e param, float delta)
+{
+    if (params == NULL)
+    {
+        return;
+    }
+
+    switch (param)
+    {
+    case ACTION_DEBUG_PARAM_STEP_LENGTH:
+        params->step_length = ActionDebug_ClampFloat(params->step_length + delta, 0.0f, 100.0f);
+        break;
+    case ACTION_DEBUG_PARAM_UP_AMP:
+        params->up_amp = ActionDebug_ClampFloat(params->up_amp + delta, 0.0f, 100.0f);
+        break;
+    case ACTION_DEBUG_PARAM_DOWN_AMP:
+        params->down_amp = ActionDebug_ClampFloat(params->down_amp + delta, 0.0f, 100.0f);
+        break;
+    case ACTION_DEBUG_PARAM_STANCE_HEIGHT:
+        params->stance_height = ActionDebug_ClampFloat(params->stance_height + delta, 0.0f, 100.0f);
+        break;
+    case ACTION_DEBUG_PARAM_FREQ:
+        params->freq = ActionDebug_ClampFloat(params->freq + delta, 0.1f, 10.0f);
+        break;
+    case ACTION_DEBUG_PARAM_FLIGHT_PERCENT:
+        params->flight_percent = ActionDebug_ClampFloat(params->flight_percent + delta, 0.05f, 0.95f);
+        break;
+    default:
+        break;
+    }
+}
+
+static void ActionDebug_AdjustCurrentStateParam(ActionDebugParam_e param, float delta)
+{
+    enum States param_state = Action_GetParamState();
+    DetachedParam *params = &state_detached_params[param_state];
+
+    ActionDebug_AdjustOneParam(&params->detached_params_0, param, delta);
+    ActionDebug_AdjustOneParam(&params->detached_params_1, param, delta);
+    ActionDebug_AdjustOneParam(&params->detached_params_2, param, delta);
+    ActionDebug_AdjustOneParam(&params->detached_params_3, param, delta);
+}
+
+static void ActionDebug_SetState(enum States next_state)
+{
+    uint8_t was_motion = Action_IsAkaneMotionState(state);
+    uint8_t is_motion = Action_IsAkaneMotionState(next_state);
+
+    state = next_state;
+    action_debug_hold_realse = (next_state == REALSE) ? 1U : 0U;
+    start_flag = (next_state == REALSE || next_state == STOP) ? 0 : 1;
+    nav_current_valid = 0U;
+    nav_goal_valid = 0U;
+    target_yaw = 0.0f;
+
+    if (is_motion && !was_motion)
+    {
+        ActionDebug_CaptureImuBase();
+        action_walk_phase_valid = 0U;
+    }
+}
+
+static uint8_t ActionDebug_ProcessParamCommand(const char *cmd,
+                                               const char *name,
+                                               ActionDebugParam_e param,
+                                               float delta)
+{
+    size_t name_len = strlen(name);
+
+    if (strncmp(cmd, name, name_len) != 0)
+    {
+        return 0U;
+    }
+
+    if (cmd[name_len] == '+')
+    {
+        ActionDebug_AdjustCurrentStateParam(param, delta);
+        return 1U;
+    }
+
+    if (cmd[name_len] == '-')
+    {
+        ActionDebug_AdjustCurrentStateParam(param, -delta);
+        return 1U;
+    }
+
+    return 0U;
+}
+
+static void ActionDebug_HandleCommand(const char *line)
+{
+    const char *cmd;
+
+    if (strncmp(line, "debug:", 6U) != 0)
+    {
+        return;
+    }
+
+    cmd = line + 6U;
+
+    if (Action_StringEquals(cmd, "run"))
+    {
+        ActionDebug_SetState(RUN);
+        return;
+    }
+
+    if (Action_StringEquals(cmd, "left_turn"))
+    {
+        ActionDebug_SetState(LEFT_TURN);
+        return;
+    }
+
+    if (Action_StringEquals(cmd, "right_turn"))
+    {
+        ActionDebug_SetState(RIGHT_TURN);
+        return;
+    }
+
+    if (Action_StringEquals(cmd, "in_place"))
+    {
+        ActionDebug_SetState(IN_PLACE);
+        return;
+    }
+
+    if (Action_StringEquals(cmd, "stand"))
+    {
+        ActionDebug_SetState(STAND);
+        return;
+    }
+
+    if (Action_StringEquals(cmd, "realse"))
+    {
+        ActionDebug_SetState(REALSE);
+        return;
+    }
+
+    if (Action_StringEquals(cmd, "clear"))
+    {
+        ActionDebug_ResetWalkRecord();
+        return;
+    }
+
+    if (ActionDebug_ProcessParamCommand(cmd, "step_length", ACTION_DEBUG_PARAM_STEP_LENGTH, ACTION_DEBUG_STEP_LENGTH_DELTA) ||
+        ActionDebug_ProcessParamCommand(cmd, "up_amp", ACTION_DEBUG_PARAM_UP_AMP, ACTION_DEBUG_AMP_DELTA) ||
+        ActionDebug_ProcessParamCommand(cmd, "down_amp", ACTION_DEBUG_PARAM_DOWN_AMP, ACTION_DEBUG_AMP_DELTA) ||
+        ActionDebug_ProcessParamCommand(cmd, "stance_height", ACTION_DEBUG_PARAM_STANCE_HEIGHT, ACTION_DEBUG_STANCE_HEIGHT_DELTA) ||
+        ActionDebug_ProcessParamCommand(cmd, "freq", ACTION_DEBUG_PARAM_FREQ, ACTION_DEBUG_FREQ_DELTA) ||
+        ActionDebug_ProcessParamCommand(cmd, "flight_percent", ACTION_DEBUG_PARAM_FLIGHT_PERCENT, ACTION_DEBUG_FLIGHT_PERCENT_DELTA))
+    {
+        return;
+    }
+}
+
+static void ActionDebug_FeedByte(uint8_t data)
+{
+    if (data == '\n' || data == '\r')
+    {
+        if (action_debug_line_len > 0U)
+        {
+            action_debug_line[action_debug_line_len] = '\0';
+            ActionDebug_HandleCommand(action_debug_line);
+            action_debug_line_len = 0U;
+        }
+        return;
+    }
+
+    if (action_debug_line_len < (ACTION_DEBUG_LINE_BUFFER_SIZE - 1U))
+    {
+        action_debug_line[action_debug_line_len++] = (char)data;
+    }
+    else
+    {
+        action_debug_line_len = 0U;
+    }
+}
+
+static void Action_UART8DebugCallback(void)
+{
+    uint16_t i;
+
+    if (action_debug_uart8_instance == NULL)
+    {
+        return;
+    }
+
+    for (i = 0U; i < action_debug_uart8_instance->recv_len; ++i)
+    {
+        ActionDebug_FeedByte(action_debug_uart8_instance->recv_buff[i]);
+    }
+}
+#endif
+
+static uint8_t Action_StringEquals(const char *lhs, const char *rhs)
+{
+    return strcmp(lhs, rhs) == 0;
+}
+
+static void Action_SelectScript(const char *action_code)
+{
+    action_script = action_script_stand_only;
+    action_script_len = (uint8_t)(sizeof(action_script_stand_only) / sizeof(action_script_stand_only[0]));
+
+    if (Action_StringEquals(action_code, "WEAVE"))
+    {
+        action_script = action_script_weave;
+        action_script_len = (uint8_t)(sizeof(action_script_weave) /  sizeof(action_script_weave[0]));
+        return;
+    }
+
+    if (Action_StringEquals(action_code, "SAND_PIT") ||
+        Action_StringEquals(action_code, "DUCK") ||
+        Action_StringEquals(action_code, "CLIMB") ||
+        Action_StringEquals(action_code, "CROSS_A") ||
+        Action_StringEquals(action_code, "CROSS_B") ||
+        Action_StringEquals(action_code, "RAMP") ||
+        Action_StringEquals(action_code, "STEPS"))
+    {
+        action_script = action_script_default;
+        action_script_len = (uint8_t)(sizeof(action_script_default) / sizeof(action_script_default[0]));
+    }
+}
+
+static void Action_ApplyScriptState(ActionScriptState_e script_state)
+{
+    switch (script_state)
+    {
+    case ACTION_SCRIPT_RUN:
+        state = RUN;
+        break;
+    case ACTION_SCRIPT_LEFT_TURN:
+        state = LEFT_TURN;
+        break;
+    case ACTION_SCRIPT_RIGHT_TURN:
+        state = RIGHT_TURN;
+        break;
+    case ACTION_SCRIPT_STAND:
+    default:
+        state = STAND;
+        break;
+    }
+}
+
+static void Action_StartScript(const char *action_code)
+{
+    strncpy(action_active_code, action_code, UNICOMM_ACTION_CODE_MAX_LEN);
+    action_active_code[UNICOMM_ACTION_CODE_MAX_LEN] = '\0';
+    Action_SelectScript(action_active_code);
+    action_script_index = 0U;
+    action_phase_start_tick = xTaskGetTickCount();
+}
+
+static uint8_t Action_RunScript(void)
+{
+    TickType_t now = xTaskGetTickCount();
+    const ActionScriptStep_s *step;
+
+    if (action_script == NULL || action_script_index >= action_script_len)
+    {
+        state = STAND;
+        return 1U;
+    }
+
+    step = &action_script[action_script_index];
+    Action_ApplyScriptState(step->state);
+
+    if ((now - action_phase_start_tick) >= pdMS_TO_TICKS(step->duration_ms))
+    {
+        action_script_index++;
+        action_phase_start_tick = now;
+    }
+
+    return action_script_index >= action_script_len;
+}
+
+void Action_UART8DebugInit(void)
+{
+#if ACTION_RECORD_UART8_ENABLE
+    USART_Init_Config_s action_debug_usart_conf = {
+        .recv_buff_size = ACTION_DEBUG_RX_BUFFER_SIZE,
+        .usart_handle = &huart8,
+        .module_callback = Action_UART8DebugCallback,
+    };
+
+    action_debug_uart8_instance = USARTRegister(&action_debug_usart_conf);
+    ActionDebug_ResetWalkRecord();
+#endif
+}
+
+void ActionDebug_ResetWalkRecord(void)
+{
+#if ACTION_RECORD_UART8_ENABLE
+    action_walk_done = 0U;
+    action_last_base_phase = 0.0f;
+    action_walk_phase_valid = 0U;
+    action_record_last_tx_tick = 0U;
+    ActionDebug_CaptureImuBase();
+#endif
+}
+
+uint8_t ActionDebug_ShouldHoldRealse(void)
+{
+#if ACTION_RECORD_UART8_ENABLE
+    return action_debug_hold_realse;
+#else
+    return 0U;
+#endif
+}
+
+void ActionDebug_UpdateWalkPhase(float base_phase)
+{
+#if ACTION_RECORD_UART8_ENABLE
+    if (!Action_IsAkaneMotionState(state))
+    {
+        action_walk_phase_valid = 0U;
+        return;
+    }
+
+    if (base_phase < 0.0f)
+    {
+        base_phase += 1.0f;
+    }
+    else if (base_phase >= 1.0f)
+    {
+        base_phase -= 1.0f;
+    }
+
+    if (action_walk_phase_valid && base_phase < action_last_base_phase)
+    {
+        action_walk_done++;
+    }
+
+    action_last_base_phase = base_phase;
+    action_walk_phase_valid = 1U;
+#else
+    (void)base_phase;
+#endif
+}
+
+#if ACTION_RECORD_UART8_ENABLE
+static uint32_t ActionDebug_GetLogIntervalMs(void)
+{
+    GaitParams *params = Action_GetPrimaryGaitParams(Action_GetParamState());
+    float freq = params->freq + params->freq_offset;
+    float interval_ms;
+
+    if (freq < 0.1f)
+    {
+        freq = 0.1f;
+    }
+
+    interval_ms = 1000.0f / (freq * ACTION_RECORD_RATE_MULTIPLIER);
+
+    if (interval_ms < (float)ACTION_DEBUG_LOG_MIN_INTERVAL_MS)
+    {
+        return ACTION_DEBUG_LOG_MIN_INTERVAL_MS;
+    }
+
+    if (interval_ms > (float)ACTION_DEBUG_LOG_MAX_INTERVAL_MS)
+    {
+        return ACTION_DEBUG_LOG_MAX_INTERVAL_MS;
+    }
+
+    return (uint32_t)interval_ms;
+}
+
+static void ActionDebug_TrySendRecord(void)
+{
+    TickType_t now = xTaskGetTickCount();
+    uint32_t interval_ms;
+    GaitParams *params;
+    float freq;
+    int len;
+    uint16_t tx_len;
+
+    if (!Action_IsAkaneMotionState(state))
+    {
+        return;
+    }
+
+    interval_ms = ActionDebug_GetLogIntervalMs();
+    if (action_record_last_tx_tick != 0U &&
+        (now - action_record_last_tx_tick) < pdMS_TO_TICKS(interval_ms))
+    {
+        return;
+    }
+
+    if (!Action_Uart8TxReady())
+    {
+        return;
+    }
+
+    params = Action_GetPrimaryGaitParams(Action_GetParamState());
+    freq = params->freq + params->freq_offset;
+    len = snprintf(action_record_tx_buffer,
+                   sizeof(action_record_tx_buffer),
+                   "ALOG,mode=AKANE_DEBUG,state=%s,walk_done=%lu,freq=%.2f,"
+                   "sp=%.1f/%.1f/%.1f/%.1f/%.2f/%.2f,"
+                   "imu_r=%.2f,imu_p=%.2f,imu_y=%.2f,"
+                   "dr=%.2f,dp=%.2f,dy=%.2f\r\n",
+                   Action_StateName(state),
+                   (unsigned long)action_walk_done,
+                   freq,
+                   params->stance_height,
+                   params->step_length,
+                   params->up_amp,
+                   params->down_amp,
+                   params->flight_percent,
+                   params->freq,
+                   Saber_DATA.Saber_imu_eluer.ELUER_ROLL,
+                   Saber_DATA.Saber_imu_eluer.ELUER_PITCH,
+                   Saber_DATA.Saber_imu_eluer.ELUER_YAW_now,
+                   Saber_DATA.Saber_imu_eluer.ELUER_ROLL - action_imu_base_roll,
+                   Saber_DATA.Saber_imu_eluer.ELUER_PITCH - action_imu_base_pitch,
+                   Saber_DATA.Saber_imu_eluer.ELUER_YAW_now - action_imu_base_yaw);
+
+    if (len <= 0)
+    {
+        return;
+    }
+
+    tx_len = (len < (int)sizeof(action_record_tx_buffer)) ? (uint16_t)len : (uint16_t)(sizeof(action_record_tx_buffer) - 1U);
+    if (HAL_UART_Transmit_DMA(&huart8, (uint8_t *)action_record_tx_buffer, tx_len) == HAL_OK)
+    {
+        action_record_last_tx_tick = now;
+    }
+}
+#endif
+
+void ActionProcessDebugControl(void)
+{
+#if ACTION_RECORD_UART8_ENABLE
+    /* AKANE obstacle-course debug mode: UART8 owns motion commands; UART7 only parses image host frames. */
+    nav_current_valid = 0U;
+    nav_goal_valid = 0U;
+    target_yaw = 0.0f;
+    ActionDebug_TrySendRecord();
+#endif
 }
 
 static float Action_NormalizeYaw180(float yaw)
@@ -127,8 +770,7 @@ void Action_ApplyRunYawCorrection(DetachedParam *run_params)
         return;
     }
 
-    // current_yaw = Action_GetFusedCurrentYaw();
-    current_yaw = Saber_DATA.Saber_imu_eluer.ELUER_YAW_now;
+    current_yaw = Action_NormalizeYaw180(upstream_current_yaw);
     goal_yaw = Action_GetNavigationGoalYaw();
     err_yaw = Action_AngularErrorDeg(current_yaw, goal_yaw);
     correction_offset = RUN_YAW_CORRECTION_GAIN * fabsf(err_yaw);
@@ -142,6 +784,107 @@ void Action_ApplyRunYawCorrection(DetachedParam *run_params)
     {
         run_params->detached_params_1.step_length_offset = correction_offset;
         run_params->detached_params_2.step_length_offset = correction_offset;
+    }
+}
+
+void ActionProcessSerialState(void)
+{
+    /* AKANE obstacle-course auto mode: UART7 MEASURING/ACTIONING drives motion when UART8 debug is disabled. */
+    uint32_t latest_frame_seq = unicomm_frame_seq;
+    TickType_t now = xTaskGetTickCount();
+    uint8_t has_new_frame = (latest_frame_seq != action_seen_frame_seq);
+
+    if (state == REALSE || state == STOP)
+    {
+        return;
+    }
+
+    if (action_serial_phase == ACTION_SERIAL_BOOT_STAND)
+    {
+        action_serial_phase = ACTION_SERIAL_APPROACH;
+        state = STAND;
+    }
+
+    if (has_new_frame)
+    {
+        action_seen_frame_seq = latest_frame_seq;
+
+        if (unicomm_latest_stage == UNICOMM_STAGE_MEASURING)
+        {
+            if (action_serial_phase == ACTION_SERIAL_APPROACH &&
+                unicomm_has_current_tag &&
+                unicomm_current_tag_id == action_expected_tag_id)
+            {
+                action_active_tag_id = unicomm_current_tag_id;
+                nav_current_valid = 1U;
+                nav_goal_valid = 1U;
+            }
+        }
+        else if (unicomm_latest_stage == UNICOMM_STAGE_ACTIONING)
+        {
+            if (action_serial_phase == ACTION_SERIAL_APPROACH)
+            {
+                action_serial_phase = ACTION_SERIAL_SETTLE;
+                action_phase_start_tick = now;
+                nav_current_valid = 0U;
+                nav_goal_valid = 0U;
+                state = STAND;
+            }
+        }
+    }
+
+    switch (action_serial_phase)
+    {
+    case ACTION_SERIAL_APPROACH:
+        if (unicomm_has_current_tag && unicomm_current_tag_id == action_expected_tag_id)
+        {
+            ActionProcessNavigation();
+        }
+        else
+        {
+            state = STAND;
+        }
+        break;
+
+    case ACTION_SERIAL_SETTLE:
+        state = STAND;
+        if ((now - action_phase_start_tick) >= pdMS_TO_TICKS(ACTION_SETTLE_MS))
+        {
+            Action_StartScript(unicomm_action_code);
+            action_serial_phase = ACTION_SERIAL_EXECUTE;
+        }
+        break;
+
+    case ACTION_SERIAL_EXECUTE:
+        if (Action_RunScript())
+        {
+            action_serial_phase = ACTION_SERIAL_DONE;
+            action_phase_start_tick = now;
+            state = STAND;
+        }
+        break;
+
+    case ACTION_SERIAL_DONE:
+        state = STAND;
+        if ((now - action_phase_start_tick) >= pdMS_TO_TICKS(ACTION_SETTLE_MS))
+        {
+            if (action_expected_tag_id == action_active_tag_id)
+            {
+                action_expected_tag_id++;
+            }
+            nav_current_valid = 0U;
+            nav_goal_valid = 0U;
+            action_script = NULL;
+            action_script_len = 0U;
+            action_script_index = 0U;
+            action_serial_phase = ACTION_SERIAL_APPROACH;
+        }
+        break;
+
+    case ACTION_SERIAL_BOOT_STAND:
+    default:
+        state = STAND;
+        break;
     }
 }
 
@@ -159,27 +902,23 @@ void ActionProcessNavigation(void)
 
     if (!nav_current_valid || !nav_goal_valid)
     {
-        arrival_report_sent = 0;
         target_yaw = 0.0f;
         state = STAND;
         return;
     }
 
-    // current_yaw = Action_GetFusedCurrentYaw();
-    current_yaw = Saber_DATA.Saber_imu_eluer.ELUER_YAW_now;
+    current_yaw = Action_NormalizeYaw180(upstream_current_yaw);
     target_yaw = Action_GetNavigationGoalYaw();
     yaw_error = Action_AngularErrorDeg(current_yaw, target_yaw);
 
     if (yaw_error > NAV_YAW_FINISH_THRESHOLD_DEG)
     {
-        arrival_report_sent = 0;
         state = RIGHT_TURN;
         return;
     }
 
     if (yaw_error < -NAV_YAW_FINISH_THRESHOLD_DEG)
     {
-        arrival_report_sent = 0;
         state = LEFT_TURN;
         return;
     }
@@ -191,15 +930,9 @@ void ActionProcessNavigation(void)
         Action_IsWithinThreshold(dy, NAV_ARRIVAL_THRESHOLD_CM))
     {
         state = STAND;
-        if (!arrival_report_sent)
-        {
-            UniComm_SendArrival();
-            arrival_report_sent = 1;
-        }
         return;
     }
 
-    arrival_report_sent = 0;
     state = RUN;
 }
 

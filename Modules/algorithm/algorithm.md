@@ -1,4 +1,4 @@
-# algorithms
+# 算法模块
 
 <p align='right'>neozng1@hnu.edu.cn</p>
 

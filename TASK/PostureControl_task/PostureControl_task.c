@@ -48,6 +48,8 @@ int start_flag = 0;
 
 static TickType_t startup_tick = 0;
 static uint8_t startup_tick_initialized = 0;
+static float gait_phase_accumulator = 0.0f;
+static float gait_phase_prev_t = 0.0f;
 
 DJIMotorInstance* _g_left_motor[4]={0};
 DJIMotorInstance* _g_right_motor[4]={0};
@@ -59,7 +61,8 @@ static int IsMotionState(enum States current_state)
     return current_state == RUN ||
            current_state == GRAB ||
            current_state == LEFT_TURN ||
-           current_state == RIGHT_TURN;
+           current_state == RIGHT_TURN ||
+           current_state == IN_PLACE;
 }
 
 static void UpdateStartupState(void)
@@ -78,7 +81,7 @@ static void UpdateStartupState(void)
         return;
     }
 
-    if (state == REALSE)
+    if (state == REALSE && !ActionDebug_ShouldHoldRealse())
     {
         state = STAND;
     }
@@ -121,13 +124,22 @@ void PostureControl_task(const void* argument)
 {
     TickType_t LastWakeTime;
     LastWakeTime = xTaskGetTickCount();
+#if !ACTION_RECORD_UART8_ENABLE
+    static char buffer[100];
+#endif
     for(;;)
     {
 
-        char buffer[100];  // 缓冲区大小按需调整
-        int length;
-        length = snprintf(buffer, sizeof(buffer), "%d,%d,%d\r\n",state,(int)target_yaw,(int)Saber_DATA.Saber_imu_eluer.ELUER_YAW_now);
-        HAL_UART_Transmit(&huart8, (uint8_t *)buffer, length,20);
+#if !ACTION_RECORD_UART8_ENABLE
+        if (HAL_UART_GetState(&huart8) == HAL_UART_STATE_READY)
+        {
+            int length = snprintf(buffer, sizeof(buffer), "%d,%d,%d\r\n", state, (int)target_yaw, (int)Saber_DATA.Saber_imu_eluer.ELUER_YAW_now);
+            if (length > 0)
+            {
+                HAL_UART_Transmit_DMA(&huart8, (uint8_t *)buffer, (uint16_t)length);
+            }
+        }
+#endif
 
         PostureControl();
         osDelayUntil(&LastWakeTime,8);
@@ -153,7 +165,11 @@ void PostureControl()
 
     if (!motion_blocked)
     {
-        ActionProcessNavigation();
+#if ACTION_RECORD_UART8_ENABLE
+        ActionProcessDebugControl();
+#else
+        ActionProcessSerialState();
+#endif
         UpdateStartFlag();
     }
 
@@ -170,6 +186,7 @@ void PostureControl()
         break;
     case GRAB:
 
+        // Task-race behavior. AKANE obstacle-course debug/auto paths do not enter GRAB.
         detached_params=state_detached_params[state];
         gait_detached(detached_params,0.0,0.0,0.0,0.0);
         break;
@@ -185,6 +202,11 @@ void PostureControl()
         turn_params = state_detached_params[state];
         ApplyTurnStepLength(&turn_params, 0);
         detached_params = turn_params;
+        gait_detached(detached_params,0.0,0.5,0.0,0.5);
+        break;
+    case IN_PLACE:
+
+        detached_params = state_detached_params[state];
         gait_detached(detached_params,0.0,0.5,0.0,0.5);
         break;
     case STOP:
@@ -263,10 +285,8 @@ void CoupledMoveLeg(float t, GaitParams params, float gait_offset, int LegId)
 
 void CycloidTrajectory(float t, GaitParams params, float gait_offset)
 {
-
-    // 定义静态变量p和prev_t，用于记录时间累积和上一次的时间
-    static float p = 0;
-    static float prev_t = 0;
+    float dt;
+    float base_phase;
 
 
     // 定义 stanceHeight 为支撑高度
@@ -283,20 +303,24 @@ void CycloidTrajectory(float t, GaitParams params, float gait_offset)
     // 定义步长
     stepLength = params.step_length + params.step_length_offset;
 
-    //调试代码
-    if(state==RUN)
-    {
-        params.step_length = 1.5f;
-    }
-
     // 从参数结构体中获取频率
     FREQ = params.freq + params.freq_offset;
 
     // 更新时间累积 p，并记录当前时间 t 为下一次的时间基准
-    p += FREQ * (t - prev_t);
-    prev_t = t;
+    dt = t - gait_phase_prev_t;
+    if (dt < 0.0f)
+    {
+        dt = 0.0f;
+    }
+    gait_phase_accumulator += FREQ * dt;
+    gait_phase_prev_t = t;
+    base_phase = fmod(gait_phase_accumulator, 1.0f);
+    if (dt > 0.0f)
+    {
+        ActionDebug_UpdateWalkPhase(base_phase);
+    }
     // 计算当前时间累积 p 加上步态偏移量后的模1值，用于周期性计算
-    float gp = fmod((p + gait_offset), 1.0);
+    float gp = fmod((gait_phase_accumulator + gait_offset), 1.0);
     if (gp <= flightPercent) // 足端摆动相
     {
 
@@ -322,7 +346,7 @@ void CycloidTrajectory(float t, GaitParams params, float gait_offset)
         foot_y=stanceHeight;
     }
 
-    else if(state==RUN || state==LEFT_TURN ||state ==RIGHT_TURN)
+    else if(state==RUN || state==LEFT_TURN ||state ==RIGHT_TURN || state == IN_PLACE)
     {
         if (gp <= flightPercent) // 足端摆动相
         {

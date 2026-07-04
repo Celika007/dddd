@@ -1,0 +1,109 @@
+# AKANE UART8 调试指南
+
+## 目的
+
+本文档用于 AKANE 障碍赛调试。
+
+- 图像主机：通过 `UART7` 向 MCU 发送 AprilTag `MEASURING` / `ACTIONING` 帧。
+- 调试主机：通过 `UART8` 向 MCU 发送 `debug:...` 文本命令，并通过 `UART8` 接收 MCU 返回的 `ALOG,...` 记录。
+- `GRAB` 和 `APP/action/navigation_logic.md` 等任务赛代码不属于此 AKANE 障碍赛调试流程。
+
+当 `ACTION_RECORD_UART8_ENABLE` 为 `1` 时，`UART7` 仍会解析图像主机帧并更新 PG 引脚，但不会驱动电机动作。电机动作由 `UART8` 调试主机控制。
+
+## 编译期开关
+
+在 `APP/action/action.h` 中：
+
+```c
+#define ACTION_RECORD_UART8_ENABLE 1U
+```
+
+- `1U`：AKANE 调试模式。`UART8` 接收调试命令并发送低频日志。旧的 8 ms yaw 调试输出会被关闭。
+- `0U`：自动模式。`UART7` 的 `MEASURING/ACTIONING` 驱动障碍赛动作状态机。
+
+## UART8 命令格式
+
+命令为 ASCII 文本，必须以 `\n` 或 `\r\n` 结尾。
+
+运动命令：
+
+```text
+debug:run
+debug:left_turn
+debug:right_turn
+debug:in_place
+debug:stand
+debug:realse
+```
+
+参数命令会同时修改当前状态下四条腿的参数：
+
+```text
+debug:step_length+
+debug:step_length-
+debug:up_amp+
+debug:up_amp-
+debug:down_amp+
+debug:down_amp-
+debug:stance_height+
+debug:stance_height-
+debug:freq+
+debug:freq-
+debug:flight_percent+
+debug:flight_percent-
+```
+
+记录重置：
+
+```text
+debug:clear
+```
+
+`debug:clear` 会重置 `walk_done`，并把 IMU 增量基准设置为当前 IMU 姿态。
+
+## 参数步进值
+
+```text
+step_length     +/- 1.0
+up_amp          +/- 0.1
+down_amp        +/- 0.1
+stance_height   +/- 1.0
+freq            +/- 0.1
+flight_percent  +/- 0.05
+```
+
+命令作用于 `state_detached_params[state]`。由于 AKANE 调试命令会同时调节四条腿，返回日志中只包含一个 `sp` 字段，而不是 `sp0/sp1/sp2/sp3`。
+
+## UART8 日志格式
+
+只有当状态为 `RUN`、`LEFT_TURN`、`RIGHT_TURN` 或 `IN_PLACE` 时才会发送日志。
+
+发送频率约为 `2 * freq`，发送接口使用 `HAL_UART_Transmit_DMA()`。如果 UART8 TX 正忙，本条记录会被跳过，而不会阻塞控制流程。
+
+示例：
+
+```text
+ALOG,mode=AKANE_DEBUG,state=RUN,walk_done=12,freq=1.80,sp=18.0/12.0/6.0/0.0/0.40/1.80,imu_r=1.20,imu_p=-0.40,imu_y=35.60,dr=0.30,dp=-0.10,dy=12.50
+```
+
+字段：
+
+```text
+state      当前运动状态
+walk_done  根据 CycloidTrajectory() 基准相位回绕统计的步态周期数
+freq       当前 freq + freq_offset
+sp         stance_height/step_length/up_amp/down_amp/flight_percent/freq
+imu_r/p/y  当前 IMU roll/pitch/yaw
+dr/dp/dy   相对上一次 debug:clear 或进入运动状态时的 IMU 增量
+```
+
+## 典型调试流程
+
+1. 将 `ACTION_RECORD_UART8_ENABLE` 设置为 `1U` 后编译并烧录。
+2. 将图像主机连接到 `UART7`；它可以继续发送 AprilTag 帧。
+3. 将调试主机连接到 `UART8`。
+4. 发送 `debug:clear`。
+5. 发送运动命令，例如 `debug:run`。
+6. 使用 `debug:step_length+` 或 `debug:freq-` 等命令调节参数。
+7. 在调试主机上读取 `ALOG` 记录。
+8. 断电后，根据 UART8 记录更新固定 `ACTIONING` 动作脚本参数。

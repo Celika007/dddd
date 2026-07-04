@@ -1,16 +1,21 @@
 #include "unicomm.h"
 
-#include <limits.h>
-#include <math.h>
-#include <stdlib.h>
 #include <string.h>
 
-#include "action.h"
 #include "bsp_usart.h"
+#include "gpio.h"
 #include "usart.h"
 
 #define UNICOMM_RX_BUFFER_SIZE 255U
-#define UNICOMM_ARRIVAL_FRAME "RCArrivalMX"
+#define UNICOMM_FRAME_SIZE 32U
+#define UNICOMM_STATE_SIZE 9U
+#define UNICOMM_END_INDEX 31U
+#define UNICOMM_END_FRAME 0xEDU
+#define UNICOMM_MEASURING_STATE "MEASURING"
+#define UNICOMM_ACTIONING_STATE "ACTIONING"
+#define UNICOMM_ACTION_RESERVED_TAG 0x0FU
+#define UNICOMM_TAG_COUNT 8U
+#define UNICOMM_CM_PER_METER 100.0f
 
 float current_x = 0.0f;
 float current_y = 0.0f;
@@ -21,136 +26,160 @@ float upstream_goal_yaw = 0.0f;
 uint8_t nav_current_valid = 0U;
 uint8_t nav_goal_valid = 0U;
 
+UniCommStage_e unicomm_latest_stage = UNICOMM_STAGE_NONE;
+uint32_t unicomm_frame_seq = 0U;
+uint8_t unicomm_current_tag_id = 0U;
+uint8_t unicomm_has_current_tag = 0U;
+float unicomm_x_m = 0.0f;
+float unicomm_y_m = 0.0f;
+float unicomm_bearing_deg = 0.0f;
+float unicomm_yaw_deg = 0.0f;
+float unicomm_margin = 0.0f;
+char unicomm_action_code[UNICOMM_ACTION_CODE_MAX_LEN + 1U] = {0};
+
 static USARTInstance *unicomm_usart_instance = NULL;
-static char unicomm_line_buffer[UNICOMM_RX_BUFFER_SIZE + 1U];
-static size_t unicomm_line_length = 0U;
-static uint8_t unicomm_line_overflow = 0U;
+static uint8_t unicomm_frame_buffer[UNICOMM_FRAME_SIZE];
+static size_t unicomm_frame_length = 0U;
 
-static const char *UniComm_FindFieldValue(const char *line, const char *key)
+static const uint16_t unicomm_pg_pins[UNICOMM_TAG_COUNT] = {
+    GPIO_PIN_1,
+    GPIO_PIN_2,
+    GPIO_PIN_3,
+    GPIO_PIN_4,
+    GPIO_PIN_5,
+    GPIO_PIN_6,
+    GPIO_PIN_7,
+    GPIO_PIN_8,
+};
+
+static void UniComm_SetAllStagePins(GPIO_PinState state)
 {
-    const size_t key_len = strlen(key);
-    const char *cursor = line;
-
-    while ((cursor = strstr(cursor, key)) != NULL)
-    {
-        if (cursor == line || cursor[-1] == ';')
-        {
-            return cursor + key_len;
-        }
-
-        cursor += key_len;
-    }
-
-    return NULL;
+    HAL_GPIO_WritePin(GPIOG,
+                      GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3 | GPIO_PIN_4 |
+                          GPIO_PIN_5 | GPIO_PIN_6 | GPIO_PIN_7 | GPIO_PIN_8,
+                      state);
 }
 
-static int UniComm_ParseIntField(const char *line, const char *key, int *value)
+static void UniComm_SetActionPin(uint8_t tag_id)
 {
-    const char *start = UniComm_FindFieldValue(line, key);
-    char *end = NULL;
-    long parsed;
+    UniComm_SetAllStagePins(GPIO_PIN_RESET);
 
-    if (start == NULL)
+    if (tag_id < UNICOMM_TAG_COUNT)
     {
-        return 0;
+        HAL_GPIO_WritePin(GPIOG, unicomm_pg_pins[tag_id], GPIO_PIN_SET);
     }
-
-    parsed = strtol(start, &end, 10);
-    if (end == start || parsed < INT_MIN || parsed > INT_MAX)
-    {
-        return 0;
-    }
-
-    if (*end != ';' && *end != '\0')
-    {
-        return 0;
-    }
-
-    *value = (int)parsed;
-    return 1;
 }
 
-static int UniComm_ParseFloatField(const char *line, const char *key, float *value)
+static void UniComm_SetMeasuringPin(uint8_t tag_id)
 {
-    const char *start = UniComm_FindFieldValue(line, key);
-    char *end = NULL;
-    float parsed;
+    UniComm_SetAllStagePins(GPIO_PIN_SET);
 
-    if (start == NULL)
+    if (tag_id < UNICOMM_TAG_COUNT)
     {
-        return 0;
+        HAL_GPIO_WritePin(GPIOG, unicomm_pg_pins[tag_id], GPIO_PIN_RESET);
     }
-
-    parsed = strtof(start, &end);
-    if (end == start || !isfinite(parsed))
-    {
-        return 0;
-    }
-
-    if (*end != ';' && *end != '\0')
-    {
-        return 0;
-    }
-
-    *value = parsed;
-    return 1;
 }
 
-static void UniComm_HandleNavFrame(const char *line)
+static uint8_t UniComm_IsKnownState(const uint8_t *frame)
 {
-    int current_valid_value;
-    int goal_valid_value;
-    float new_current_x;
-    float new_current_y;
-    float new_target_x;
-    float new_target_y;
-    float new_upstream_current_yaw;
-    float new_upstream_goal_yaw;
+    return memcmp(frame, UNICOMM_MEASURING_STATE, UNICOMM_STATE_SIZE) == 0 ||
+           memcmp(frame, UNICOMM_ACTIONING_STATE, UNICOMM_STATE_SIZE) == 0;
+}
 
-    if (!UniComm_ParseIntField(line, "cur_valid=", &current_valid_value) ||
-        !UniComm_ParseIntField(line, "goal_valid=", &goal_valid_value) ||
-        !UniComm_ParseFloatField(line, "cur_x=", &new_current_x) ||
-        !UniComm_ParseFloatField(line, "cur_y=", &new_current_y) ||
-        !UniComm_ParseFloatField(line, "goal_x=", &new_target_x) ||
-        !UniComm_ParseFloatField(line, "goal_y=", &new_target_y) ||
-        !UniComm_ParseFloatField(line, "cur_yaw=", &new_upstream_current_yaw) ||
-        !UniComm_ParseFloatField(line, "goal_yaw=", &new_upstream_goal_yaw))
+static uint8_t UniComm_IsValidFrame(const uint8_t *frame)
+{
+    if (frame[UNICOMM_END_INDEX] != UNICOMM_END_FRAME)
+    {
+        return 0U;
+    }
+
+    return UniComm_IsKnownState(frame);
+}
+
+static float UniComm_ReadFloatLE(const uint8_t *data)
+{
+    float value;
+    uint8_t raw[sizeof(float)];
+
+    raw[0] = data[0];
+    raw[1] = data[1];
+    raw[2] = data[2];
+    raw[3] = data[3];
+    memcpy(&value, raw, sizeof(value));
+
+    return value;
+}
+
+static void UniComm_HandleMeasuringFrame(const uint8_t *frame)
+{
+    uint8_t tag_id = frame[9];
+
+    if (tag_id >= UNICOMM_TAG_COUNT)
     {
         return;
     }
 
-    nav_current_valid = current_valid_value != 0 ? 1U : 0U;
-    nav_goal_valid = goal_valid_value != 0 ? 1U : 0U;
-    current_x = new_current_x;
-    current_y = new_current_y;
-    target_x = new_target_x;
-    target_y = new_target_y;
-    upstream_current_yaw = new_upstream_current_yaw;
-    upstream_goal_yaw = new_upstream_goal_yaw;
+    unicomm_latest_stage = UNICOMM_STAGE_MEASURING;
+    unicomm_frame_seq++;
+    unicomm_current_tag_id = tag_id;
+    unicomm_has_current_tag = 1U;
+    unicomm_x_m = UniComm_ReadFloatLE(&frame[10]);
+    unicomm_y_m = UniComm_ReadFloatLE(&frame[14]);
+    unicomm_bearing_deg = UniComm_ReadFloatLE(&frame[18]);
+    unicomm_yaw_deg = UniComm_ReadFloatLE(&frame[22]);
+    unicomm_margin = UniComm_ReadFloatLE(&frame[26]);
+
+    current_x = unicomm_x_m * UNICOMM_CM_PER_METER;
+    current_y = unicomm_y_m * UNICOMM_CM_PER_METER;
+    target_x = 0.0f;
+    target_y = 0.0f;
+    upstream_current_yaw = unicomm_yaw_deg;
+    upstream_goal_yaw = unicomm_bearing_deg;
+    nav_current_valid = 1U;
+    nav_goal_valid = 1U;
+
+    UniComm_SetMeasuringPin(tag_id);
 }
 
-static void UniComm_ProcessLine(const char *line)
+static void UniComm_HandleActioningFrame(const uint8_t *frame)
 {
-    if (line[0] == '\0')
+    size_t action_len = UNICOMM_ACTION_CODE_MAX_LEN;
+
+    if (frame[9] != UNICOMM_ACTION_RESERVED_TAG)
     {
         return;
     }
 
-    if (strcmp(line, "RCPickUpBoxes") == 0)
+    memcpy(unicomm_action_code, &frame[10], UNICOMM_ACTION_CODE_MAX_LEN);
+    while (action_len > 0U && unicomm_action_code[action_len - 1U] == '-')
     {
-        state = GRAB;
+        --action_len;
+    }
+    unicomm_action_code[action_len] = '\0';
+    unicomm_latest_stage = UNICOMM_STAGE_ACTIONING;
+    unicomm_frame_seq++;
+
+    if (unicomm_has_current_tag)
+    {
+        UniComm_SetActionPin(unicomm_current_tag_id);
+    }
+    else
+    {
+        UniComm_SetAllStagePins(GPIO_PIN_RESET);
+    }
+}
+
+static void UniComm_ProcessFrame(const uint8_t *frame)
+{
+    if (memcmp(frame, UNICOMM_MEASURING_STATE, UNICOMM_STATE_SIZE) == 0)
+    {
+        UniComm_HandleMeasuringFrame(frame);
         return;
     }
 
-    if (strncmp(line, "RCplace=", 8) == 0)
+    if (memcmp(frame, UNICOMM_ACTIONING_STATE, UNICOMM_STATE_SIZE) == 0)
     {
-        state = STAND;
-        return;
-    }
-
-    if (strncmp(line, "RCNAV;", 6) == 0)
-    {
-        UniComm_HandleNavFrame(line);
+        UniComm_HandleActioningFrame(frame);
     }
 }
 
@@ -160,83 +189,49 @@ static void UniComm_ProcessIncomingBytes(const uint8_t *buffer, size_t data_len)
 
     for (i = 0U; i < data_len; ++i)
     {
-        char current_char = (char)buffer[i];
+        if (unicomm_frame_length < UNICOMM_FRAME_SIZE)
+        {
+            unicomm_frame_buffer[unicomm_frame_length++] = buffer[i];
+        }
+        else
+        {
+            memmove(&unicomm_frame_buffer[0],
+                    &unicomm_frame_buffer[1],
+                    UNICOMM_FRAME_SIZE - 1U);
+            unicomm_frame_buffer[UNICOMM_FRAME_SIZE - 1U] = buffer[i];
+        }
 
-        if (current_char == '\r')
+        if (unicomm_frame_length < UNICOMM_FRAME_SIZE)
         {
             continue;
         }
 
-        if (current_char == '\n')
+        if (UniComm_IsValidFrame(unicomm_frame_buffer))
         {
-            if (!unicomm_line_overflow)
-            {
-                unicomm_line_buffer[unicomm_line_length] = '\0';
-                UniComm_ProcessLine(unicomm_line_buffer);
-            }
-
-            unicomm_line_length = 0U;
-            unicomm_line_overflow = 0U;
-            continue;
+            UniComm_ProcessFrame(unicomm_frame_buffer);
+            unicomm_frame_length = 0U;
         }
-
-        if (unicomm_line_overflow)
-        {
-            continue;
-        }
-
-        if (unicomm_line_length >= UNICOMM_RX_BUFFER_SIZE)
-        {
-            unicomm_line_length = 0U;
-            unicomm_line_overflow = 1U;
-            continue;
-        }
-
-        unicomm_line_buffer[unicomm_line_length++] = current_char;
     }
 }
 
-static void UniComm_UART8_Callback(void)
+static void UniComm_UART7_Callback(void)
 {
     if (unicomm_usart_instance == NULL)
     {
         return;
-    }
-
-    if (unicomm_usart_instance->recv_len > 0U)
-    {
-        HAL_UART_Transmit(&huart7,
-                          unicomm_usart_instance->recv_buff,
-                          unicomm_usart_instance->recv_len,
-                          20);
     }
 
     UniComm_ProcessIncomingBytes(unicomm_usart_instance->recv_buff,
                                  unicomm_usart_instance->recv_len);
 }
 
-void UniComm_UART8_Init(void)
+void UniComm_UART7_Init(void)
 {
     USART_Init_Config_s unicomm_usart_conf = {
         .recv_buff_size = UNICOMM_RX_BUFFER_SIZE,
-        .usart_handle = &huart8,
-        .module_callback = UniComm_UART8_Callback,
+        .usart_handle = &huart7,
+        .module_callback = UniComm_UART7_Callback,
     };
 
     unicomm_usart_instance = USARTRegister(&unicomm_usart_conf);
-}
-
-void UniComm_SendArrival(void)
-{
-    static uint8_t arrival_frame[] = UNICOMM_ARRIVAL_FRAME;
-
-    if (unicomm_usart_instance == NULL)
-    {
-        return;
-    }
-
-    USARTSend(unicomm_usart_instance,
-              arrival_frame,
-              (uint16_t)(sizeof(arrival_frame) - 1U),
-              USART_TRANSFER_BLOCKING);
 }

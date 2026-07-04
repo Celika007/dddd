@@ -1,4 +1,4 @@
-# Buzzer 运行说明（TIM PWM → BSP PWM → Buzzer）
+# 蜂鸣器运行说明（TIM PWM → BSP PWM → Buzzer）
 
 ## 概览
 
@@ -62,6 +62,6 @@ AlarmSetStatus(robocmd_alarm, ALARM_OFF);
 
 ## 注意事项
 
--- 在同一定时器下更改某通道周期可能影响其他通道，请参考 `BSP/pwm/bsp_pwm.md:3`。
--- 使用 DMA 中断时，占空比为 0 不会进入中断，参考 `BSP/pwm/bsp_pwm.md:4`。
--- `BSP/pwm/bsp_pwm.h` 针对 H7 的时钟选择示例，若在 F4 平台使用，请确保 `PWMSelectTclk` 时钟源逻辑与芯片一致。
+- 在同一定时器下更改某通道周期可能影响其他通道，请参考 `BSP/pwm/bsp_pwm.md:3`。
+- 使用 DMA 中断时，占空比为 0 不会进入中断，参考 `BSP/pwm/bsp_pwm.md:4`。
+- `BSP/pwm/bsp_pwm.h` 针对 H7 的时钟选择示例，若在 F4 平台使用，请确保 `PWMSelectTclk` 时钟源逻辑与芯片一致。
