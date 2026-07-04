@@ -226,9 +226,51 @@ static GaitParams *Action_GetPrimaryGaitParams(enum States action_state)
 static uint8_t Action_StringEquals(const char *lhs, const char *rhs);
 
 #if ACTION_RECORD_UART8_ENABLE
+static void ActionDebug_TrySendRecord(uint8_t force_send);
+
 static uint8_t Action_Uart8TxReady(void)
 {
     return huart8.gState == HAL_UART_STATE_READY;
+}
+
+static void ActionDebug_FormatFloat(char *buffer, size_t buffer_size, float value, uint8_t decimals)
+{
+    int32_t scale = 1;
+    int32_t scaled_value;
+    int32_t integer_part;
+    int32_t decimal_part;
+    uint8_t i;
+
+    if (buffer == NULL || buffer_size == 0U)
+    {
+        return;
+    }
+
+    for (i = 0U; i < decimals; ++i)
+    {
+        scale *= 10;
+    }
+
+    scaled_value = (int32_t)lroundf(value * (float)scale);
+    integer_part = scaled_value / scale;
+    decimal_part = scaled_value % scale;
+    if (decimal_part < 0)
+    {
+        decimal_part = -decimal_part;
+    }
+
+    if (decimals == 0U)
+    {
+        (void)snprintf(buffer, buffer_size, "%ld", (long)integer_part);
+    }
+    else if (decimals == 1U)
+    {
+        (void)snprintf(buffer, buffer_size, "%ld.%01ld", (long)integer_part, (long)decimal_part);
+    }
+    else
+    {
+        (void)snprintf(buffer, buffer_size, "%ld.%02ld", (long)integer_part, (long)decimal_part);
+    }
 }
 
 static void ActionDebug_CaptureImuBase(void)
@@ -342,13 +384,13 @@ static uint8_t ActionDebug_ProcessParamCommand(const char *cmd,
     return 0U;
 }
 
-static void ActionDebug_HandleCommand(const char *line)
+static uint8_t ActionDebug_HandleCommand(const char *line)
 {
     const char *cmd;
 
     if (strncmp(line, "debug:", 6U) != 0)
     {
-        return;
+        return 0U;
     }
 
     cmd = line + 6U;
@@ -356,43 +398,43 @@ static void ActionDebug_HandleCommand(const char *line)
     if (Action_StringEquals(cmd, "run"))
     {
         ActionDebug_SetState(RUN);
-        return;
+        return 1U;
     }
 
     if (Action_StringEquals(cmd, "left_turn"))
     {
         ActionDebug_SetState(LEFT_TURN);
-        return;
+        return 1U;
     }
 
     if (Action_StringEquals(cmd, "right_turn"))
     {
         ActionDebug_SetState(RIGHT_TURN);
-        return;
+        return 1U;
     }
 
     if (Action_StringEquals(cmd, "in_place"))
     {
         ActionDebug_SetState(IN_PLACE);
-        return;
+        return 1U;
     }
 
     if (Action_StringEquals(cmd, "stand"))
     {
         ActionDebug_SetState(STAND);
-        return;
+        return 1U;
     }
 
     if (Action_StringEquals(cmd, "realse"))
     {
         ActionDebug_SetState(REALSE);
-        return;
+        return 1U;
     }
 
     if (Action_StringEquals(cmd, "clear"))
     {
         ActionDebug_ResetWalkRecord();
-        return;
+        return 1U;
     }
 
     if (ActionDebug_ProcessParamCommand(cmd, "step_length", ACTION_DEBUG_PARAM_STEP_LENGTH, ACTION_DEBUG_STEP_LENGTH_DELTA) ||
@@ -402,8 +444,10 @@ static void ActionDebug_HandleCommand(const char *line)
         ActionDebug_ProcessParamCommand(cmd, "freq", ACTION_DEBUG_PARAM_FREQ, ACTION_DEBUG_FREQ_DELTA) ||
         ActionDebug_ProcessParamCommand(cmd, "flight_percent", ACTION_DEBUG_PARAM_FLIGHT_PERCENT, ACTION_DEBUG_FLIGHT_PERCENT_DELTA))
     {
-        return;
+        return 1U;
     }
+
+    return 0U;
 }
 
 static void ActionDebug_FeedByte(uint8_t data)
@@ -413,7 +457,10 @@ static void ActionDebug_FeedByte(uint8_t data)
         if (action_debug_line_len > 0U)
         {
             action_debug_line[action_debug_line_len] = '\0';
-            ActionDebug_HandleCommand(action_debug_line);
+            if (ActionDebug_HandleCommand(action_debug_line))
+            {
+                ActionDebug_TrySendRecord(1U);
+            }
             action_debug_line_len = 0U;
         }
         return;
@@ -618,22 +665,36 @@ static uint32_t ActionDebug_GetLogIntervalMs(void)
     return (uint32_t)interval_ms;
 }
 
-static void ActionDebug_TrySendRecord(void)
+static void ActionDebug_TrySendRecord(uint8_t force_send)
 {
     TickType_t now = xTaskGetTickCount();
     uint32_t interval_ms;
     GaitParams *params;
     float freq;
+    char freq_text[16];
+    char stance_height_text[16];
+    char step_length_text[16];
+    char up_amp_text[16];
+    char down_amp_text[16];
+    char flight_percent_text[16];
+    char param_freq_text[16];
+    char imu_roll_text[16];
+    char imu_pitch_text[16];
+    char imu_yaw_text[16];
+    char delta_roll_text[16];
+    char delta_pitch_text[16];
+    char delta_yaw_text[16];
     int len;
     uint16_t tx_len;
 
-    if (!Action_IsAkaneMotionState(state))
+    if (!force_send && !Action_IsAkaneMotionState(state))
     {
         return;
     }
 
     interval_ms = ActionDebug_GetLogIntervalMs();
-    if (action_record_last_tx_tick != 0U &&
+    if (!force_send &&
+        action_record_last_tx_tick != 0U &&
         (now - action_record_last_tx_tick) < pdMS_TO_TICKS(interval_ms))
     {
         return;
@@ -646,27 +707,41 @@ static void ActionDebug_TrySendRecord(void)
 
     params = Action_GetPrimaryGaitParams(Action_GetParamState());
     freq = params->freq + params->freq_offset;
+    ActionDebug_FormatFloat(freq_text, sizeof(freq_text), freq, 2U);
+    ActionDebug_FormatFloat(stance_height_text, sizeof(stance_height_text), params->stance_height, 1U);
+    ActionDebug_FormatFloat(step_length_text, sizeof(step_length_text), params->step_length, 1U);
+    ActionDebug_FormatFloat(up_amp_text, sizeof(up_amp_text), params->up_amp, 1U);
+    ActionDebug_FormatFloat(down_amp_text, sizeof(down_amp_text), params->down_amp, 1U);
+    ActionDebug_FormatFloat(flight_percent_text, sizeof(flight_percent_text), params->flight_percent, 2U);
+    ActionDebug_FormatFloat(param_freq_text, sizeof(param_freq_text), params->freq, 2U);
+    ActionDebug_FormatFloat(imu_roll_text, sizeof(imu_roll_text), Saber_DATA.Saber_imu_eluer.ELUER_ROLL, 2U);
+    ActionDebug_FormatFloat(imu_pitch_text, sizeof(imu_pitch_text), Saber_DATA.Saber_imu_eluer.ELUER_PITCH, 2U);
+    ActionDebug_FormatFloat(imu_yaw_text, sizeof(imu_yaw_text), Saber_DATA.Saber_imu_eluer.ELUER_YAW_now, 2U);
+    ActionDebug_FormatFloat(delta_roll_text, sizeof(delta_roll_text), Saber_DATA.Saber_imu_eluer.ELUER_ROLL - action_imu_base_roll, 2U);
+    ActionDebug_FormatFloat(delta_pitch_text, sizeof(delta_pitch_text), Saber_DATA.Saber_imu_eluer.ELUER_PITCH - action_imu_base_pitch, 2U);
+    ActionDebug_FormatFloat(delta_yaw_text, sizeof(delta_yaw_text), Saber_DATA.Saber_imu_eluer.ELUER_YAW_now - action_imu_base_yaw, 2U);
+
     len = snprintf(action_record_tx_buffer,
                    sizeof(action_record_tx_buffer),
-                   "ALOG,mode=AKANE_DEBUG,state=%s,walk_done=%lu,freq=%.2f,"
-                   "sp=%.1f/%.1f/%.1f/%.1f/%.2f/%.2f,"
-                   "imu_r=%.2f,imu_p=%.2f,imu_y=%.2f,"
-                   "dr=%.2f,dp=%.2f,dy=%.2f\r\n",
+                   "ALOG,mode=AKANE_DEBUG,state=%s,walk_done=%lu,freq=%s,"
+                   "sp=%s/%s/%s/%s/%s/%s,"
+                   "imu_r=%s,imu_p=%s,imu_y=%s,"
+                   "dr=%s,dp=%s,dy=%s\r\n",
                    Action_StateName(state),
                    (unsigned long)action_walk_done,
-                   freq,
-                   params->stance_height,
-                   params->step_length,
-                   params->up_amp,
-                   params->down_amp,
-                   params->flight_percent,
-                   params->freq,
-                   Saber_DATA.Saber_imu_eluer.ELUER_ROLL,
-                   Saber_DATA.Saber_imu_eluer.ELUER_PITCH,
-                   Saber_DATA.Saber_imu_eluer.ELUER_YAW_now,
-                   Saber_DATA.Saber_imu_eluer.ELUER_ROLL - action_imu_base_roll,
-                   Saber_DATA.Saber_imu_eluer.ELUER_PITCH - action_imu_base_pitch,
-                   Saber_DATA.Saber_imu_eluer.ELUER_YAW_now - action_imu_base_yaw);
+                   freq_text,
+                   stance_height_text,
+                   step_length_text,
+                   up_amp_text,
+                   down_amp_text,
+                   flight_percent_text,
+                   param_freq_text,
+                   imu_roll_text,
+                   imu_pitch_text,
+                   imu_yaw_text,
+                   delta_roll_text,
+                   delta_pitch_text,
+                   delta_yaw_text);
 
     if (len <= 0)
     {
@@ -688,7 +763,7 @@ void ActionProcessDebugControl(void)
     nav_current_valid = 0U;
     nav_goal_valid = 0U;
     target_yaw = 0.0f;
-    ActionDebug_TrySendRecord();
+    ActionDebug_TrySendRecord(0U);
 #endif
 }
 

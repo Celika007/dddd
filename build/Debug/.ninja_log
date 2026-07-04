@@ -20,7 +20,7 @@
 1784	3561	8047462508795406	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Core/Src/system_stm32f4xx.c.obj	61460c0131553eb3
 1453	3312	8047462505490090	CMakeFiles/SIZU_TASK.dir/Modules/algorithm/pid/PID.c.obj	7dd0435a22d3a8ca
 852	2199	8047462499601260	CMakeFiles/SIZU_TASK.dir/Modules/algorithm/kalman/Kalman_filter.c.obj	6b6d13b178cdde36
-852	5635	8048514473624008	CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj	80d08752e9f68261
+53	943	8048755670580654	CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj	80d08752e9f68261
 595	2855	8047462496930778	CMakeFiles/SIZU_TASK.dir/BSP/tim/bsp_tim.c.obj	85ef69ec8061d812
 2200	4171	8047462512964368	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c.obj	159756b687740ec2
 494	2940	8047462495902795	CMakeFiles/SIZU_TASK.dir/BSP/dwt/bsp_dwt.c.obj	ab52bef70ee40062
@@ -61,11 +61,8 @@
 4120	5738	8047462532209008	cmake/stm32cubemx/CMakeFiles/FreeRTOS.dir/__/__/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.c.obj	a86cadc0ebdca83f
 4314	5611	8047462534105168	cmake/stm32cubemx/CMakeFiles/FreeRTOS.dir/__/__/Middlewares/Third_Party/SEGGRE/RTT/SEGGER_RTT_printf.c.obj	c916c20c17859349
 4269	5748	8047462533637101	cmake/stm32cubemx/CMakeFiles/FreeRTOS.dir/__/__/Middlewares/Third_Party/SEGGRE/RTT/SEGGER_RTT.c.obj	25e4817e0bb8e11e
-897	5703	8048514474075875	CMakeFiles/SIZU_TASK.dir/TASK/PostureControl_task/PostureControl_task.c.obj	e4330804a412855b
-5704	9724	8048514522136102	SIZU_TASK.elf	32cc4771a9b69b05
-2	367	8048515854707266	build.ninja	7727378d23ddbeb5
+106	1085	8048516066490312	CMakeFiles/SIZU_TASK.dir/TASK/PostureControl_task/PostureControl_task.c.obj	e4330804a412855b
+946	3844	8048755679489990	SIZU_TASK.elf	32cc4771a9b69b05
+2	367	8048764294550384	build.ninja	7727378d23ddbeb5
 85	722	8047723502274185	CMakeFiles/SIZU_TASK.dir/Modules/unicomm/unicomm.c.obj	2e4f645a10a9e650
 432	3007	8047462495282791	CMakeFiles/SIZU_TASK.dir/BSP/bsp_init.c.obj	d716cc21ec2dd284
-106	1085	8048516066490312	CMakeFiles/SIZU_TASK.dir/TASK/PostureControl_task/PostureControl_task.c.obj	e4330804a412855b
-85	1104	8048516066270116	CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj	80d08752e9f68261
-1104	2241	8048516076472547	SIZU_TASK.elf	32cc4771a9b69b05

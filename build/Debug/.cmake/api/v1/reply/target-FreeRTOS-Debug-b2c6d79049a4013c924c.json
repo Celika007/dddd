@@ -79,18 +79,6 @@
 			}
 		]
 	},
-	"codemodelVersion" : 
-	{
-		"major" : 2,
-		"minor" : 10
-	},
-	"compileDependencies" : 
-	[
-		{
-			"backtrace" : 2,
-			"id" : "stm32cubemx::@768a070a0fe75716b479"
-		}
-	],
 	"compileGroups" : 
 	[
 		{
@@ -448,27 +436,6 @@
 		}
 	],
 	"id" : "FreeRTOS::@768a070a0fe75716b479",
-	"interfaceCompileDependencies" : 
-	[
-		{
-			"backtrace" : 2,
-			"id" : "stm32cubemx::@768a070a0fe75716b479"
-		}
-	],
-	"interfaceLinkLibraries" : 
-	[
-		{
-			"backtrace" : 2,
-			"id" : "stm32cubemx::@768a070a0fe75716b479"
-		}
-	],
-	"linkLibraries" : 
-	[
-		{
-			"backtrace" : 2,
-			"id" : "stm32cubemx::@768a070a0fe75716b479"
-		}
-	],
 	"name" : "FreeRTOS",
 	"paths" : 
 	{

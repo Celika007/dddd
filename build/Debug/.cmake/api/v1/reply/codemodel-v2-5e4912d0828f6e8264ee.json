@@ -2,16 +2,6 @@
 	"configurations" : 
 	[
 		{
-			"abstractTargets" : 
-			[
-				{
-					"directoryIndex" : 1,
-					"id" : "stm32cubemx::@768a070a0fe75716b479",
-					"jsonFile" : "target-stm32cubemx-Debug-9817635fad9d7f3bed7a.json",
-					"name" : "stm32cubemx",
-					"projectIndex" : 0
-				}
-			],
 			"directories" : 
 			[
 				{
@@ -20,7 +10,7 @@
 					[
 						1
 					],
-					"jsonFile" : "directory-.-Debug-f040eec181a89de70dbe.json",
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
 					"minimumCMakeVersion" : 
 					{
 						"string" : "3.22"
@@ -33,12 +23,8 @@
 					]
 				},
 				{
-					"abstractTargetIndexes" : 
-					[
-						0
-					],
 					"build" : "cmake/stm32cubemx",
-					"jsonFile" : "directory-cmake.stm32cubemx-Debug-720efe0a241989607e76.json",
+					"jsonFile" : "directory-cmake.stm32cubemx-Debug-a874d3cc84b5982fda2e.json",
 					"minimumCMakeVersion" : 
 					{
 						"string" : "3.22"
@@ -57,10 +43,6 @@
 			"projects" : 
 			[
 				{
-					"abstractTargetIndexes" : 
-					[
-						0
-					],
 					"directoryIndexes" : 
 					[
 						0,
@@ -80,21 +62,21 @@
 				{
 					"directoryIndex" : 1,
 					"id" : "FreeRTOS::@768a070a0fe75716b479",
-					"jsonFile" : "target-FreeRTOS-Debug-30c2d8e09653dcb32c53.json",
+					"jsonFile" : "target-FreeRTOS-Debug-b2c6d79049a4013c924c.json",
 					"name" : "FreeRTOS",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
 					"id" : "SIZU_TASK::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-SIZU_TASK-Debug-05b603286025b809de80.json",
+					"jsonFile" : "target-SIZU_TASK-Debug-b6d9bf2a926c9d0f075a.json",
 					"name" : "SIZU_TASK",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 1,
 					"id" : "STM32_Drivers::@768a070a0fe75716b479",
-					"jsonFile" : "target-STM32_Drivers-Debug-7915af9ea87d2ecbbd01.json",
+					"jsonFile" : "target-STM32_Drivers-Debug-e85d32a1cbd87fdb5193.json",
 					"name" : "STM32_Drivers",
 					"projectIndex" : 0
 				}
@@ -110,6 +92,6 @@
 	"version" : 
 	{
 		"major" : 2,
-		"minor" : 10
+		"minor" : 8
 	}
 }

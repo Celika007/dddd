@@ -24,6 +24,8 @@ D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../a
                               D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-w_pow.o) (finite)
 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-s_nan.o)
                               D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-w_acos.o) (nan)
+D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-sf_lround.o)
+                              CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj (lroundf)
 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-e_sqrt.o)
                               D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-w_sqrt.o) (__ieee754_sqrt)
 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-k_cos.o)
@@ -7756,6 +7758,9 @@ Discarded input sections
  .text          0x00000000        0x0 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-s_nan.o)
  .data          0x00000000        0x0 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-s_nan.o)
  .bss           0x00000000        0x0 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-s_nan.o)
+ .text          0x00000000        0x0 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-sf_lround.o)
+ .data          0x00000000        0x0 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-sf_lround.o)
+ .bss           0x00000000        0x0 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-sf_lround.o)
  .text          0x00000000        0x0 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-e_sqrt.o)
  .data          0x00000000        0x0 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-e_sqrt.o)
  .bss           0x00000000        0x0 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-e_sqrt.o)
@@ -8483,7 +8488,7 @@ LOAD D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7
                 0x08000000                g_pfnVectors
                 0x080001ac                        . = ALIGN (0x4)
 
-.text           0x080001b0    0x11260
+.text           0x080001b0    0x11458
                 0x080001b0                        . = ALIGN (0x4)
  *(.text)
  .text          0x080001b0      0x378 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_addsubdf3.o)
@@ -9176,547 +9181,553 @@ LOAD D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7
                 0x080081ec       0x38 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
  .text.Action_Uart8TxReady
                 0x08008224       0x24 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
+ .text.ActionDebug_FormatFloat
+                0x08008248       0xd8 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
  .text.ActionDebug_CaptureImuBase
-                0x08008248       0x34 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
+                0x08008320       0x34 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
  .text.ActionDebug_ClampFloat
-                0x0800827c       0x50 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
+                0x08008354       0x50 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
  .text.ActionDebug_AdjustOneParam
-                0x080082cc      0x168 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
+                0x080083a4      0x168 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
  .text.ActionDebug_AdjustCurrentStateParam
-                0x08008434       0x78 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
+                0x0800850c       0x78 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
  .text.ActionDebug_SetState
-                0x080084ac       0xa0 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
+                0x08008584       0xa0 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
  .text.ActionDebug_ProcessParamCommand
-                0x0800854c       0x78 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
+                0x08008624       0x78 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
  .text.ActionDebug_HandleCommand
-                0x080085c4      0x17c CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
+                0x0800869c      0x190 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
  .text.ActionDebug_FeedByte
-                0x08008740       0x68 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
+                0x0800882c       0x74 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
  .text.Action_UART8DebugCallback
-                0x080087a8       0x44 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
+                0x080088a0       0x44 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
  .text.Action_StringEquals
-                0x080087ec       0x26 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
- *fill*         0x08008812        0x2 
+                0x080088e4       0x26 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
+ *fill*         0x0800890a        0x2 
  .text.Action_UART8DebugInit
-                0x08008814       0x34 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
-                0x08008814                Action_UART8DebugInit
+                0x0800890c       0x34 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
+                0x0800890c                Action_UART8DebugInit
  .text.ActionDebug_ResetWalkRecord
-                0x08008848       0x38 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
-                0x08008848                ActionDebug_ResetWalkRecord
+                0x08008940       0x38 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
+                0x08008940                ActionDebug_ResetWalkRecord
  .text.ActionDebug_ShouldHoldRealse
-                0x08008880       0x14 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
-                0x08008880                ActionDebug_ShouldHoldRealse
+                0x08008978       0x14 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
+                0x08008978                ActionDebug_ShouldHoldRealse
  .text.ActionDebug_UpdateWalkPhase
-                0x08008894       0xac CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
-                0x08008894                ActionDebug_UpdateWalkPhase
+                0x0800898c       0xac CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
+                0x0800898c                ActionDebug_UpdateWalkPhase
  .text.ActionDebug_GetLogIntervalMs
-                0x08008940       0xa4 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
+                0x08008a38       0xa4 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
  .text.ActionDebug_TrySendRecord
-                0x080089e4      0x250 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
+                0x08008adc      0x2e8 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
  .text.ActionProcessDebugControl
-                0x08008c34       0x2c CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
-                0x08008c34                ActionProcessDebugControl
+                0x08008dc4       0x30 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
+                0x08008dc4                ActionProcessDebugControl
  .text.Action_NormalizeYaw180
-                0x08008c60       0x70 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
+                0x08008df4       0x70 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
  .text.Action_AngularErrorDeg
-                0x08008cd0       0x30 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
+                0x08008e64       0x30 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
  .text.Action_GetNavigationGoalYaw
-                0x08008d00       0x20 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
+                0x08008e94       0x20 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
  .text.Action_ApplyRunYawCorrection
-                0x08008d20       0xd4 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
-                0x08008d20                Action_ApplyRunYawCorrection
- .text.DOWN     0x08008df4       0xa8 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
-                0x08008df4                DOWN
- .text.BSPInit  0x08008e9c       0x12 CMakeFiles/SIZU_TASK.dir/BSP/bsp_init.c.obj
-                0x08008e9c                BSPInit
- *fill*         0x08008eae        0x2 
+                0x08008eb4       0xd4 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
+                0x08008eb4                Action_ApplyRunYawCorrection
+ .text.DOWN     0x08008f88       0xa8 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
+                0x08008f88                DOWN
+ .text.BSPInit  0x08009030       0x12 CMakeFiles/SIZU_TASK.dir/BSP/bsp_init.c.obj
+                0x08009030                BSPInit
+ *fill*         0x08009042        0x2 
  .text.CANAddFilter
-                0x08008eb0       0x78 CMakeFiles/SIZU_TASK.dir/BSP/can/bsp_can.c.obj
+                0x08009044       0x78 CMakeFiles/SIZU_TASK.dir/BSP/can/bsp_can.c.obj
  .text.CANServiceInit
-                0x08008f28       0x4c CMakeFiles/SIZU_TASK.dir/BSP/can/bsp_can.c.obj
-                0x08008f28                CANServiceInit
+                0x080090bc       0x4c CMakeFiles/SIZU_TASK.dir/BSP/can/bsp_can.c.obj
+                0x080090bc                CANServiceInit
  .text.CANRegister
-                0x08008f74      0x168 CMakeFiles/SIZU_TASK.dir/BSP/can/bsp_can.c.obj
-                0x08008f74                CANRegister
+                0x08009108      0x168 CMakeFiles/SIZU_TASK.dir/BSP/can/bsp_can.c.obj
+                0x08009108                CANRegister
  .text.CANFIFOxCallback
-                0x080090dc       0xcc CMakeFiles/SIZU_TASK.dir/BSP/can/bsp_can.c.obj
+                0x08009270       0xcc CMakeFiles/SIZU_TASK.dir/BSP/can/bsp_can.c.obj
  .text.HAL_CAN_RxFifo0MsgPendingCallback
-                0x080091a8       0x18 CMakeFiles/SIZU_TASK.dir/BSP/can/bsp_can.c.obj
-                0x080091a8                HAL_CAN_RxFifo0MsgPendingCallback
+                0x0800933c       0x18 CMakeFiles/SIZU_TASK.dir/BSP/can/bsp_can.c.obj
+                0x0800933c                HAL_CAN_RxFifo0MsgPendingCallback
  .text.HAL_CAN_RxFifo1MsgPendingCallback
-                0x080091c0       0x18 CMakeFiles/SIZU_TASK.dir/BSP/can/bsp_can.c.obj
-                0x080091c0                HAL_CAN_RxFifo1MsgPendingCallback
+                0x08009354       0x18 CMakeFiles/SIZU_TASK.dir/BSP/can/bsp_can.c.obj
+                0x08009354                HAL_CAN_RxFifo1MsgPendingCallback
  .text.CANTransmitTry
-                0x080091d8       0x46 CMakeFiles/SIZU_TASK.dir/BSP/can/bsp_can.c.obj
-                0x080091d8                CANTransmitTry
- *fill*         0x0800921e        0x2 
+                0x0800936c       0x46 CMakeFiles/SIZU_TASK.dir/BSP/can/bsp_can.c.obj
+                0x0800936c                CANTransmitTry
+ *fill*         0x080093b2        0x2 
  .text.DWT_CNT_Update
-                0x08009220       0x58 CMakeFiles/SIZU_TASK.dir/BSP/dwt/bsp_dwt.c.obj
+                0x080093b4       0x58 CMakeFiles/SIZU_TASK.dir/BSP/dwt/bsp_dwt.c.obj
  .text.DWT_Init
-                0x08009278       0x88 CMakeFiles/SIZU_TASK.dir/BSP/dwt/bsp_dwt.c.obj
-                0x08009278                DWT_Init
+                0x0800940c       0x88 CMakeFiles/SIZU_TASK.dir/BSP/dwt/bsp_dwt.c.obj
+                0x0800940c                DWT_Init
  .text.DWT_GetDeltaT
-                0x08009300       0x54 CMakeFiles/SIZU_TASK.dir/BSP/dwt/bsp_dwt.c.obj
-                0x08009300                DWT_GetDeltaT
+                0x08009494       0x54 CMakeFiles/SIZU_TASK.dir/BSP/dwt/bsp_dwt.c.obj
+                0x08009494                DWT_GetDeltaT
  .text.BSPLogInit
-                0x08009354       0x18 CMakeFiles/SIZU_TASK.dir/BSP/log/bsp_log.c.obj
-                0x08009354                BSPLogInit
+                0x080094e8       0x18 CMakeFiles/SIZU_TASK.dir/BSP/log/bsp_log.c.obj
+                0x080094e8                BSPLogInit
  .text.PrintLog
-                0x0800936c       0x2c CMakeFiles/SIZU_TASK.dir/BSP/log/bsp_log.c.obj
-                0x0800936c                PrintLog
+                0x08009500       0x2c CMakeFiles/SIZU_TASK.dir/BSP/log/bsp_log.c.obj
+                0x08009500                PrintLog
  .text.HAL_TIM_PWM_PulseFinishedCallback
-                0x08009398       0x84 CMakeFiles/SIZU_TASK.dir/BSP/pwm/bsp_pwm.c.obj
-                0x08009398                HAL_TIM_PWM_PulseFinishedCallback
+                0x0800952c       0x84 CMakeFiles/SIZU_TASK.dir/BSP/pwm/bsp_pwm.c.obj
+                0x0800952c                HAL_TIM_PWM_PulseFinishedCallback
  .text.HAL_TIM_IC_CaptureCallback
-                0x0800941c       0x68 CMakeFiles/SIZU_TASK.dir/BSP/tim/bsp_tim.c.obj
-                0x0800941c                HAL_TIM_IC_CaptureCallback
+                0x080095b0       0x68 CMakeFiles/SIZU_TASK.dir/BSP/tim/bsp_tim.c.obj
+                0x080095b0                HAL_TIM_IC_CaptureCallback
  .text.HAL_TIM_OC_DelayElapsedCallback
-                0x08009484       0x68 CMakeFiles/SIZU_TASK.dir/BSP/tim/bsp_tim.c.obj
-                0x08009484                HAL_TIM_OC_DelayElapsedCallback
+                0x08009618       0x68 CMakeFiles/SIZU_TASK.dir/BSP/tim/bsp_tim.c.obj
+                0x08009618                HAL_TIM_OC_DelayElapsedCallback
  .text.USARTServiceInit
-                0x080094ec       0x40 CMakeFiles/SIZU_TASK.dir/BSP/usart/bsp_usart.c.obj
-                0x080094ec                USARTServiceInit
+                0x08009680       0x40 CMakeFiles/SIZU_TASK.dir/BSP/usart/bsp_usart.c.obj
+                0x08009680                USARTServiceInit
  .text.USARTRegister
-                0x0800952c       0xd8 CMakeFiles/SIZU_TASK.dir/BSP/usart/bsp_usart.c.obj
-                0x0800952c                USARTRegister
+                0x080096c0       0xd8 CMakeFiles/SIZU_TASK.dir/BSP/usart/bsp_usart.c.obj
+                0x080096c0                USARTRegister
  .text.HAL_UARTEx_RxEventCallback
-                0x08009604       0xd4 CMakeFiles/SIZU_TASK.dir/BSP/usart/bsp_usart.c.obj
-                0x08009604                HAL_UARTEx_RxEventCallback
+                0x08009798       0xd4 CMakeFiles/SIZU_TASK.dir/BSP/usart/bsp_usart.c.obj
+                0x08009798                HAL_UARTEx_RxEventCallback
  .text.HAL_UART_ErrorCallback
-                0x080096d8       0xb4 CMakeFiles/SIZU_TASK.dir/BSP/usart/bsp_usart.c.obj
-                0x080096d8                HAL_UART_ErrorCallback
+                0x0800986c       0xb4 CMakeFiles/SIZU_TASK.dir/BSP/usart/bsp_usart.c.obj
+                0x0800986c                HAL_UART_ErrorCallback
  .text.MotorSenderGrouping
-                0x0800978c      0x224 CMakeFiles/SIZU_TASK.dir/Modules/motor/DJImotor/dji_motor.c.obj
+                0x08009920      0x224 CMakeFiles/SIZU_TASK.dir/Modules/motor/DJImotor/dji_motor.c.obj
  .text.DecodeDJIMotor
-                0x080099b0      0x1d8 CMakeFiles/SIZU_TASK.dir/Modules/motor/DJImotor/dji_motor.c.obj
+                0x08009b44      0x1d8 CMakeFiles/SIZU_TASK.dir/Modules/motor/DJImotor/dji_motor.c.obj
  .text.DJIMotorLostCallback
-                0x08009b88       0x60 CMakeFiles/SIZU_TASK.dir/Modules/motor/DJImotor/dji_motor.c.obj
+                0x08009d1c       0x60 CMakeFiles/SIZU_TASK.dir/Modules/motor/DJImotor/dji_motor.c.obj
  .text.DJIMotorInit
-                0x08009be8      0x15c CMakeFiles/SIZU_TASK.dir/Modules/motor/DJImotor/dji_motor.c.obj
-                0x08009be8                DJIMotorInit
+                0x08009d7c      0x15c CMakeFiles/SIZU_TASK.dir/Modules/motor/DJImotor/dji_motor.c.obj
+                0x08009d7c                DJIMotorInit
  .text.DJIMotorEnable
-                0x08009d44       0x1a CMakeFiles/SIZU_TASK.dir/Modules/motor/DJImotor/dji_motor.c.obj
-                0x08009d44                DJIMotorEnable
+                0x08009ed8       0x1a CMakeFiles/SIZU_TASK.dir/Modules/motor/DJImotor/dji_motor.c.obj
+                0x08009ed8                DJIMotorEnable
  .text.DJIMotorSetRef
-                0x08009d5e       0x1e CMakeFiles/SIZU_TASK.dir/Modules/motor/DJImotor/dji_motor.c.obj
-                0x08009d5e                DJIMotorSetRef
+                0x08009ef2       0x1e CMakeFiles/SIZU_TASK.dir/Modules/motor/DJImotor/dji_motor.c.obj
+                0x08009ef2                DJIMotorSetRef
  .text.DJIMotorControl
-                0x08009d7c      0x350 CMakeFiles/SIZU_TASK.dir/Modules/motor/DJImotor/dji_motor.c.obj
-                0x08009d7c                DJIMotorControl
+                0x08009f10      0x350 CMakeFiles/SIZU_TASK.dir/Modules/motor/DJImotor/dji_motor.c.obj
+                0x08009f10                DJIMotorControl
  .text.rotation_of_coordinate_system
-                0x0800a0cc      0x1f4 CMakeFiles/SIZU_TASK.dir/Modules/algorithm/coordinate_system/coordinate_system.c.obj
-                0x0800a0cc                rotation_of_coordinate_system
+                0x0800a260      0x1f4 CMakeFiles/SIZU_TASK.dir/Modules/algorithm/coordinate_system/coordinate_system.c.obj
+                0x0800a260                rotation_of_coordinate_system
  .text.f_Trapezoid_Intergral
-                0x0800a2c0       0x44 CMakeFiles/SIZU_TASK.dir/Modules/algorithm/pid/controller.c.obj
+                0x0800a454       0x44 CMakeFiles/SIZU_TASK.dir/Modules/algorithm/pid/controller.c.obj
  .text.f_Changing_Integration_Rate
-                0x0800a304       0xf6 CMakeFiles/SIZU_TASK.dir/Modules/algorithm/pid/controller.c.obj
- *fill*         0x0800a3fa        0x2 
+                0x0800a498       0xf6 CMakeFiles/SIZU_TASK.dir/Modules/algorithm/pid/controller.c.obj
+ *fill*         0x0800a58e        0x2 
  .text.f_Integral_Limit
-                0x0800a3fc      0x100 CMakeFiles/SIZU_TASK.dir/Modules/algorithm/pid/controller.c.obj
+                0x0800a590      0x100 CMakeFiles/SIZU_TASK.dir/Modules/algorithm/pid/controller.c.obj
  .text.f_Derivative_On_Measurement
-                0x0800a4fc       0x3c CMakeFiles/SIZU_TASK.dir/Modules/algorithm/pid/controller.c.obj
+                0x0800a690       0x3c CMakeFiles/SIZU_TASK.dir/Modules/algorithm/pid/controller.c.obj
  .text.f_Derivative_Filter
-                0x0800a538       0x64 CMakeFiles/SIZU_TASK.dir/Modules/algorithm/pid/controller.c.obj
+                0x0800a6cc       0x64 CMakeFiles/SIZU_TASK.dir/Modules/algorithm/pid/controller.c.obj
  .text.f_Output_Filter
-                0x0800a59c       0x64 CMakeFiles/SIZU_TASK.dir/Modules/algorithm/pid/controller.c.obj
+                0x0800a730       0x64 CMakeFiles/SIZU_TASK.dir/Modules/algorithm/pid/controller.c.obj
  .text.f_Output_Limit
-                0x0800a600       0x5c CMakeFiles/SIZU_TASK.dir/Modules/algorithm/pid/controller.c.obj
+                0x0800a794       0x5c CMakeFiles/SIZU_TASK.dir/Modules/algorithm/pid/controller.c.obj
  .text.f_PID_ErrorHandle
-                0x0800a65c       0xc8 CMakeFiles/SIZU_TASK.dir/Modules/algorithm/pid/controller.c.obj
- .text.PIDInit  0x0800a724       0x7e CMakeFiles/SIZU_TASK.dir/Modules/algorithm/pid/controller.c.obj
-                0x0800a724                PIDInit
+                0x0800a7f0       0xc8 CMakeFiles/SIZU_TASK.dir/Modules/algorithm/pid/controller.c.obj
+ .text.PIDInit  0x0800a8b8       0x7e CMakeFiles/SIZU_TASK.dir/Modules/algorithm/pid/controller.c.obj
+                0x0800a8b8                PIDInit
  .text.PIDCalculate
-                0x0800a7a2      0x1de CMakeFiles/SIZU_TASK.dir/Modules/algorithm/pid/controller.c.obj
-                0x0800a7a2                PIDCalculate
+                0x0800a936      0x1de CMakeFiles/SIZU_TASK.dir/Modules/algorithm/pid/controller.c.obj
+                0x0800a936                PIDCalculate
  .text.IMU_USART_Callback
-                0x0800a980       0x74 CMakeFiles/SIZU_TASK.dir/Modules/imu/IMU.c.obj
+                0x0800ab14       0x74 CMakeFiles/SIZU_TASK.dir/Modules/imu/IMU.c.obj
  .text.Eliminating_the_influence_of_gravity
-                0x0800a9f4       0x94 CMakeFiles/SIZU_TASK.dir/Modules/imu/IMU.c.obj
-                0x0800a9f4                Eliminating_the_influence_of_gravity
+                0x0800ab88       0x94 CMakeFiles/SIZU_TASK.dir/Modules/imu/IMU.c.obj
+                0x0800ab88                Eliminating_the_influence_of_gravity
  .text.Rotation_processing
-                0x0800aa88       0x44 CMakeFiles/SIZU_TASK.dir/Modules/imu/IMU.c.obj
-                0x0800aa88                Rotation_processing
+                0x0800ac1c       0x44 CMakeFiles/SIZU_TASK.dir/Modules/imu/IMU.c.obj
+                0x0800ac1c                Rotation_processing
  .text.Saber_imu_data_analysis
-                0x0800aacc      0x170 CMakeFiles/SIZU_TASK.dir/Modules/imu/IMU.c.obj
-                0x0800aacc                Saber_imu_data_analysis
+                0x0800ac60      0x170 CMakeFiles/SIZU_TASK.dir/Modules/imu/IMU.c.obj
+                0x0800ac60                Saber_imu_data_analysis
  .text.IMU_ParseLatestFrame
-                0x0800ac3c       0x60 CMakeFiles/SIZU_TASK.dir/Modules/imu/IMU.c.obj
-                0x0800ac3c                IMU_ParseLatestFrame
+                0x0800add0       0x60 CMakeFiles/SIZU_TASK.dir/Modules/imu/IMU.c.obj
+                0x0800add0                IMU_ParseLatestFrame
  .text.IMU_USART6_Init
-                0x0800ac9c       0x38 CMakeFiles/SIZU_TASK.dir/Modules/imu/IMU.c.obj
-                0x0800ac9c                IMU_USART6_Init
+                0x0800ae30       0x38 CMakeFiles/SIZU_TASK.dir/Modules/imu/IMU.c.obj
+                0x0800ae30                IMU_USART6_Init
  .text.UniComm_SetAllStagePins
-                0x0800acd4       0x24 CMakeFiles/SIZU_TASK.dir/Modules/unicomm/unicomm.c.obj
+                0x0800ae68       0x24 CMakeFiles/SIZU_TASK.dir/Modules/unicomm/unicomm.c.obj
  .text.UniComm_SetActionPin
-                0x0800acf8       0x38 CMakeFiles/SIZU_TASK.dir/Modules/unicomm/unicomm.c.obj
+                0x0800ae8c       0x38 CMakeFiles/SIZU_TASK.dir/Modules/unicomm/unicomm.c.obj
  .text.UniComm_SetMeasuringPin
-                0x0800ad30       0x38 CMakeFiles/SIZU_TASK.dir/Modules/unicomm/unicomm.c.obj
+                0x0800aec4       0x38 CMakeFiles/SIZU_TASK.dir/Modules/unicomm/unicomm.c.obj
  .text.UniComm_IsKnownState
-                0x0800ad68       0x40 CMakeFiles/SIZU_TASK.dir/Modules/unicomm/unicomm.c.obj
+                0x0800aefc       0x40 CMakeFiles/SIZU_TASK.dir/Modules/unicomm/unicomm.c.obj
  .text.UniComm_IsValidFrame
-                0x0800ada8       0x26 CMakeFiles/SIZU_TASK.dir/Modules/unicomm/unicomm.c.obj
+                0x0800af3c       0x26 CMakeFiles/SIZU_TASK.dir/Modules/unicomm/unicomm.c.obj
  .text.UniComm_ReadFloatLE
-                0x0800adce       0x3c CMakeFiles/SIZU_TASK.dir/Modules/unicomm/unicomm.c.obj
- *fill*         0x0800ae0a        0x2 
+                0x0800af62       0x3c CMakeFiles/SIZU_TASK.dir/Modules/unicomm/unicomm.c.obj
+ *fill*         0x0800af9e        0x2 
  .text.UniComm_HandleMeasuringFrame
-                0x0800ae0c      0x144 CMakeFiles/SIZU_TASK.dir/Modules/unicomm/unicomm.c.obj
+                0x0800afa0      0x144 CMakeFiles/SIZU_TASK.dir/Modules/unicomm/unicomm.c.obj
  .text.UniComm_HandleActioningFrame
-                0x0800af50       0x90 CMakeFiles/SIZU_TASK.dir/Modules/unicomm/unicomm.c.obj
+                0x0800b0e4       0x90 CMakeFiles/SIZU_TASK.dir/Modules/unicomm/unicomm.c.obj
  .text.UniComm_ProcessFrame
-                0x0800afe0       0x44 CMakeFiles/SIZU_TASK.dir/Modules/unicomm/unicomm.c.obj
+                0x0800b174       0x44 CMakeFiles/SIZU_TASK.dir/Modules/unicomm/unicomm.c.obj
  .text.UniComm_ProcessIncomingBytes
-                0x0800b024       0x90 CMakeFiles/SIZU_TASK.dir/Modules/unicomm/unicomm.c.obj
+                0x0800b1b8       0x90 CMakeFiles/SIZU_TASK.dir/Modules/unicomm/unicomm.c.obj
  .text.UniComm_UART7_Callback
-                0x0800b0b4       0x2c CMakeFiles/SIZU_TASK.dir/Modules/unicomm/unicomm.c.obj
+                0x0800b248       0x2c CMakeFiles/SIZU_TASK.dir/Modules/unicomm/unicomm.c.obj
  .text.UniComm_UART7_Init
-                0x0800b0e0       0x30 CMakeFiles/SIZU_TASK.dir/Modules/unicomm/unicomm.c.obj
-                0x0800b0e0                UniComm_UART7_Init
+                0x0800b274       0x30 CMakeFiles/SIZU_TASK.dir/Modules/unicomm/unicomm.c.obj
+                0x0800b274                UniComm_UART7_Init
  .text.DaemonRegister
-                0x0800b110       0x84 CMakeFiles/SIZU_TASK.dir/Modules/daemon/daemon.c.obj
-                0x0800b110                DaemonRegister
+                0x0800b2a4       0x84 CMakeFiles/SIZU_TASK.dir/Modules/daemon/daemon.c.obj
+                0x0800b2a4                DaemonRegister
  .text.DaemonReload
-                0x0800b194       0x1a CMakeFiles/SIZU_TASK.dir/Modules/daemon/daemon.c.obj
-                0x0800b194                DaemonReload
- *fill*         0x0800b1ae        0x2 
+                0x0800b328       0x1a CMakeFiles/SIZU_TASK.dir/Modules/daemon/daemon.c.obj
+                0x0800b328                DaemonReload
+ *fill*         0x0800b342        0x2 
  .text.MotorControl_task
-                0x0800b1b0      0x274 CMakeFiles/SIZU_TASK.dir/TASK/MotorControl_task/MotorControl_task.c.obj
-                0x0800b1b0                MotorControl_task
+                0x0800b344      0x274 CMakeFiles/SIZU_TASK.dir/TASK/MotorControl_task/MotorControl_task.c.obj
+                0x0800b344                MotorControl_task
  .text.LeftBuildDefaultMotorConfig
-                0x0800b424      0x238 CMakeFiles/SIZU_TASK.dir/TASK/MotorControl_task/MotorControl_task.c.obj
-                0x0800b424                LeftBuildDefaultMotorConfig
+                0x0800b5b8      0x238 CMakeFiles/SIZU_TASK.dir/TASK/MotorControl_task/MotorControl_task.c.obj
+                0x0800b5b8                LeftBuildDefaultMotorConfig
  .text.LeftMotorInit
-                0x0800b65c       0x8c CMakeFiles/SIZU_TASK.dir/TASK/MotorControl_task/MotorControl_task.c.obj
-                0x0800b65c                LeftMotorInit
+                0x0800b7f0       0x8c CMakeFiles/SIZU_TASK.dir/TASK/MotorControl_task/MotorControl_task.c.obj
+                0x0800b7f0                LeftMotorInit
  .text.RightBuildDefaultMotorConfig
-                0x0800b6e8      0x258 CMakeFiles/SIZU_TASK.dir/TASK/MotorControl_task/MotorControl_task.c.obj
-                0x0800b6e8                RightBuildDefaultMotorConfig
+                0x0800b87c      0x258 CMakeFiles/SIZU_TASK.dir/TASK/MotorControl_task/MotorControl_task.c.obj
+                0x0800b87c                RightBuildDefaultMotorConfig
  .text.RightMotorInit
-                0x0800b940       0x8c CMakeFiles/SIZU_TASK.dir/TASK/MotorControl_task/MotorControl_task.c.obj
-                0x0800b940                RightMotorInit
+                0x0800bad4       0x8c CMakeFiles/SIZU_TASK.dir/TASK/MotorControl_task/MotorControl_task.c.obj
+                0x0800bad4                RightMotorInit
  .text.LeftGetMotor
-                0x0800b9cc       0x2c CMakeFiles/SIZU_TASK.dir/TASK/MotorControl_task/MotorControl_task.c.obj
-                0x0800b9cc                LeftGetMotor
+                0x0800bb60       0x2c CMakeFiles/SIZU_TASK.dir/TASK/MotorControl_task/MotorControl_task.c.obj
+                0x0800bb60                LeftGetMotor
  .text.RightGetMotor
-                0x0800b9f8       0x2c CMakeFiles/SIZU_TASK.dir/TASK/MotorControl_task/MotorControl_task.c.obj
-                0x0800b9f8                RightGetMotor
+                0x0800bb8c       0x2c CMakeFiles/SIZU_TASK.dir/TASK/MotorControl_task/MotorControl_task.c.obj
+                0x0800bb8c                RightGetMotor
  .text.IsMotionState
-                0x0800ba24       0x38 CMakeFiles/SIZU_TASK.dir/TASK/PostureControl_task/PostureControl_task.c.obj
+                0x0800bbb8       0x38 CMakeFiles/SIZU_TASK.dir/TASK/PostureControl_task/PostureControl_task.c.obj
  .text.UpdateStartupState
-                0x0800ba5c       0x60 CMakeFiles/SIZU_TASK.dir/TASK/PostureControl_task/PostureControl_task.c.obj
+                0x0800bbf0       0x60 CMakeFiles/SIZU_TASK.dir/TASK/PostureControl_task/PostureControl_task.c.obj
  .text.UpdateStartFlag
-                0x0800babc       0x3c CMakeFiles/SIZU_TASK.dir/TASK/PostureControl_task/PostureControl_task.c.obj
+                0x0800bc50       0x3c CMakeFiles/SIZU_TASK.dir/TASK/PostureControl_task/PostureControl_task.c.obj
  .text.ApplyTurnStepLength
-                0x0800baf8       0xe8 CMakeFiles/SIZU_TASK.dir/TASK/PostureControl_task/PostureControl_task.c.obj
+                0x0800bc8c       0xe8 CMakeFiles/SIZU_TASK.dir/TASK/PostureControl_task/PostureControl_task.c.obj
  .text.PostureControl_task
-                0x0800bbe0       0x24 CMakeFiles/SIZU_TASK.dir/TASK/PostureControl_task/PostureControl_task.c.obj
-                0x0800bbe0                PostureControl_task
+                0x0800bd74       0x24 CMakeFiles/SIZU_TASK.dir/TASK/PostureControl_task/PostureControl_task.c.obj
+                0x0800bd74                PostureControl_task
  .text.PostureControl
-                0x0800bc04      0x284 CMakeFiles/SIZU_TASK.dir/TASK/PostureControl_task/PostureControl_task.c.obj
-                0x0800bc04                PostureControl
+                0x0800bd98      0x284 CMakeFiles/SIZU_TASK.dir/TASK/PostureControl_task/PostureControl_task.c.obj
+                0x0800bd98                PostureControl
  .text.StandByStartPosition
-                0x0800be88       0xb4 CMakeFiles/SIZU_TASK.dir/TASK/PostureControl_task/PostureControl_task.c.obj
+                0x0800c01c       0xb4 CMakeFiles/SIZU_TASK.dir/TASK/PostureControl_task/PostureControl_task.c.obj
  .text.gait_detached
-                0x0800bf3c      0x128 CMakeFiles/SIZU_TASK.dir/TASK/PostureControl_task/PostureControl_task.c.obj
-                0x0800bf3c                gait_detached
+                0x0800c0d0      0x128 CMakeFiles/SIZU_TASK.dir/TASK/PostureControl_task/PostureControl_task.c.obj
+                0x0800c0d0                gait_detached
  .text.CoupledMoveLeg
-                0x0800c064       0xdc CMakeFiles/SIZU_TASK.dir/TASK/PostureControl_task/PostureControl_task.c.obj
-                0x0800c064                CoupledMoveLeg
+                0x0800c1f8       0xdc CMakeFiles/SIZU_TASK.dir/TASK/PostureControl_task/PostureControl_task.c.obj
+                0x0800c1f8                CoupledMoveLeg
+ *fill*         0x0800c2d4        0x4 
  .text.CycloidTrajectory
-                0x0800c140      0xbf0 CMakeFiles/SIZU_TASK.dir/TASK/PostureControl_task/PostureControl_task.c.obj
-                0x0800c140                CycloidTrajectory
+                0x0800c2d8      0xbf0 CMakeFiles/SIZU_TASK.dir/TASK/PostureControl_task/PostureControl_task.c.obj
+                0x0800c2d8                CycloidTrajectory
  .text.CartesianToTheta
-                0x0800cd30      0x38c CMakeFiles/SIZU_TASK.dir/TASK/PostureControl_task/PostureControl_task.c.obj
-                0x0800cd30                CartesianToTheta
- *fill*         0x0800d0bc        0x4 
+                0x0800cec8      0x38c CMakeFiles/SIZU_TASK.dir/TASK/PostureControl_task/PostureControl_task.c.obj
+                0x0800cec8                CartesianToTheta
+ *fill*         0x0800d254        0x4 
  .text.SetCoupledPosition
-                0x0800d0c0      0x268 CMakeFiles/SIZU_TASK.dir/TASK/PostureControl_task/PostureControl_task.c.obj
-                0x0800d0c0                SetCoupledPosition
- .text.acos     0x0800d328       0x68 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-w_acos.o)
-                0x0800d328                acos
- .text.asin     0x0800d390       0x68 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-w_asin.o)
-                0x0800d390                asin
- .text.fmod     0x0800d3f8       0x64 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-w_fmod.o)
-                0x0800d3f8                fmod
- *fill*         0x0800d45c        0x4 
- .text.pow      0x0800d460      0x100 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-w_pow.o)
-                0x0800d460                pow
- .text.sqrt     0x0800d560       0x68 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-w_sqrt.o)
-                0x0800d560                sqrt
- .text.fabs     0x0800d5c8       0x14 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-s_fabs.o)
-                0x0800d5c8                fabs
- *fill*         0x0800d5dc        0x4 
- .text.sin      0x0800d5e0       0x98 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-s_sin.o)
-                0x0800d5e0                sin
- .text.finite   0x0800d678       0x18 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-s_finite.o)
-                0x0800d678                finite
- .text.nan      0x0800d690       0x10 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-s_nan.o)
-                0x0800d690                nan
+                0x0800d258      0x268 CMakeFiles/SIZU_TASK.dir/TASK/PostureControl_task/PostureControl_task.c.obj
+                0x0800d258                SetCoupledPosition
+ .text.acos     0x0800d4c0       0x68 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-w_acos.o)
+                0x0800d4c0                acos
+ .text.asin     0x0800d528       0x68 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-w_asin.o)
+                0x0800d528                asin
+ .text.fmod     0x0800d590       0x64 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-w_fmod.o)
+                0x0800d590                fmod
+ *fill*         0x0800d5f4        0x4 
+ .text.pow      0x0800d5f8      0x100 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-w_pow.o)
+                0x0800d5f8                pow
+ .text.sqrt     0x0800d6f8       0x68 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-w_sqrt.o)
+                0x0800d6f8                sqrt
+ .text.fabs     0x0800d760       0x14 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-s_fabs.o)
+                0x0800d760                fabs
+ *fill*         0x0800d774        0x4 
+ .text.sin      0x0800d778       0x98 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-s_sin.o)
+                0x0800d778                sin
+ .text.finite   0x0800d810       0x18 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-s_finite.o)
+                0x0800d810                finite
+ .text.nan      0x0800d828       0x10 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-s_nan.o)
+                0x0800d828                nan
+ .text.lroundf  0x0800d838       0x5c D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-sf_lround.o)
+                0x0800d838                lroundf
  .text.__ieee754_sqrt
-                0x0800d6a0      0x1f0 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-e_sqrt.o)
-                0x0800d6a0                __ieee754_sqrt
+                0x0800d894      0x1f0 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-e_sqrt.o)
+                0x0800d894                __ieee754_sqrt
+ *fill*         0x0800da84        0x4 
  .text.__kernel_cos
-                0x0800d890      0x27c D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-k_cos.o)
-                0x0800d890                __kernel_cos
- *fill*         0x0800db0c        0x4 
+                0x0800da88      0x27c D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-k_cos.o)
+                0x0800da88                __kernel_cos
+ *fill*         0x0800dd04        0x4 
  .text.__kernel_sin
-                0x0800db10      0x194 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-k_sin.o)
-                0x0800db10                __kernel_sin
- *fill*         0x0800dca4        0x4 
+                0x0800dd08      0x194 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-k_sin.o)
+                0x0800dd08                __kernel_sin
+ *fill*         0x0800de9c        0x4 
  .text.__ieee754_acos
-                0x0800dca8      0x4f8 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-e_acos.o)
-                0x0800dca8                __ieee754_acos
+                0x0800dea0      0x4f8 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-e_acos.o)
+                0x0800dea0                __ieee754_acos
  .text.__ieee754_asin
-                0x0800e1a0      0x474 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-e_asin.o)
-                0x0800e1a0                __ieee754_asin
+                0x0800e398      0x474 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-e_asin.o)
+                0x0800e398                __ieee754_asin
  .text.__ieee754_fmod
-                0x0800e614      0x3b8 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-e_fmod.o)
-                0x0800e614                __ieee754_fmod
- *fill*         0x0800e9cc        0x4 
+                0x0800e80c      0x3b8 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-e_fmod.o)
+                0x0800e80c                __ieee754_fmod
+ *fill*         0x0800ebc4        0x4 
  .text.__ieee754_pow
-                0x0800e9d0      0xc9c D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-e_pow.o)
-                0x0800e9d0                __ieee754_pow
- *fill*         0x0800f66c        0x4 
+                0x0800ebc8      0xc9c D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-e_pow.o)
+                0x0800ebc8                __ieee754_pow
+ *fill*         0x0800f864        0x4 
  .text.__ieee754_rem_pio2
-                0x0800f670      0x43c D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-e_rem_pio2.o)
-                0x0800f670                __ieee754_rem_pio2
- *fill*         0x0800faac        0x4 
- .text.scalbn   0x0800fab0      0x12c D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-s_scalbn.o)
-                0x0800fab0                scalbn
+                0x0800f868      0x43c D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-e_rem_pio2.o)
+                0x0800f868                __ieee754_rem_pio2
+ *fill*         0x0800fca4        0x4 
+ .text.scalbn   0x0800fca8      0x12c D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-s_scalbn.o)
+                0x0800fca8                scalbn
  .text.with_errno
-                0x0800fbdc       0x18 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-math_err.o)
- .text.xflow    0x0800fbf4       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-math_err.o)
+                0x0800fdd4       0x18 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-math_err.o)
+ .text.xflow    0x0800fdec       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-math_err.o)
  .text.__math_uflow
-                0x0800fc28       0x10 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-math_err.o)
-                0x0800fc28                __math_uflow
+                0x0800fe20       0x10 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-math_err.o)
+                0x0800fe20                __math_uflow
  .text.__math_oflow
-                0x0800fc38       0x10 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-math_err.o)
-                0x0800fc38                __math_oflow
+                0x0800fe30       0x10 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-math_err.o)
+                0x0800fe30                __math_oflow
  .text.__kernel_rem_pio2
-                0x0800fc48      0x890 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-k_rem_pio2.o)
-                0x0800fc48                __kernel_rem_pio2
- .text.floor    0x080104d8      0x108 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-s_floor.o)
-                0x080104d8                floor
+                0x0800fe40      0x890 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-k_rem_pio2.o)
+                0x0800fe40                __kernel_rem_pio2
+ .text.floor    0x080106d0      0x108 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-s_floor.o)
+                0x080106d0                floor
  .text.arm_sin_f32
-                0x080105e0       0x8c C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/Middlewares/ST/ARM/DSP/Lib/libarm_cortexM4lf_math.a(arm_sin_f32.o)
-                0x080105e0                arm_sin_f32
+                0x080107d8       0x8c C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/Middlewares/ST/ARM/DSP/Lib/libarm_cortexM4lf_math.a(arm_sin_f32.o)
+                0x080107d8                arm_sin_f32
  .text.arm_cos_f32
-                0x0801066c       0x94 C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/Middlewares/ST/ARM/DSP/Lib/libarm_cortexM4lf_math.a(arm_cos_f32.o)
-                0x0801066c                arm_cos_f32
+                0x08010864       0x94 C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/Middlewares/ST/ARM/DSP/Lib/libarm_cortexM4lf_math.a(arm_cos_f32.o)
+                0x08010864                arm_cos_f32
  .text.__udivmoddi4
-                0x08010700      0x320 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard\libgcc.a(_udivmoddi4.o)
-                0x08010700                __udivmoddi4
- .text.malloc   0x08010a20       0x10 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-malloc.o)
-                0x08010a20                malloc
+                0x080108f8      0x320 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard\libgcc.a(_udivmoddi4.o)
+                0x080108f8                __udivmoddi4
+ .text.malloc   0x08010c18       0x10 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-malloc.o)
+                0x08010c18                malloc
  .text.sbrk_aligned
-                0x08010a30       0x44 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-mallocr.o)
+                0x08010c28       0x44 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-mallocr.o)
  .text._malloc_r
-                0x08010a74       0xf8 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-mallocr.o)
-                0x08010a74                _malloc_r
+                0x08010c6c       0xf8 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-mallocr.o)
+                0x08010c6c                _malloc_r
  .text.__malloc_lock
-                0x08010b6c        0xc D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-mlock.o)
-                0x08010b6c                __malloc_lock
+                0x08010d64        0xc D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-mlock.o)
+                0x08010d64                __malloc_lock
  .text.__malloc_unlock
-                0x08010b78        0xc D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-mlock.o)
-                0x08010b78                __malloc_unlock
+                0x08010d70        0xc D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-mlock.o)
+                0x08010d70                __malloc_unlock
  .text.snprintf
-                0x08010b84       0x64 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-snprintf.o)
-                0x08010b84                sniprintf
-                0x08010b84                snprintf
- .text.memcmp   0x08010be8       0x20 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-memcmp.o)
-                0x08010be8                memcmp
- .text.memmove  0x08010c08       0x32 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-memmove.o)
-                0x08010c08                memmove
- .text.memset   0x08010c3a       0x10 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-memset.o)
-                0x08010c3a                memset
- .text.strncmp  0x08010c4a       0x24 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-strncmp.o)
-                0x08010c4a                strncmp
- *fill*         0x08010c6e        0x2 
- .text._sbrk_r  0x08010c70       0x20 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-sbrkr.o)
-                0x08010c70                _sbrk_r
- .text.__errno  0x08010c90        0xc D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-errno.o)
-                0x08010c90                __errno
+                0x08010d7c       0x64 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-snprintf.o)
+                0x08010d7c                sniprintf
+                0x08010d7c                snprintf
+ .text.memcmp   0x08010de0       0x20 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-memcmp.o)
+                0x08010de0                memcmp
+ .text.memmove  0x08010e00       0x32 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-memmove.o)
+                0x08010e00                memmove
+ .text.memset   0x08010e32       0x10 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-memset.o)
+                0x08010e32                memset
+ .text.strncmp  0x08010e42       0x24 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-strncmp.o)
+                0x08010e42                strncmp
+ *fill*         0x08010e66        0x2 
+ .text._sbrk_r  0x08010e68       0x20 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-sbrkr.o)
+                0x08010e68                _sbrk_r
+ .text.__errno  0x08010e88        0xc D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-errno.o)
+                0x08010e88                __errno
  .text.__libc_init_array
-                0x08010c9c       0x48 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-init.o)
-                0x08010c9c                __libc_init_array
+                0x08010e94       0x48 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-init.o)
+                0x08010e94                __libc_init_array
  .text.__retarget_lock_acquire_recursive
-                0x08010ce4        0x2 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-lock.o)
-                0x08010ce4                __retarget_lock_acquire_recursive
+                0x08010edc        0x2 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-lock.o)
+                0x08010edc                __retarget_lock_acquire_recursive
  .text.__retarget_lock_release_recursive
-                0x08010ce6        0x2 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-lock.o)
-                0x08010ce6                __retarget_lock_release_recursive
- .text.memcpy   0x08010ce8       0x1c D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-memcpy-stub.o)
-                0x08010ce8                memcpy
- .text._free_r  0x08010d04       0x98 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-freer.o)
-                0x08010d04                _free_r
+                0x08010ede        0x2 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-lock.o)
+                0x08010ede                __retarget_lock_release_recursive
+ .text.memcpy   0x08010ee0       0x1c D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-memcpy-stub.o)
+                0x08010ee0                memcpy
+ .text._free_r  0x08010efc       0x98 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-freer.o)
+                0x08010efc                _free_r
  .text.__ssputs_r
-                0x08010d9c       0xc0 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-nano-svfprintf.o)
-                0x08010d9c                __ssputs_r
+                0x08010f94       0xc0 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-nano-svfprintf.o)
+                0x08010f94                __ssputs_r
  .text._svfprintf_r
-                0x08010e5c      0x1f0 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-nano-svfprintf.o)
-                0x08010e5c                _svfiprintf_r
-                0x08010e5c                _svfprintf_r
+                0x08011054      0x1f0 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-nano-svfprintf.o)
+                0x08011054                _svfiprintf_r
+                0x08011054                _svfprintf_r
  .text._printf_common
-                0x0801104c       0xea D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-nano-vfprintf_i.o)
-                0x0801104c                _printf_common
- *fill*         0x08011136        0x2 
+                0x08011244       0xea D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-nano-vfprintf_i.o)
+                0x08011244                _printf_common
+ *fill*         0x0801132e        0x2 
  .text._printf_i
-                0x08011138      0x254 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-nano-vfprintf_i.o)
-                0x08011138                _printf_i
+                0x08011330      0x254 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-nano-vfprintf_i.o)
+                0x08011330                _printf_i
  .text._realloc_r
-                0x0801138c       0x5c D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-reallocr.o)
-                0x0801138c                _realloc_r
+                0x08011584       0x5c D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-reallocr.o)
+                0x08011584                _realloc_r
  .text._malloc_usable_size_r
-                0x080113e8       0x10 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-msizer.o)
-                0x080113e8                _malloc_usable_size_r
+                0x080115e0       0x10 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-msizer.o)
+                0x080115e0                _malloc_usable_size_r
  *(.glue_7)
- .glue_7        0x080113f8        0x0 linker stubs
+ .glue_7        0x080115f0        0x0 linker stubs
  *(.glue_7t)
- .glue_7t       0x080113f8        0x0 linker stubs
+ .glue_7t       0x080115f0        0x0 linker stubs
  *(.eh_frame)
- .eh_frame      0x080113f8        0x0 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard/crtbegin.o
+ .eh_frame      0x080115f0        0x0 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard/crtbegin.o
  *(.init)
- .init          0x080113f8        0x4 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard/crti.o
-                0x080113f8                _init
- .init          0x080113fc        0x8 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard/crtn.o
+ .init          0x080115f0        0x4 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard/crti.o
+                0x080115f0                _init
+ .init          0x080115f4        0x8 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard/crtn.o
  *(.fini)
- .fini          0x08011404        0x4 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard/crti.o
-                0x08011404                _fini
- .fini          0x08011408        0x8 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard/crtn.o
-                0x08011410                        . = ALIGN (0x4)
-                0x08011410                        _etext = .
+ .fini          0x080115fc        0x4 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard/crti.o
+                0x080115fc                _fini
+ .fini          0x08011600        0x8 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard/crtn.o
+                0x08011608                        . = ALIGN (0x4)
+                0x08011608                        _etext = .
 
-.vfp11_veneer   0x08011410        0x0
- .vfp11_veneer  0x08011410        0x0 linker stubs
+.vfp11_veneer   0x08011608        0x0
+ .vfp11_veneer  0x08011608        0x0 linker stubs
 
-.v4_bx          0x08011410        0x0
- .v4_bx         0x08011410        0x0 linker stubs
+.v4_bx          0x08011608        0x0
+ .v4_bx         0x08011608        0x0 linker stubs
 
-.iplt           0x08011410        0x0
- .iplt          0x08011410        0x0 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard/crtbegin.o
+.iplt           0x08011608        0x0
+ .iplt          0x08011608        0x0 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard/crtbegin.o
 
-.rodata         0x08011410     0x1180
-                0x08011410                        . = ALIGN (0x4)
+.rodata         0x08011608     0x1180
+                0x08011608                        . = ALIGN (0x4)
  *(.rodata)
- .rodata        0x08011410        0x5 cmake/stm32cubemx/CMakeFiles/FreeRTOS.dir/__/__/Middlewares/Third_Party/FreeRTOS/Source/tasks.c.obj
- *fill*         0x08011415        0x3 
- .rodata        0x08011418        0x9 cmake/stm32cubemx/CMakeFiles/FreeRTOS.dir/__/__/Middlewares/Third_Party/SEGGRE/RTT/SEGGER_RTT.c.obj
- *fill*         0x08011421        0x3 
- .rodata        0x08011424        0x7 cmake/stm32cubemx/CMakeFiles/FreeRTOS.dir/__/__/Middlewares/Third_Party/SEGGRE/RTT/SEGGER_RTT_printf.c.obj
- *fill*         0x0801142b        0x1 
- .rodata        0x0801142c       0x7c CMakeFiles/SIZU_TASK.dir/Core/Src/freertos.c.obj
- .rodata        0x080114a8      0x1c3 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
- *fill*         0x0801166b        0x1 
- .rodata        0x0801166c      0x1b7 CMakeFiles/SIZU_TASK.dir/BSP/can/bsp_can.c.obj
- *fill*         0x08011823        0x1 
- .rodata        0x08011824       0x1a CMakeFiles/SIZU_TASK.dir/BSP/log/bsp_log.c.obj
- *fill*         0x0801183e        0x2 
- .rodata        0x08011840       0xdc CMakeFiles/SIZU_TASK.dir/BSP/usart/bsp_usart.c.obj
- .rodata        0x0801191c      0x1b8 CMakeFiles/SIZU_TASK.dir/Modules/motor/DJImotor/dji_motor.c.obj
- .rodata        0x08011ad4        0xc CMakeFiles/SIZU_TASK.dir/Modules/imu/IMU.c.obj
- .rodata        0x08011ae0       0x24 CMakeFiles/SIZU_TASK.dir/Modules/unicomm/unicomm.c.obj
+ .rodata        0x08011608        0x5 cmake/stm32cubemx/CMakeFiles/FreeRTOS.dir/__/__/Middlewares/Third_Party/FreeRTOS/Source/tasks.c.obj
+ *fill*         0x0801160d        0x3 
+ .rodata        0x08011610        0x9 cmake/stm32cubemx/CMakeFiles/FreeRTOS.dir/__/__/Middlewares/Third_Party/SEGGRE/RTT/SEGGER_RTT.c.obj
+ *fill*         0x08011619        0x3 
+ .rodata        0x0801161c        0x7 cmake/stm32cubemx/CMakeFiles/FreeRTOS.dir/__/__/Middlewares/Third_Party/SEGGRE/RTT/SEGGER_RTT_printf.c.obj
+ *fill*         0x08011623        0x1 
+ .rodata        0x08011624       0x7c CMakeFiles/SIZU_TASK.dir/Core/Src/freertos.c.obj
+ .rodata        0x080116a0      0x1c5 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
+ *fill*         0x08011865        0x3 
+ .rodata        0x08011868      0x1b7 CMakeFiles/SIZU_TASK.dir/BSP/can/bsp_can.c.obj
+ *fill*         0x08011a1f        0x1 
+ .rodata        0x08011a20       0x1a CMakeFiles/SIZU_TASK.dir/BSP/log/bsp_log.c.obj
+ *fill*         0x08011a3a        0x2 
+ .rodata        0x08011a3c       0xdc CMakeFiles/SIZU_TASK.dir/BSP/usart/bsp_usart.c.obj
+ .rodata        0x08011b18      0x1b8 CMakeFiles/SIZU_TASK.dir/Modules/motor/DJImotor/dji_motor.c.obj
+ .rodata        0x08011cd0        0xc CMakeFiles/SIZU_TASK.dir/Modules/imu/IMU.c.obj
+ .rodata        0x08011cdc       0x24 CMakeFiles/SIZU_TASK.dir/Modules/unicomm/unicomm.c.obj
  *(.rodata*)
  .rodata.AHBPrescTable
-                0x08011b04       0x10 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Core/Src/system_stm32f4xx.c.obj
-                0x08011b04                AHBPrescTable
+                0x08011d00       0x10 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Core/Src/system_stm32f4xx.c.obj
+                0x08011d00                AHBPrescTable
  .rodata.APBPrescTable
-                0x08011b14        0x8 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Core/Src/system_stm32f4xx.c.obj
-                0x08011b14                APBPrescTable
+                0x08011d10        0x8 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Core/Src/system_stm32f4xx.c.obj
+                0x08011d10                APBPrescTable
  .rodata.flagBitshiftOffset.0
-                0x08011b1c        0x8 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c.obj
+                0x08011d18        0x8 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c.obj
  .rodata._aInitStr.0
-                0x08011b24       0x11 cmake/stm32cubemx/CMakeFiles/FreeRTOS.dir/__/__/Middlewares/Third_Party/SEGGRE/RTT/SEGGER_RTT.c.obj
- *fill*         0x08011b35        0x3 
+                0x08011d20       0x11 cmake/stm32cubemx/CMakeFiles/FreeRTOS.dir/__/__/Middlewares/Third_Party/SEGGRE/RTT/SEGGER_RTT.c.obj
+ *fill*         0x08011d31        0x3 
  .rodata._aV2C.0
-                0x08011b38       0x10 cmake/stm32cubemx/CMakeFiles/FreeRTOS.dir/__/__/Middlewares/Third_Party/SEGGRE/RTT/SEGGER_RTT_printf.c.obj
+                0x08011d34       0x10 cmake/stm32cubemx/CMakeFiles/FreeRTOS.dir/__/__/Middlewares/Third_Party/SEGGRE/RTT/SEGGER_RTT_printf.c.obj
  .rodata.unicomm_pg_pins
-                0x08011b48       0x10 CMakeFiles/SIZU_TASK.dir/Modules/unicomm/unicomm.c.obj
+                0x08011d44       0x10 CMakeFiles/SIZU_TASK.dir/Modules/unicomm/unicomm.c.obj
  .rodata.acos.str1.4
-                0x08011b58        0x1 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-w_acos.o)
+                0x08011d54        0x1 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-w_acos.o)
  .rodata.asin.str1.4
-                0x08011b59        0x0 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-w_asin.o)
+                0x08011d55        0x0 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-w_asin.o)
                                   0x1 (size before relaxing)
- *fill*         0x08011b59        0x7 
- .rodata.tiny   0x08011b60        0x8 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-e_sqrt.o)
- .rodata.one    0x08011b68        0x8 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-e_sqrt.o)
- .rodata.Zero   0x08011b70       0x10 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-e_fmod.o)
+ *fill*         0x08011d55        0x3 
+ .rodata.tiny   0x08011d58        0x8 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-e_sqrt.o)
+ .rodata.one    0x08011d60        0x8 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-e_sqrt.o)
+ .rodata.Zero   0x08011d68       0x10 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-e_fmod.o)
  .rodata.npio2_hw
-                0x08011b80       0x80 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-e_rem_pio2.o)
+                0x08011d78       0x80 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-e_rem_pio2.o)
  .rodata.two_over_pi
-                0x08011c00      0x108 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-e_rem_pio2.o)
- .rodata.PIo2   0x08011d08       0x40 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-k_rem_pio2.o)
+                0x08011df8      0x108 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-e_rem_pio2.o)
+ .rodata.PIo2   0x08011f00       0x40 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-k_rem_pio2.o)
  .rodata.init_jk
-                0x08011d48       0x10 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-k_rem_pio2.o)
+                0x08011f40       0x10 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-k_rem_pio2.o)
  .rodata.sinTable_f32
-                0x08011d58      0x804 C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/Middlewares/ST/ARM/DSP/Lib/libarm_cortexM4lf_math.a(arm_common_tables.o)
-                0x08011d58                sinTable_f32
+                0x08011f50      0x804 C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/Middlewares/ST/ARM/DSP/Lib/libarm_cortexM4lf_math.a(arm_common_tables.o)
+                0x08011f50                sinTable_f32
  .rodata._svfprintf_r.str1.1
-                0x0801255c       0x33 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-nano-svfprintf.o)
+                0x08012754       0x33 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-nano-svfprintf.o)
                                  0x11 (size before relaxing)
  .rodata._printf_i.str1.1
-                0x0801258f        0x0 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-nano-vfprintf_i.o)
+                0x08012787        0x0 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-nano-vfprintf_i.o)
                                  0x22 (size before relaxing)
-                0x08012590                        . = ALIGN (0x4)
- *fill*         0x0801258f        0x1 
+                0x08012788                        . = ALIGN (0x4)
+ *fill*         0x08012787        0x1 
 
-.ARM.extab      0x08012590        0x0
-                0x08012590                        . = ALIGN (0x4)
+.ARM.extab      0x08012788        0x0
+                0x08012788                        . = ALIGN (0x4)
  *(.ARM.extab* .gnu.linkonce.armextab.*)
-                0x08012590                        . = ALIGN (0x4)
+                0x08012788                        . = ALIGN (0x4)
 
-.ARM            0x08012590        0x8
-                0x08012590                        . = ALIGN (0x4)
-                0x08012590                        __exidx_start = .
+.ARM            0x08012788        0x8
+                0x08012788                        . = ALIGN (0x4)
+                0x08012788                        __exidx_start = .
  *(.ARM.exidx*)
- .ARM.exidx     0x08012590        0x8 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-strcmp.o)
- .ARM.exidx     0x08012598        0x0 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-strlen.o)
+ .ARM.exidx     0x08012788        0x8 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-strcmp.o)
+ .ARM.exidx     0x08012790        0x0 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-strlen.o)
                                   0x8 (size before relaxing)
- .ARM.exidx     0x08012598        0x0 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-memchr.o)
+ .ARM.exidx     0x08012790        0x0 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-memchr.o)
                                   0x8 (size before relaxing)
  .ARM.exidx.text.__udivmoddi4
-                0x08012598        0x0 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard\libgcc.a(_udivmoddi4.o)
+                0x08012790        0x0 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard\libgcc.a(_udivmoddi4.o)
                                   0x8 (size before relaxing)
-                0x08012598                        __exidx_end = .
-                0x08012598                        . = ALIGN (0x4)
+                0x08012790                        __exidx_end = .
+                0x08012790                        . = ALIGN (0x4)
 
-.preinit_array  0x08012598        0x0
-                0x08012598                        . = ALIGN (0x4)
-                0x08012598                        PROVIDE (__preinit_array_start = .)
+.preinit_array  0x08012790        0x0
+                0x08012790                        . = ALIGN (0x4)
+                0x08012790                        PROVIDE (__preinit_array_start = .)
  *(.preinit_array*)
-                0x08012598                        PROVIDE (__preinit_array_end = .)
-                0x08012598                        . = ALIGN (0x4)
+                0x08012790                        PROVIDE (__preinit_array_end = .)
+                0x08012790                        . = ALIGN (0x4)
 
-.init_array     0x08012598        0x4
-                0x08012598                        . = ALIGN (0x4)
-                0x08012598                        PROVIDE (__init_array_start = .)
+.init_array     0x08012790        0x4
+                0x08012790                        . = ALIGN (0x4)
+                0x08012790                        PROVIDE (__init_array_start = .)
  *(SORT_BY_NAME(.init_array.*))
  *(.init_array*)
- .init_array    0x08012598        0x4 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard/crtbegin.o
-                0x0801259c                        PROVIDE (__init_array_end = .)
-                0x0801259c                        . = ALIGN (0x4)
+ .init_array    0x08012790        0x4 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard/crtbegin.o
+                0x08012794                        PROVIDE (__init_array_end = .)
+                0x08012794                        . = ALIGN (0x4)
 
-.fini_array     0x0801259c        0x4
-                0x0801259c                        . = ALIGN (0x4)
+.fini_array     0x08012794        0x4
+                0x08012794                        . = ALIGN (0x4)
                 [!provide]                        PROVIDE (__fini_array_start = .)
  *(SORT_BY_NAME(.fini_array.*))
  *(.fini_array*)
- .fini_array    0x0801259c        0x4 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard/crtbegin.o
+ .fini_array    0x08012794        0x4 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard/crtbegin.o
                 [!provide]                        PROVIDE (__fini_array_end = .)
-                0x080125a0                        . = ALIGN (0x4)
-                0x080125a0                        _siccmram = LOADADDR (.ccmram)
+                0x08012798                        . = ALIGN (0x4)
+                0x08012798                        _siccmram = LOADADDR (.ccmram)
 
-.rel.dyn        0x080125a0        0x0
- .rel.iplt      0x080125a0        0x0 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard/crtbegin.o
+.rel.dyn        0x08012798        0x0
+ .rel.iplt      0x08012798        0x0 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard/crtbegin.o
 
-.ccmram         0x10000000        0x0 load address 0x080125a0
+.ccmram         0x10000000        0x0 load address 0x08012798
                 0x10000000                        . = ALIGN (0x4)
                 0x10000000                        _sccmram = .
  *(.ccmram)
  *(.ccmram*)
                 0x10000000                        . = ALIGN (0x4)
                 0x10000000                        _eccmram = .
-                0x080125a0                        _sidata = LOADADDR (.data)
+                0x08012798                        _sidata = LOADADDR (.data)
 
-.data           0x20000000      0x674 load address 0x080125a0
+.data           0x20000000      0x674 load address 0x08012798
                 0x20000000                        . = ALIGN (0x4)
                 0x20000000                        _sdata = .
  *(.data)
@@ -9759,16 +9770,16 @@ LOAD D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7
                 0x20000674                        . = ALIGN (0x4)
 
 .tm_clone_table
-                0x20000674        0x0 load address 0x08012c14
+                0x20000674        0x0 load address 0x08012e0c
  .tm_clone_table
                 0x20000674        0x0 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard/crtbegin.o
  .tm_clone_table
                 0x20000674        0x0 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard/crtend.o
 
-.igot.plt       0x20000674        0x0 load address 0x08012c14
+.igot.plt       0x20000674        0x0 load address 0x08012e0c
  .igot.plt      0x20000674        0x0 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard/crtbegin.o
 
-.tdata          0x20000674        0x0 load address 0x08012c14
+.tdata          0x20000674        0x0 load address 0x08012e0c
  *(.tdata .tdata.* .gnu.linkonce.td.*)
                 0x20000674                        . = ALIGN (0x4)
                 0x20000674                        _edata = .
@@ -9785,7 +9796,7 @@ LOAD D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7
                 [!provide]                        PROVIDE (__data_source_end = __tdata_source_end)
                 [!provide]                        PROVIDE (__data_source_size = (__data_source_end - __data_source))
 
-.tbss           0x20000674        0x0 load address 0x08012c14
+.tbss           0x20000674        0x0 load address 0x08012e0c
                 0x20000674                        _sbss = .
                 0x20000674                        __bss_start__ = _sbss
  *(.tbss .tbss.*)
@@ -9802,7 +9813,7 @@ LOAD D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7
                 [!provide]                        PROVIDE (__arm32_tls_tcb_offset = MAX (0x8, __tls_align))
                 [!provide]                        PROVIDE (__arm64_tls_tcb_offset = MAX (0x10, __tls_align))
 
-.bss            0x20000674     0x538c load address 0x08012c14
+.bss            0x20000674     0x538c load address 0x08012e0c
  *(.bss)
  *(.bss*)
  .bss.completed.1
@@ -10213,7 +10224,7 @@ LOAD D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7
                 [!provide]                        PROVIDE (__bss_size = (__bss_end - __bss_start))
 
 ._user_heap_stack
-                0x20005a00      0x600 load address 0x08012c14
+                0x20005a00      0x600 load address 0x08012e0c
                 0x20005a00                        . = ALIGN (0x8)
                 [!provide]                        PROVIDE (end = .)
                 0x20005a00                        PROVIDE (_end = .)
@@ -10343,105 +10354,107 @@ LOAD linker stubs
  .ARM.attributes
                 0x00000ad3       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-s_nan.o)
  .ARM.attributes
-                0x00000b07       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-e_sqrt.o)
+                0x00000b07       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-sf_lround.o)
  .ARM.attributes
-                0x00000b3b       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-k_cos.o)
+                0x00000b3b       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-e_sqrt.o)
  .ARM.attributes
-                0x00000b6f       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-k_sin.o)
+                0x00000b6f       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-k_cos.o)
  .ARM.attributes
-                0x00000ba3       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-e_acos.o)
+                0x00000ba3       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-k_sin.o)
  .ARM.attributes
-                0x00000bd7       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-e_asin.o)
+                0x00000bd7       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-e_acos.o)
  .ARM.attributes
-                0x00000c0b       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-e_fmod.o)
+                0x00000c0b       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-e_asin.o)
  .ARM.attributes
-                0x00000c3f       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-e_pow.o)
+                0x00000c3f       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-e_fmod.o)
  .ARM.attributes
-                0x00000c73       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-e_rem_pio2.o)
+                0x00000c73       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-e_pow.o)
  .ARM.attributes
-                0x00000ca7       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-s_scalbn.o)
+                0x00000ca7       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-e_rem_pio2.o)
  .ARM.attributes
-                0x00000cdb       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-math_err.o)
+                0x00000cdb       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-s_scalbn.o)
  .ARM.attributes
-                0x00000d0f       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-k_rem_pio2.o)
+                0x00000d0f       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-math_err.o)
  .ARM.attributes
-                0x00000d43       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-s_floor.o)
+                0x00000d43       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-k_rem_pio2.o)
  .ARM.attributes
-                0x00000d77       0x34 C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/Middlewares/ST/ARM/DSP/Lib/libarm_cortexM4lf_math.a(arm_sin_f32.o)
+                0x00000d77       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-s_floor.o)
  .ARM.attributes
-                0x00000dab       0x34 C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/Middlewares/ST/ARM/DSP/Lib/libarm_cortexM4lf_math.a(arm_cos_f32.o)
+                0x00000dab       0x34 C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/Middlewares/ST/ARM/DSP/Lib/libarm_cortexM4lf_math.a(arm_sin_f32.o)
  .ARM.attributes
-                0x00000ddf       0x39 C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/Middlewares/ST/ARM/DSP/Lib/libarm_cortexM4lf_math.a(arm_common_tables.o)
+                0x00000ddf       0x34 C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/Middlewares/ST/ARM/DSP/Lib/libarm_cortexM4lf_math.a(arm_cos_f32.o)
  .ARM.attributes
-                0x00000e18       0x22 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_addsubdf3.o)
+                0x00000e13       0x39 C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/Middlewares/ST/ARM/DSP/Lib/libarm_cortexM4lf_math.a(arm_common_tables.o)
  .ARM.attributes
-                0x00000e3a       0x22 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_muldivdf3.o)
+                0x00000e4c       0x22 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_addsubdf3.o)
  .ARM.attributes
-                0x00000e5c       0x22 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_cmpdf2.o)
+                0x00000e6e       0x22 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_muldivdf3.o)
  .ARM.attributes
-                0x00000e7e       0x22 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_unorddf2.o)
+                0x00000e90       0x22 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_cmpdf2.o)
  .ARM.attributes
-                0x00000ea0       0x22 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_fixdfsi.o)
+                0x00000eb2       0x22 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_unorddf2.o)
  .ARM.attributes
-                0x00000ec2       0x22 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_truncdfsf2.o)
+                0x00000ed4       0x22 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_fixdfsi.o)
  .ARM.attributes
-                0x00000ee4       0x22 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard\libgcc.a(_aeabi_uldivmod.o)
+                0x00000ef6       0x22 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_truncdfsf2.o)
  .ARM.attributes
-                0x00000f06       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard\libgcc.a(_udivmoddi4.o)
+                0x00000f18       0x22 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard\libgcc.a(_aeabi_uldivmod.o)
  .ARM.attributes
-                0x00000f3a       0x22 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard\libgcc.a(_dvmd_tls.o)
+                0x00000f3a       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard\libgcc.a(_udivmoddi4.o)
  .ARM.attributes
-                0x00000f5c       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-malloc.o)
+                0x00000f6e       0x22 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard\libgcc.a(_dvmd_tls.o)
  .ARM.attributes
-                0x00000f90       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-mallocr.o)
+                0x00000f90       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-malloc.o)
  .ARM.attributes
-                0x00000fc4       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-mlock.o)
+                0x00000fc4       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-mallocr.o)
  .ARM.attributes
-                0x00000ff8       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-findfp.o)
+                0x00000ff8       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-mlock.o)
  .ARM.attributes
-                0x0000102c       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-snprintf.o)
+                0x0000102c       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-findfp.o)
  .ARM.attributes
-                0x00001060       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-memcmp.o)
+                0x00001060       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-snprintf.o)
  .ARM.attributes
-                0x00001094       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-memmove.o)
+                0x00001094       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-memcmp.o)
  .ARM.attributes
-                0x000010c8       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-memset.o)
+                0x000010c8       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-memmove.o)
  .ARM.attributes
-                0x000010fc       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-strncmp.o)
+                0x000010fc       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-memset.o)
  .ARM.attributes
-                0x00001130       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-reent.o)
+                0x00001130       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-strncmp.o)
  .ARM.attributes
-                0x00001164       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-impure.o)
+                0x00001164       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-reent.o)
  .ARM.attributes
-                0x00001198       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-sbrkr.o)
+                0x00001198       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-impure.o)
  .ARM.attributes
-                0x000011cc       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-errno.o)
+                0x000011cc       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-sbrkr.o)
  .ARM.attributes
-                0x00001200       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-init.o)
+                0x00001200       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-errno.o)
  .ARM.attributes
-                0x00001234       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-lock.o)
+                0x00001234       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-init.o)
  .ARM.attributes
-                0x00001268       0x20 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-strcmp.o)
+                0x00001268       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-lock.o)
  .ARM.attributes
-                0x00001288       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-memcpy-stub.o)
+                0x0000129c       0x20 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-strcmp.o)
  .ARM.attributes
-                0x000012bc       0x17 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-strlen.o)
+                0x000012bc       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-memcpy-stub.o)
  .ARM.attributes
-                0x000012d3       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-freer.o)
+                0x000012f0       0x17 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-strlen.o)
  .ARM.attributes
-                0x00001307       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-nano-svfprintf.o)
+                0x00001307       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-freer.o)
  .ARM.attributes
-                0x0000133b       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-nano-vfprintf_i.o)
+                0x0000133b       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-nano-svfprintf.o)
  .ARM.attributes
-                0x0000136f       0x1c D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-memchr.o)
+                0x0000136f       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-nano-vfprintf_i.o)
  .ARM.attributes
-                0x0000138b       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-reallocr.o)
+                0x000013a3       0x1c D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-memchr.o)
  .ARM.attributes
-                0x000013bf       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-msizer.o)
+                0x000013bf       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-reallocr.o)
  .ARM.attributes
-                0x000013f3       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard/crtend.o
+                0x000013f3       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-msizer.o)
  .ARM.attributes
-                0x00001427       0x22 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard/crtn.o
+                0x00001427       0x34 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard/crtend.o
+ .ARM.attributes
+                0x0000145b       0x22 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard/crtn.o
 
 .comment        0x00000000       0xbe
  .comment       0x00000000       0xbe cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Core/Src/system_stm32f4xx.c.obj
@@ -10537,7 +10550,7 @@ LOAD linker stubs
  .comment       0x000000be        0x0 C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/Middlewares/ST/ARM/DSP/Lib/libarm_cortexM4lf_math.a(arm_common_tables.o)
                                  0x7a (size before relaxing)
 
-.debug_info     0x00000000    0x26777
+.debug_info     0x00000000    0x26919
  .debug_info    0x00000000      0x52e cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Core/Src/system_stm32f4xx.c.obj
  .debug_info    0x0000052e      0xf42 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_can.c.obj
  .debug_info    0x00001470      0x8db cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c.obj
@@ -10566,27 +10579,27 @@ LOAD linker stubs
  .debug_info    0x00015a56      0x4f9 CMakeFiles/SIZU_TASK.dir/Core/Src/stm32f4xx_hal_msp.c.obj
  .debug_info    0x00015f4f      0x168 CMakeFiles/SIZU_TASK.dir/Core/Src/sysmem.c.obj
  .debug_info    0x000160b7       0x30 CMakeFiles/SIZU_TASK.dir/startup_stm32f427xx.s.obj
- .debug_info    0x000160e7     0x2192 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
- .debug_info    0x00018279       0xd0 CMakeFiles/SIZU_TASK.dir/BSP/bsp_init.c.obj
- .debug_info    0x00018349      0xba6 CMakeFiles/SIZU_TASK.dir/BSP/can/bsp_can.c.obj
- .debug_info    0x00018eef      0x51c CMakeFiles/SIZU_TASK.dir/BSP/dwt/bsp_dwt.c.obj
- .debug_info    0x0001940b      0x1c2 CMakeFiles/SIZU_TASK.dir/BSP/log/bsp_log.c.obj
- .debug_info    0x000195cd      0x9eb CMakeFiles/SIZU_TASK.dir/BSP/pwm/bsp_pwm.c.obj
- .debug_info    0x00019fb8      0xde7 CMakeFiles/SIZU_TASK.dir/BSP/tim/bsp_tim.c.obj
- .debug_info    0x0001ad9f      0x91b CMakeFiles/SIZU_TASK.dir/BSP/usart/bsp_usart.c.obj
- .debug_info    0x0001b6ba     0x1902 CMakeFiles/SIZU_TASK.dir/Modules/motor/DJImotor/dji_motor.c.obj
- .debug_info    0x0001cfbc      0x2de CMakeFiles/SIZU_TASK.dir/Modules/algorithm/coordinate_system/coordinate_system.c.obj
- .debug_info    0x0001d29a      0x5a2 CMakeFiles/SIZU_TASK.dir/Modules/algorithm/pid/controller.c.obj
- .debug_info    0x0001d83c      0x990 CMakeFiles/SIZU_TASK.dir/Modules/imu/IMU.c.obj
- .debug_info    0x0001e1cc      0xc21 CMakeFiles/SIZU_TASK.dir/Modules/unicomm/unicomm.c.obj
- .debug_info    0x0001eded      0x29b CMakeFiles/SIZU_TASK.dir/Modules/daemon/daemon.c.obj
- .debug_info    0x0001f088     0x1253 CMakeFiles/SIZU_TASK.dir/TASK/MotorControl_task/MotorControl_task.c.obj
- .debug_info    0x000202db     0x152e CMakeFiles/SIZU_TASK.dir/TASK/PostureControl_task/PostureControl_task.c.obj
- .debug_info    0x00021809     0x1874 C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/Middlewares/ST/ARM/DSP/Lib/libarm_cortexM4lf_math.a(arm_sin_f32.o)
- .debug_info    0x0002307d     0x1874 C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/Middlewares/ST/ARM/DSP/Lib/libarm_cortexM4lf_math.a(arm_cos_f32.o)
- .debug_info    0x000248f1     0x1e86 C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/Middlewares/ST/ARM/DSP/Lib/libarm_cortexM4lf_math.a(arm_common_tables.o)
+ .debug_info    0x000160e7     0x2334 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
+ .debug_info    0x0001841b       0xd0 CMakeFiles/SIZU_TASK.dir/BSP/bsp_init.c.obj
+ .debug_info    0x000184eb      0xba6 CMakeFiles/SIZU_TASK.dir/BSP/can/bsp_can.c.obj
+ .debug_info    0x00019091      0x51c CMakeFiles/SIZU_TASK.dir/BSP/dwt/bsp_dwt.c.obj
+ .debug_info    0x000195ad      0x1c2 CMakeFiles/SIZU_TASK.dir/BSP/log/bsp_log.c.obj
+ .debug_info    0x0001976f      0x9eb CMakeFiles/SIZU_TASK.dir/BSP/pwm/bsp_pwm.c.obj
+ .debug_info    0x0001a15a      0xde7 CMakeFiles/SIZU_TASK.dir/BSP/tim/bsp_tim.c.obj
+ .debug_info    0x0001af41      0x91b CMakeFiles/SIZU_TASK.dir/BSP/usart/bsp_usart.c.obj
+ .debug_info    0x0001b85c     0x1902 CMakeFiles/SIZU_TASK.dir/Modules/motor/DJImotor/dji_motor.c.obj
+ .debug_info    0x0001d15e      0x2de CMakeFiles/SIZU_TASK.dir/Modules/algorithm/coordinate_system/coordinate_system.c.obj
+ .debug_info    0x0001d43c      0x5a2 CMakeFiles/SIZU_TASK.dir/Modules/algorithm/pid/controller.c.obj
+ .debug_info    0x0001d9de      0x990 CMakeFiles/SIZU_TASK.dir/Modules/imu/IMU.c.obj
+ .debug_info    0x0001e36e      0xc21 CMakeFiles/SIZU_TASK.dir/Modules/unicomm/unicomm.c.obj
+ .debug_info    0x0001ef8f      0x29b CMakeFiles/SIZU_TASK.dir/Modules/daemon/daemon.c.obj
+ .debug_info    0x0001f22a     0x1253 CMakeFiles/SIZU_TASK.dir/TASK/MotorControl_task/MotorControl_task.c.obj
+ .debug_info    0x0002047d     0x152e CMakeFiles/SIZU_TASK.dir/TASK/PostureControl_task/PostureControl_task.c.obj
+ .debug_info    0x000219ab     0x1874 C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/Middlewares/ST/ARM/DSP/Lib/libarm_cortexM4lf_math.a(arm_sin_f32.o)
+ .debug_info    0x0002321f     0x1874 C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/Middlewares/ST/ARM/DSP/Lib/libarm_cortexM4lf_math.a(arm_cos_f32.o)
+ .debug_info    0x00024a93     0x1e86 C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/Middlewares/ST/ARM/DSP/Lib/libarm_cortexM4lf_math.a(arm_common_tables.o)
 
-.debug_abbrev   0x00000000     0x6254
+.debug_abbrev   0x00000000     0x627e
  .debug_abbrev  0x00000000      0x11a cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Core/Src/system_stm32f4xx.c.obj
  .debug_abbrev  0x0000011a      0x25a cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_can.c.obj
  .debug_abbrev  0x00000374      0x2b7 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c.obj
@@ -10615,27 +10628,27 @@ LOAD linker stubs
  .debug_abbrev  0x00003691      0x119 CMakeFiles/SIZU_TASK.dir/Core/Src/stm32f4xx_hal_msp.c.obj
  .debug_abbrev  0x000037aa       0xbc CMakeFiles/SIZU_TASK.dir/Core/Src/sysmem.c.obj
  .debug_abbrev  0x00003866       0x24 CMakeFiles/SIZU_TASK.dir/startup_stm32f427xx.s.obj
- .debug_abbrev  0x0000388a      0x430 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
- .debug_abbrev  0x00003cba       0x86 CMakeFiles/SIZU_TASK.dir/BSP/bsp_init.c.obj
- .debug_abbrev  0x00003d40      0x2be CMakeFiles/SIZU_TASK.dir/BSP/can/bsp_can.c.obj
- .debug_abbrev  0x00003ffe      0x167 CMakeFiles/SIZU_TASK.dir/BSP/dwt/bsp_dwt.c.obj
- .debug_abbrev  0x00004165      0x141 CMakeFiles/SIZU_TASK.dir/BSP/log/bsp_log.c.obj
- .debug_abbrev  0x000042a6      0x25e CMakeFiles/SIZU_TASK.dir/BSP/pwm/bsp_pwm.c.obj
- .debug_abbrev  0x00004504      0x263 CMakeFiles/SIZU_TASK.dir/BSP/tim/bsp_tim.c.obj
- .debug_abbrev  0x00004767      0x220 CMakeFiles/SIZU_TASK.dir/BSP/usart/bsp_usart.c.obj
- .debug_abbrev  0x00004987      0x32e CMakeFiles/SIZU_TASK.dir/Modules/motor/DJImotor/dji_motor.c.obj
- .debug_abbrev  0x00004cb5      0x12b CMakeFiles/SIZU_TASK.dir/Modules/algorithm/coordinate_system/coordinate_system.c.obj
- .debug_abbrev  0x00004de0      0x18d CMakeFiles/SIZU_TASK.dir/Modules/algorithm/pid/controller.c.obj
- .debug_abbrev  0x00004f6d      0x241 CMakeFiles/SIZU_TASK.dir/Modules/imu/IMU.c.obj
- .debug_abbrev  0x000051ae      0x269 CMakeFiles/SIZU_TASK.dir/Modules/unicomm/unicomm.c.obj
- .debug_abbrev  0x00005417      0x164 CMakeFiles/SIZU_TASK.dir/Modules/daemon/daemon.c.obj
- .debug_abbrev  0x0000557b      0x2fb CMakeFiles/SIZU_TASK.dir/TASK/MotorControl_task/MotorControl_task.c.obj
- .debug_abbrev  0x00005876      0x39a CMakeFiles/SIZU_TASK.dir/TASK/PostureControl_task/PostureControl_task.c.obj
- .debug_abbrev  0x00005c10      0x22c C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/Middlewares/ST/ARM/DSP/Lib/libarm_cortexM4lf_math.a(arm_sin_f32.o)
- .debug_abbrev  0x00005e3c      0x22c C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/Middlewares/ST/ARM/DSP/Lib/libarm_cortexM4lf_math.a(arm_cos_f32.o)
- .debug_abbrev  0x00006068      0x1ec C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/Middlewares/ST/ARM/DSP/Lib/libarm_cortexM4lf_math.a(arm_common_tables.o)
+ .debug_abbrev  0x0000388a      0x45a CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
+ .debug_abbrev  0x00003ce4       0x86 CMakeFiles/SIZU_TASK.dir/BSP/bsp_init.c.obj
+ .debug_abbrev  0x00003d6a      0x2be CMakeFiles/SIZU_TASK.dir/BSP/can/bsp_can.c.obj
+ .debug_abbrev  0x00004028      0x167 CMakeFiles/SIZU_TASK.dir/BSP/dwt/bsp_dwt.c.obj
+ .debug_abbrev  0x0000418f      0x141 CMakeFiles/SIZU_TASK.dir/BSP/log/bsp_log.c.obj
+ .debug_abbrev  0x000042d0      0x25e CMakeFiles/SIZU_TASK.dir/BSP/pwm/bsp_pwm.c.obj
+ .debug_abbrev  0x0000452e      0x263 CMakeFiles/SIZU_TASK.dir/BSP/tim/bsp_tim.c.obj
+ .debug_abbrev  0x00004791      0x220 CMakeFiles/SIZU_TASK.dir/BSP/usart/bsp_usart.c.obj
+ .debug_abbrev  0x000049b1      0x32e CMakeFiles/SIZU_TASK.dir/Modules/motor/DJImotor/dji_motor.c.obj
+ .debug_abbrev  0x00004cdf      0x12b CMakeFiles/SIZU_TASK.dir/Modules/algorithm/coordinate_system/coordinate_system.c.obj
+ .debug_abbrev  0x00004e0a      0x18d CMakeFiles/SIZU_TASK.dir/Modules/algorithm/pid/controller.c.obj
+ .debug_abbrev  0x00004f97      0x241 CMakeFiles/SIZU_TASK.dir/Modules/imu/IMU.c.obj
+ .debug_abbrev  0x000051d8      0x269 CMakeFiles/SIZU_TASK.dir/Modules/unicomm/unicomm.c.obj
+ .debug_abbrev  0x00005441      0x164 CMakeFiles/SIZU_TASK.dir/Modules/daemon/daemon.c.obj
+ .debug_abbrev  0x000055a5      0x2fb CMakeFiles/SIZU_TASK.dir/TASK/MotorControl_task/MotorControl_task.c.obj
+ .debug_abbrev  0x000058a0      0x39a CMakeFiles/SIZU_TASK.dir/TASK/PostureControl_task/PostureControl_task.c.obj
+ .debug_abbrev  0x00005c3a      0x22c C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/Middlewares/ST/ARM/DSP/Lib/libarm_cortexM4lf_math.a(arm_sin_f32.o)
+ .debug_abbrev  0x00005e66      0x22c C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/Middlewares/ST/ARM/DSP/Lib/libarm_cortexM4lf_math.a(arm_cos_f32.o)
+ .debug_abbrev  0x00006092      0x1ec C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/Middlewares/ST/ARM/DSP/Lib/libarm_cortexM4lf_math.a(arm_common_tables.o)
 
-.debug_aranges  0x00000000     0x1be8
+.debug_aranges  0x00000000     0x1bf0
  .debug_aranges
                 0x00000000       0x28 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Core/Src/system_stm32f4xx.c.obj
  .debug_aranges
@@ -10693,46 +10706,46 @@ LOAD linker stubs
  .debug_aranges
                 0x00001518       0x28 CMakeFiles/SIZU_TASK.dir/startup_stm32f427xx.s.obj
  .debug_aranges
-                0x00001540      0x150 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
+                0x00001540      0x158 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
  .debug_aranges
-                0x00001690       0x20 CMakeFiles/SIZU_TASK.dir/BSP/bsp_init.c.obj
+                0x00001698       0x20 CMakeFiles/SIZU_TASK.dir/BSP/bsp_init.c.obj
  .debug_aranges
-                0x000016b0       0x68 CMakeFiles/SIZU_TASK.dir/BSP/can/bsp_can.c.obj
+                0x000016b8       0x68 CMakeFiles/SIZU_TASK.dir/BSP/can/bsp_can.c.obj
  .debug_aranges
-                0x00001718       0x60 CMakeFiles/SIZU_TASK.dir/BSP/dwt/bsp_dwt.c.obj
+                0x00001720       0x60 CMakeFiles/SIZU_TASK.dir/BSP/dwt/bsp_dwt.c.obj
  .debug_aranges
-                0x00001778       0x30 CMakeFiles/SIZU_TASK.dir/BSP/log/bsp_log.c.obj
+                0x00001780       0x30 CMakeFiles/SIZU_TASK.dir/BSP/log/bsp_log.c.obj
  .debug_aranges
-                0x000017a8       0x58 CMakeFiles/SIZU_TASK.dir/BSP/pwm/bsp_pwm.c.obj
+                0x000017b0       0x58 CMakeFiles/SIZU_TASK.dir/BSP/pwm/bsp_pwm.c.obj
  .debug_aranges
-                0x00001800       0x88 CMakeFiles/SIZU_TASK.dir/BSP/tim/bsp_tim.c.obj
+                0x00001808       0x88 CMakeFiles/SIZU_TASK.dir/BSP/tim/bsp_tim.c.obj
  .debug_aranges
-                0x00001888       0x48 CMakeFiles/SIZU_TASK.dir/BSP/usart/bsp_usart.c.obj
+                0x00001890       0x48 CMakeFiles/SIZU_TASK.dir/BSP/usart/bsp_usart.c.obj
  .debug_aranges
-                0x000018d0       0x68 CMakeFiles/SIZU_TASK.dir/Modules/motor/DJImotor/dji_motor.c.obj
+                0x000018d8       0x68 CMakeFiles/SIZU_TASK.dir/Modules/motor/DJImotor/dji_motor.c.obj
  .debug_aranges
-                0x00001938       0x28 CMakeFiles/SIZU_TASK.dir/Modules/algorithm/coordinate_system/coordinate_system.c.obj
+                0x00001940       0x28 CMakeFiles/SIZU_TASK.dir/Modules/algorithm/coordinate_system/coordinate_system.c.obj
  .debug_aranges
-                0x00001960       0x70 CMakeFiles/SIZU_TASK.dir/Modules/algorithm/pid/controller.c.obj
+                0x00001968       0x70 CMakeFiles/SIZU_TASK.dir/Modules/algorithm/pid/controller.c.obj
  .debug_aranges
-                0x000019d0       0x48 CMakeFiles/SIZU_TASK.dir/Modules/imu/IMU.c.obj
+                0x000019d8       0x48 CMakeFiles/SIZU_TASK.dir/Modules/imu/IMU.c.obj
  .debug_aranges
-                0x00001a18       0x78 CMakeFiles/SIZU_TASK.dir/Modules/unicomm/unicomm.c.obj
+                0x00001a20       0x78 CMakeFiles/SIZU_TASK.dir/Modules/unicomm/unicomm.c.obj
  .debug_aranges
-                0x00001a90       0x38 CMakeFiles/SIZU_TASK.dir/Modules/daemon/daemon.c.obj
+                0x00001a98       0x38 CMakeFiles/SIZU_TASK.dir/Modules/daemon/daemon.c.obj
  .debug_aranges
-                0x00001ac8       0x50 CMakeFiles/SIZU_TASK.dir/TASK/MotorControl_task/MotorControl_task.c.obj
+                0x00001ad0       0x50 CMakeFiles/SIZU_TASK.dir/TASK/MotorControl_task/MotorControl_task.c.obj
  .debug_aranges
-                0x00001b18       0x78 CMakeFiles/SIZU_TASK.dir/TASK/PostureControl_task/PostureControl_task.c.obj
+                0x00001b20       0x78 CMakeFiles/SIZU_TASK.dir/TASK/PostureControl_task/PostureControl_task.c.obj
  .debug_aranges
-                0x00001b90       0x20 C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/Middlewares/ST/ARM/DSP/Lib/libarm_cortexM4lf_math.a(arm_sin_f32.o)
+                0x00001b98       0x20 C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/Middlewares/ST/ARM/DSP/Lib/libarm_cortexM4lf_math.a(arm_sin_f32.o)
  .debug_aranges
-                0x00001bb0       0x20 C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/Middlewares/ST/ARM/DSP/Lib/libarm_cortexM4lf_math.a(arm_cos_f32.o)
+                0x00001bb8       0x20 C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/Middlewares/ST/ARM/DSP/Lib/libarm_cortexM4lf_math.a(arm_cos_f32.o)
  .debug_aranges
-                0x00001bd0       0x18 C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/Middlewares/ST/ARM/DSP/Lib/libarm_cortexM4lf_math.a(arm_common_tables.o)
+                0x00001bd8       0x18 C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/Middlewares/ST/ARM/DSP/Lib/libarm_cortexM4lf_math.a(arm_common_tables.o)
 
 .debug_rnglists
-                0x00000000     0x1513
+                0x00000000     0x151a
  .debug_rnglists
                 0x00000000       0x1a cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Core/Src/system_stm32f4xx.c.obj
  .debug_rnglists
@@ -10790,37 +10803,37 @@ LOAD linker stubs
  .debug_rnglists
                 0x00001053       0x19 CMakeFiles/SIZU_TASK.dir/startup_stm32f427xx.s.obj
  .debug_rnglists
-                0x0000106c      0x105 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
+                0x0000106c      0x10c CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
  .debug_rnglists
-                0x00001171       0x13 CMakeFiles/SIZU_TASK.dir/BSP/bsp_init.c.obj
+                0x00001178       0x13 CMakeFiles/SIZU_TASK.dir/BSP/bsp_init.c.obj
  .debug_rnglists
-                0x00001184       0x4c CMakeFiles/SIZU_TASK.dir/BSP/can/bsp_can.c.obj
+                0x0000118b       0x4c CMakeFiles/SIZU_TASK.dir/BSP/can/bsp_can.c.obj
  .debug_rnglists
-                0x000011d0       0x45 CMakeFiles/SIZU_TASK.dir/BSP/dwt/bsp_dwt.c.obj
+                0x000011d7       0x45 CMakeFiles/SIZU_TASK.dir/BSP/dwt/bsp_dwt.c.obj
  .debug_rnglists
-                0x00001215       0x20 CMakeFiles/SIZU_TASK.dir/BSP/log/bsp_log.c.obj
+                0x0000121c       0x20 CMakeFiles/SIZU_TASK.dir/BSP/log/bsp_log.c.obj
  .debug_rnglists
-                0x00001235       0x41 CMakeFiles/SIZU_TASK.dir/BSP/pwm/bsp_pwm.c.obj
+                0x0000123c       0x41 CMakeFiles/SIZU_TASK.dir/BSP/pwm/bsp_pwm.c.obj
  .debug_rnglists
-                0x00001276       0x64 CMakeFiles/SIZU_TASK.dir/BSP/tim/bsp_tim.c.obj
+                0x0000127d       0x64 CMakeFiles/SIZU_TASK.dir/BSP/tim/bsp_tim.c.obj
  .debug_rnglists
-                0x000012da       0x34 CMakeFiles/SIZU_TASK.dir/BSP/usart/bsp_usart.c.obj
+                0x000012e1       0x34 CMakeFiles/SIZU_TASK.dir/BSP/usart/bsp_usart.c.obj
  .debug_rnglists
-                0x0000130e       0x4d CMakeFiles/SIZU_TASK.dir/Modules/motor/DJImotor/dji_motor.c.obj
+                0x00001315       0x4d CMakeFiles/SIZU_TASK.dir/Modules/motor/DJImotor/dji_motor.c.obj
  .debug_rnglists
-                0x0000135b       0x1b CMakeFiles/SIZU_TASK.dir/Modules/algorithm/coordinate_system/coordinate_system.c.obj
+                0x00001362       0x1b CMakeFiles/SIZU_TASK.dir/Modules/algorithm/coordinate_system/coordinate_system.c.obj
  .debug_rnglists
-                0x00001376       0x53 CMakeFiles/SIZU_TASK.dir/Modules/algorithm/pid/controller.c.obj
+                0x0000137d       0x53 CMakeFiles/SIZU_TASK.dir/Modules/algorithm/pid/controller.c.obj
  .debug_rnglists
-                0x000013c9       0x33 CMakeFiles/SIZU_TASK.dir/Modules/imu/IMU.c.obj
+                0x000013d0       0x33 CMakeFiles/SIZU_TASK.dir/Modules/imu/IMU.c.obj
  .debug_rnglists
-                0x000013fc       0x58 CMakeFiles/SIZU_TASK.dir/Modules/unicomm/unicomm.c.obj
+                0x00001403       0x58 CMakeFiles/SIZU_TASK.dir/Modules/unicomm/unicomm.c.obj
  .debug_rnglists
-                0x00001454       0x26 CMakeFiles/SIZU_TASK.dir/Modules/daemon/daemon.c.obj
+                0x0000145b       0x26 CMakeFiles/SIZU_TASK.dir/Modules/daemon/daemon.c.obj
  .debug_rnglists
-                0x0000147a       0x3c CMakeFiles/SIZU_TASK.dir/TASK/MotorControl_task/MotorControl_task.c.obj
+                0x00001481       0x3c CMakeFiles/SIZU_TASK.dir/TASK/MotorControl_task/MotorControl_task.c.obj
  .debug_rnglists
-                0x000014b6       0x5d CMakeFiles/SIZU_TASK.dir/TASK/PostureControl_task/PostureControl_task.c.obj
+                0x000014bd       0x5d CMakeFiles/SIZU_TASK.dir/TASK/PostureControl_task/PostureControl_task.c.obj
 
 .debug_macro    0x00000000    0x29323
  .debug_macro   0x00000000      0x1d8 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Core/Src/system_stm32f4xx.c.obj
@@ -10949,7 +10962,7 @@ LOAD linker stubs
  .debug_macro   0x00028ddf       0x22 CMakeFiles/SIZU_TASK.dir/TASK/MotorControl_task/MotorControl_task.c.obj
  .debug_macro   0x00028e01      0x522 CMakeFiles/SIZU_TASK.dir/TASK/PostureControl_task/PostureControl_task.c.obj
 
-.debug_line     0x00000000    0x23145
+.debug_line     0x00000000    0x23172
  .debug_line    0x00000000      0x692 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Core/Src/system_stm32f4xx.c.obj
  .debug_line    0x00000692     0x10cd cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_can.c.obj
  .debug_line    0x0000175f      0xd1b cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c.obj
@@ -10978,123 +10991,123 @@ LOAD linker stubs
  .debug_line    0x00015b81      0x61d CMakeFiles/SIZU_TASK.dir/Core/Src/stm32f4xx_hal_msp.c.obj
  .debug_line    0x0001619e      0x28a CMakeFiles/SIZU_TASK.dir/Core/Src/sysmem.c.obj
  .debug_line    0x00016428       0x7a CMakeFiles/SIZU_TASK.dir/startup_stm32f427xx.s.obj
- .debug_line    0x000164a2     0x194f CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
- .debug_line    0x00017df1      0x920 CMakeFiles/SIZU_TASK.dir/BSP/bsp_init.c.obj
- .debug_line    0x00018711      0xb7f CMakeFiles/SIZU_TASK.dir/BSP/can/bsp_can.c.obj
- .debug_line    0x00019290      0xc20 CMakeFiles/SIZU_TASK.dir/BSP/dwt/bsp_dwt.c.obj
- .debug_line    0x00019eb0      0x3d5 CMakeFiles/SIZU_TASK.dir/BSP/log/bsp_log.c.obj
- .debug_line    0x0001a285      0x885 CMakeFiles/SIZU_TASK.dir/BSP/pwm/bsp_pwm.c.obj
- .debug_line    0x0001ab0a      0x9c3 CMakeFiles/SIZU_TASK.dir/BSP/tim/bsp_tim.c.obj
- .debug_line    0x0001b4cd      0x9a6 CMakeFiles/SIZU_TASK.dir/BSP/usart/bsp_usart.c.obj
- .debug_line    0x0001be73      0xfd1 CMakeFiles/SIZU_TASK.dir/Modules/motor/DJImotor/dji_motor.c.obj
- .debug_line    0x0001ce44      0x957 CMakeFiles/SIZU_TASK.dir/Modules/algorithm/coordinate_system/coordinate_system.c.obj
- .debug_line    0x0001d79b      0xd78 CMakeFiles/SIZU_TASK.dir/Modules/algorithm/pid/controller.c.obj
- .debug_line    0x0001e513      0x9d1 CMakeFiles/SIZU_TASK.dir/Modules/imu/IMU.c.obj
- .debug_line    0x0001eee4      0x9a8 CMakeFiles/SIZU_TASK.dir/Modules/unicomm/unicomm.c.obj
- .debug_line    0x0001f88c      0x93e CMakeFiles/SIZU_TASK.dir/Modules/daemon/daemon.c.obj
- .debug_line    0x000201ca     0x11f1 CMakeFiles/SIZU_TASK.dir/TASK/MotorControl_task/MotorControl_task.c.obj
- .debug_line    0x000213bb     0x1688 CMakeFiles/SIZU_TASK.dir/TASK/PostureControl_task/PostureControl_task.c.obj
- .debug_line    0x00022a43      0x284 C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/Middlewares/ST/ARM/DSP/Lib/libarm_cortexM4lf_math.a(arm_sin_f32.o)
- .debug_line    0x00022cc7      0x287 C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/Middlewares/ST/ARM/DSP/Lib/libarm_cortexM4lf_math.a(arm_cos_f32.o)
- .debug_line    0x00022f4e      0x1f7 C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/Middlewares/ST/ARM/DSP/Lib/libarm_cortexM4lf_math.a(arm_common_tables.o)
+ .debug_line    0x000164a2     0x197c CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
+ .debug_line    0x00017e1e      0x920 CMakeFiles/SIZU_TASK.dir/BSP/bsp_init.c.obj
+ .debug_line    0x0001873e      0xb7f CMakeFiles/SIZU_TASK.dir/BSP/can/bsp_can.c.obj
+ .debug_line    0x000192bd      0xc20 CMakeFiles/SIZU_TASK.dir/BSP/dwt/bsp_dwt.c.obj
+ .debug_line    0x00019edd      0x3d5 CMakeFiles/SIZU_TASK.dir/BSP/log/bsp_log.c.obj
+ .debug_line    0x0001a2b2      0x885 CMakeFiles/SIZU_TASK.dir/BSP/pwm/bsp_pwm.c.obj
+ .debug_line    0x0001ab37      0x9c3 CMakeFiles/SIZU_TASK.dir/BSP/tim/bsp_tim.c.obj
+ .debug_line    0x0001b4fa      0x9a6 CMakeFiles/SIZU_TASK.dir/BSP/usart/bsp_usart.c.obj
+ .debug_line    0x0001bea0      0xfd1 CMakeFiles/SIZU_TASK.dir/Modules/motor/DJImotor/dji_motor.c.obj
+ .debug_line    0x0001ce71      0x957 CMakeFiles/SIZU_TASK.dir/Modules/algorithm/coordinate_system/coordinate_system.c.obj
+ .debug_line    0x0001d7c8      0xd78 CMakeFiles/SIZU_TASK.dir/Modules/algorithm/pid/controller.c.obj
+ .debug_line    0x0001e540      0x9d1 CMakeFiles/SIZU_TASK.dir/Modules/imu/IMU.c.obj
+ .debug_line    0x0001ef11      0x9a8 CMakeFiles/SIZU_TASK.dir/Modules/unicomm/unicomm.c.obj
+ .debug_line    0x0001f8b9      0x93e CMakeFiles/SIZU_TASK.dir/Modules/daemon/daemon.c.obj
+ .debug_line    0x000201f7     0x11f1 CMakeFiles/SIZU_TASK.dir/TASK/MotorControl_task/MotorControl_task.c.obj
+ .debug_line    0x000213e8     0x1688 CMakeFiles/SIZU_TASK.dir/TASK/PostureControl_task/PostureControl_task.c.obj
+ .debug_line    0x00022a70      0x284 C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/Middlewares/ST/ARM/DSP/Lib/libarm_cortexM4lf_math.a(arm_sin_f32.o)
+ .debug_line    0x00022cf4      0x287 C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/Middlewares/ST/ARM/DSP/Lib/libarm_cortexM4lf_math.a(arm_cos_f32.o)
+ .debug_line    0x00022f7b      0x1f7 C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/Middlewares/ST/ARM/DSP/Lib/libarm_cortexM4lf_math.a(arm_common_tables.o)
 
-.debug_str      0x00000000    0xea892
- .debug_str     0x00000000    0xea892 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Core/Src/system_stm32f4xx.c.obj
+.debug_str      0x00000000    0xea9bb
+ .debug_str     0x00000000    0xea9bb cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Core/Src/system_stm32f4xx.c.obj
                               0xd2c3f (size before relaxing)
- .debug_str     0x000ea892        0x0 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_can.c.obj
+ .debug_str     0x000ea9bb        0x0 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_can.c.obj
                               0xd3326 (size before relaxing)
- .debug_str     0x000ea892        0x0 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c.obj
+ .debug_str     0x000ea9bb        0x0 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c.obj
                               0xd3073 (size before relaxing)
- .debug_str     0x000ea892        0x0 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c.obj
+ .debug_str     0x000ea9bb        0x0 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c.obj
                               0xd2dba (size before relaxing)
- .debug_str     0x000ea892        0x0 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c.obj
+ .debug_str     0x000ea9bb        0x0 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c.obj
                               0xd3046 (size before relaxing)
- .debug_str     0x000ea892        0x0 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c.obj
+ .debug_str     0x000ea9bb        0x0 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c.obj
                               0xd3579 (size before relaxing)
- .debug_str     0x000ea892        0x0 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c.obj
+ .debug_str     0x000ea9bb        0x0 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c.obj
                               0xd384b (size before relaxing)
- .debug_str     0x000ea892        0x0 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c.obj
+ .debug_str     0x000ea9bb        0x0 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c.obj
                               0xd3fb6 (size before relaxing)
- .debug_str     0x000ea892        0x0 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c.obj
+ .debug_str     0x000ea9bb        0x0 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c.obj
                               0xd37c2 (size before relaxing)
- .debug_str     0x000ea892        0x0 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c.obj
+ .debug_str     0x000ea9bb        0x0 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c.obj
                               0xd3641 (size before relaxing)
- .debug_str     0x000ea892        0x0 cmake/stm32cubemx/CMakeFiles/FreeRTOS.dir/__/__/Middlewares/Third_Party/FreeRTOS/Source/list.c.obj
+ .debug_str     0x000ea9bb        0x0 cmake/stm32cubemx/CMakeFiles/FreeRTOS.dir/__/__/Middlewares/Third_Party/FreeRTOS/Source/list.c.obj
                                0xa61c (size before relaxing)
- .debug_str     0x000ea892        0x0 cmake/stm32cubemx/CMakeFiles/FreeRTOS.dir/__/__/Middlewares/Third_Party/FreeRTOS/Source/tasks.c.obj
+ .debug_str     0x000ea9bb        0x0 cmake/stm32cubemx/CMakeFiles/FreeRTOS.dir/__/__/Middlewares/Third_Party/FreeRTOS/Source/tasks.c.obj
                                0xc937 (size before relaxing)
- .debug_str     0x000ea892        0x0 cmake/stm32cubemx/CMakeFiles/FreeRTOS.dir/__/__/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.c.obj
+ .debug_str     0x000ea9bb        0x0 cmake/stm32cubemx/CMakeFiles/FreeRTOS.dir/__/__/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.c.obj
                                0xe4fa (size before relaxing)
- .debug_str     0x000ea892        0x0 cmake/stm32cubemx/CMakeFiles/FreeRTOS.dir/__/__/Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.c.obj
+ .debug_str     0x000ea9bb        0x0 cmake/stm32cubemx/CMakeFiles/FreeRTOS.dir/__/__/Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.c.obj
                                0xaf5e (size before relaxing)
- .debug_str     0x000ea892        0x0 cmake/stm32cubemx/CMakeFiles/FreeRTOS.dir/__/__/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c.obj
+ .debug_str     0x000ea9bb        0x0 cmake/stm32cubemx/CMakeFiles/FreeRTOS.dir/__/__/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c.obj
                                0x8813 (size before relaxing)
- .debug_str     0x000ea892        0x0 cmake/stm32cubemx/CMakeFiles/FreeRTOS.dir/__/__/Middlewares/Third_Party/SEGGRE/RTT/SEGGER_RTT.c.obj
+ .debug_str     0x000ea9bb        0x0 cmake/stm32cubemx/CMakeFiles/FreeRTOS.dir/__/__/Middlewares/Third_Party/SEGGRE/RTT/SEGGER_RTT.c.obj
                                0x8270 (size before relaxing)
- .debug_str     0x000ea892        0x0 cmake/stm32cubemx/CMakeFiles/FreeRTOS.dir/__/__/Middlewares/Third_Party/SEGGRE/RTT/SEGGER_RTT_printf.c.obj
+ .debug_str     0x000ea9bb        0x0 cmake/stm32cubemx/CMakeFiles/FreeRTOS.dir/__/__/Middlewares/Third_Party/SEGGRE/RTT/SEGGER_RTT_printf.c.obj
                                0x7c38 (size before relaxing)
- .debug_str     0x000ea892        0x0 CMakeFiles/SIZU_TASK.dir/Core/Src/main.c.obj
+ .debug_str     0x000ea9bb        0x0 CMakeFiles/SIZU_TASK.dir/Core/Src/main.c.obj
                               0xdf066 (size before relaxing)
- .debug_str     0x000ea892        0x0 CMakeFiles/SIZU_TASK.dir/Core/Src/gpio.c.obj
+ .debug_str     0x000ea9bb        0x0 CMakeFiles/SIZU_TASK.dir/Core/Src/gpio.c.obj
                               0xd2c5a (size before relaxing)
- .debug_str     0x000ea892        0x0 CMakeFiles/SIZU_TASK.dir/Core/Src/freertos.c.obj
+ .debug_str     0x000ea9bb        0x0 CMakeFiles/SIZU_TASK.dir/Core/Src/freertos.c.obj
                               0xd8e16 (size before relaxing)
- .debug_str     0x000ea892        0x0 CMakeFiles/SIZU_TASK.dir/Core/Src/can.c.obj
+ .debug_str     0x000ea9bb        0x0 CMakeFiles/SIZU_TASK.dir/Core/Src/can.c.obj
                               0xd34b5 (size before relaxing)
- .debug_str     0x000ea892        0x0 CMakeFiles/SIZU_TASK.dir/Core/Src/dma.c.obj
+ .debug_str     0x000ea9bb        0x0 CMakeFiles/SIZU_TASK.dir/Core/Src/dma.c.obj
                               0xd30f9 (size before relaxing)
- .debug_str     0x000ea892        0x0 CMakeFiles/SIZU_TASK.dir/Core/Src/tim.c.obj
+ .debug_str     0x000ea9bb        0x0 CMakeFiles/SIZU_TASK.dir/Core/Src/tim.c.obj
                               0xd37b1 (size before relaxing)
- .debug_str     0x000ea892        0x0 CMakeFiles/SIZU_TASK.dir/Core/Src/usart.c.obj
+ .debug_str     0x000ea9bb        0x0 CMakeFiles/SIZU_TASK.dir/Core/Src/usart.c.obj
                               0xd37c1 (size before relaxing)
- .debug_str     0x000ea892        0x0 CMakeFiles/SIZU_TASK.dir/Core/Src/stm32f4xx_it.c.obj
+ .debug_str     0x000ea9bb        0x0 CMakeFiles/SIZU_TASK.dir/Core/Src/stm32f4xx_it.c.obj
                               0xd757b (size before relaxing)
- .debug_str     0x000ea892        0x0 CMakeFiles/SIZU_TASK.dir/Core/Src/stm32f4xx_hal_msp.c.obj
+ .debug_str     0x000ea9bb        0x0 CMakeFiles/SIZU_TASK.dir/Core/Src/stm32f4xx_hal_msp.c.obj
                               0xd30e9 (size before relaxing)
- .debug_str     0x000ea892        0x0 CMakeFiles/SIZU_TASK.dir/Core/Src/sysmem.c.obj
+ .debug_str     0x000ea9bb        0x0 CMakeFiles/SIZU_TASK.dir/Core/Src/sysmem.c.obj
                                0x7194 (size before relaxing)
- .debug_str     0x000ea892        0x0 CMakeFiles/SIZU_TASK.dir/startup_stm32f427xx.s.obj
+ .debug_str     0x000ea9bb        0x0 CMakeFiles/SIZU_TASK.dir/startup_stm32f427xx.s.obj
                                  0xa6 (size before relaxing)
- .debug_str     0x000ea892        0x0 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
-                              0xe094e (size before relaxing)
- .debug_str     0x000ea892        0x0 CMakeFiles/SIZU_TASK.dir/BSP/bsp_init.c.obj
+ .debug_str     0x000ea9bb        0x0 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
+                              0xe0a88 (size before relaxing)
+ .debug_str     0x000ea9bb        0x0 CMakeFiles/SIZU_TASK.dir/BSP/bsp_init.c.obj
                               0xd6d5c (size before relaxing)
- .debug_str     0x000ea892        0x0 CMakeFiles/SIZU_TASK.dir/BSP/can/bsp_can.c.obj
+ .debug_str     0x000ea9bb        0x0 CMakeFiles/SIZU_TASK.dir/BSP/can/bsp_can.c.obj
                               0xd73ab (size before relaxing)
- .debug_str     0x000ea892        0x0 CMakeFiles/SIZU_TASK.dir/BSP/dwt/bsp_dwt.c.obj
+ .debug_str     0x000ea9bb        0x0 CMakeFiles/SIZU_TASK.dir/BSP/dwt/bsp_dwt.c.obj
                               0xdce45 (size before relaxing)
- .debug_str     0x000ea892        0x0 CMakeFiles/SIZU_TASK.dir/BSP/log/bsp_log.c.obj
+ .debug_str     0x000ea9bb        0x0 CMakeFiles/SIZU_TASK.dir/BSP/log/bsp_log.c.obj
                                0x8365 (size before relaxing)
- .debug_str     0x000ea892        0x0 CMakeFiles/SIZU_TASK.dir/BSP/pwm/bsp_pwm.c.obj
+ .debug_str     0x000ea9bb        0x0 CMakeFiles/SIZU_TASK.dir/BSP/pwm/bsp_pwm.c.obj
                               0xd5db1 (size before relaxing)
- .debug_str     0x000ea892        0x0 CMakeFiles/SIZU_TASK.dir/BSP/tim/bsp_tim.c.obj
+ .debug_str     0x000ea9bb        0x0 CMakeFiles/SIZU_TASK.dir/BSP/tim/bsp_tim.c.obj
                               0xd6017 (size before relaxing)
- .debug_str     0x000ea892        0x0 CMakeFiles/SIZU_TASK.dir/BSP/usart/bsp_usart.c.obj
+ .debug_str     0x000ea9bb        0x0 CMakeFiles/SIZU_TASK.dir/BSP/usart/bsp_usart.c.obj
                               0xd72e9 (size before relaxing)
- .debug_str     0x000ea892        0x0 CMakeFiles/SIZU_TASK.dir/Modules/motor/DJImotor/dji_motor.c.obj
+ .debug_str     0x000ea9bb        0x0 CMakeFiles/SIZU_TASK.dir/Modules/motor/DJImotor/dji_motor.c.obj
                               0xd9bcb (size before relaxing)
- .debug_str     0x000ea892        0x0 CMakeFiles/SIZU_TASK.dir/Modules/algorithm/coordinate_system/coordinate_system.c.obj
+ .debug_str     0x000ea9bb        0x0 CMakeFiles/SIZU_TASK.dir/Modules/algorithm/coordinate_system/coordinate_system.c.obj
                               0xd72a5 (size before relaxing)
- .debug_str     0x000ea892        0x0 CMakeFiles/SIZU_TASK.dir/Modules/algorithm/pid/controller.c.obj
+ .debug_str     0x000ea9bb        0x0 CMakeFiles/SIZU_TASK.dir/Modules/algorithm/pid/controller.c.obj
                               0xd8afe (size before relaxing)
- .debug_str     0x000ea892        0x0 CMakeFiles/SIZU_TASK.dir/Modules/imu/IMU.c.obj
+ .debug_str     0x000ea9bb        0x0 CMakeFiles/SIZU_TASK.dir/Modules/imu/IMU.c.obj
                               0xd7854 (size before relaxing)
- .debug_str     0x000ea892        0x0 CMakeFiles/SIZU_TASK.dir/Modules/unicomm/unicomm.c.obj
+ .debug_str     0x000ea9bb        0x0 CMakeFiles/SIZU_TASK.dir/Modules/unicomm/unicomm.c.obj
                               0xd6005 (size before relaxing)
- .debug_str     0x000ea892        0x0 CMakeFiles/SIZU_TASK.dir/Modules/daemon/daemon.c.obj
+ .debug_str     0x000ea9bb        0x0 CMakeFiles/SIZU_TASK.dir/Modules/daemon/daemon.c.obj
                               0xd6dbd (size before relaxing)
- .debug_str     0x000ea892        0x0 CMakeFiles/SIZU_TASK.dir/TASK/MotorControl_task/MotorControl_task.c.obj
+ .debug_str     0x000ea9bb        0x0 CMakeFiles/SIZU_TASK.dir/TASK/MotorControl_task/MotorControl_task.c.obj
                               0xdf8aa (size before relaxing)
- .debug_str     0x000ea892        0x0 CMakeFiles/SIZU_TASK.dir/TASK/PostureControl_task/PostureControl_task.c.obj
+ .debug_str     0x000ea9bb        0x0 CMakeFiles/SIZU_TASK.dir/TASK/PostureControl_task/PostureControl_task.c.obj
                               0xdfc2a (size before relaxing)
- .debug_str     0x000ea892        0x0 C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/Middlewares/ST/ARM/DSP/Lib/libarm_cortexM4lf_math.a(arm_sin_f32.o)
+ .debug_str     0x000ea9bb        0x0 C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/Middlewares/ST/ARM/DSP/Lib/libarm_cortexM4lf_math.a(arm_sin_f32.o)
                                 0xfb7 (size before relaxing)
- .debug_str     0x000ea892        0x0 C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/Middlewares/ST/ARM/DSP/Lib/libarm_cortexM4lf_math.a(arm_cos_f32.o)
+ .debug_str     0x000ea9bb        0x0 C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/Middlewares/ST/ARM/DSP/Lib/libarm_cortexM4lf_math.a(arm_cos_f32.o)
                                 0xfb7 (size before relaxing)
- .debug_str     0x000ea892        0x0 C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/Middlewares/ST/ARM/DSP/Lib/libarm_cortexM4lf_math.a(arm_common_tables.o)
+ .debug_str     0x000ea9bb        0x0 C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/Middlewares/ST/ARM/DSP/Lib/libarm_cortexM4lf_math.a(arm_common_tables.o)
                                 0xf92 (size before relaxing)
 
-.debug_frame    0x00000000     0x7e30
+.debug_frame    0x00000000     0x7e68
  .debug_frame   0x00000000       0x58 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Core/Src/system_stm32f4xx.c.obj
  .debug_frame   0x00000058      0x5a0 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_can.c.obj
  .debug_frame   0x000005f8      0x1f4 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c.obj
@@ -11122,76 +11135,77 @@ LOAD linker stubs
  .debug_frame   0x00005268      0x348 CMakeFiles/SIZU_TASK.dir/Core/Src/stm32f4xx_it.c.obj
  .debug_frame   0x000055b0       0x34 CMakeFiles/SIZU_TASK.dir/Core/Src/stm32f4xx_hal_msp.c.obj
  .debug_frame   0x000055e4       0x34 CMakeFiles/SIZU_TASK.dir/Core/Src/sysmem.c.obj
- .debug_frame   0x00005618      0x5a0 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
- .debug_frame   0x00005bb8       0x2c CMakeFiles/SIZU_TASK.dir/BSP/bsp_init.c.obj
- .debug_frame   0x00005be4      0x180 CMakeFiles/SIZU_TASK.dir/BSP/can/bsp_can.c.obj
- .debug_frame   0x00005d64      0x174 CMakeFiles/SIZU_TASK.dir/BSP/dwt/bsp_dwt.c.obj
- .debug_frame   0x00005ed8       0x8c CMakeFiles/SIZU_TASK.dir/BSP/log/bsp_log.c.obj
- .debug_frame   0x00005f64      0x138 CMakeFiles/SIZU_TASK.dir/BSP/pwm/bsp_pwm.c.obj
- .debug_frame   0x0000609c      0x21c CMakeFiles/SIZU_TASK.dir/BSP/tim/bsp_tim.c.obj
- .debug_frame   0x000062b8       0xf4 CMakeFiles/SIZU_TASK.dir/BSP/usart/bsp_usart.c.obj
- .debug_frame   0x000063ac      0x19c CMakeFiles/SIZU_TASK.dir/Modules/motor/DJImotor/dji_motor.c.obj
- .debug_frame   0x00006548       0x6c CMakeFiles/SIZU_TASK.dir/Modules/algorithm/coordinate_system/coordinate_system.c.obj
- .debug_frame   0x000065b4      0x1c4 CMakeFiles/SIZU_TASK.dir/Modules/algorithm/pid/controller.c.obj
- .debug_frame   0x00006778       0xe0 CMakeFiles/SIZU_TASK.dir/Modules/imu/IMU.c.obj
- .debug_frame   0x00006858      0x1bc CMakeFiles/SIZU_TASK.dir/Modules/unicomm/unicomm.c.obj
- .debug_frame   0x00006a14       0xa8 CMakeFiles/SIZU_TASK.dir/Modules/daemon/daemon.c.obj
- .debug_frame   0x00006abc      0x118 CMakeFiles/SIZU_TASK.dir/TASK/MotorControl_task/MotorControl_task.c.obj
- .debug_frame   0x00006bd4      0x210 CMakeFiles/SIZU_TASK.dir/TASK/PostureControl_task/PostureControl_task.c.obj
- .debug_frame   0x00006de4       0x4c D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-w_acos.o)
- .debug_frame   0x00006e30       0x4c D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-w_asin.o)
- .debug_frame   0x00006e7c       0x44 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-w_fmod.o)
- .debug_frame   0x00006ec0       0x48 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-w_pow.o)
- .debug_frame   0x00006f08       0x48 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-w_sqrt.o)
- .debug_frame   0x00006f50       0x20 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-s_fabs.o)
- .debug_frame   0x00006f70       0x40 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-s_sin.o)
- .debug_frame   0x00006fb0       0x28 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-s_finite.o)
- .debug_frame   0x00006fd8       0x20 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-s_nan.o)
- .debug_frame   0x00006ff8       0x38 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-e_sqrt.o)
- .debug_frame   0x00007030       0x68 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-k_cos.o)
- .debug_frame   0x00007098       0x68 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-k_sin.o)
- .debug_frame   0x00007100       0x64 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-e_acos.o)
- .debug_frame   0x00007164       0x50 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-e_asin.o)
- .debug_frame   0x000071b4       0x40 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-e_fmod.o)
- .debug_frame   0x000071f4       0x80 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-e_pow.o)
- .debug_frame   0x00007274       0x48 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-e_rem_pio2.o)
- .debug_frame   0x000072bc       0x2c D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-s_scalbn.o)
- .debug_frame   0x000072e8      0x148 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-math_err.o)
- .debug_frame   0x00007430       0x58 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-k_rem_pio2.o)
- .debug_frame   0x00007488       0x30 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-s_floor.o)
- .debug_frame   0x000074b8       0x20 C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/Middlewares/ST/ARM/DSP/Lib/libarm_cortexM4lf_math.a(arm_sin_f32.o)
- .debug_frame   0x000074d8       0x20 C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/Middlewares/ST/ARM/DSP/Lib/libarm_cortexM4lf_math.a(arm_cos_f32.o)
- .debug_frame   0x000074f8       0xac D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_addsubdf3.o)
- .debug_frame   0x000075a4       0x50 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_muldivdf3.o)
- .debug_frame   0x000075f4       0xc4 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_cmpdf2.o)
- .debug_frame   0x000076b8       0x20 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_unorddf2.o)
- .debug_frame   0x000076d8       0x24 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_fixdfsi.o)
- .debug_frame   0x000076fc       0x24 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_truncdfsf2.o)
- .debug_frame   0x00007720       0x2c D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard\libgcc.a(_aeabi_uldivmod.o)
- .debug_frame   0x0000774c       0x44 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard\libgcc.a(_udivmoddi4.o)
- .debug_frame   0x00007790       0x30 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-malloc.o)
- .debug_frame   0x000077c0       0x50 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-mallocr.o)
- .debug_frame   0x00007810       0x30 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-mlock.o)
- .debug_frame   0x00007840      0x144 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-findfp.o)
- .debug_frame   0x00007984       0x7c D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-snprintf.o)
- .debug_frame   0x00007a00       0x28 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-memcmp.o)
- .debug_frame   0x00007a28       0x28 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-memmove.o)
- .debug_frame   0x00007a50       0x20 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-memset.o)
- .debug_frame   0x00007a70       0x28 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-strncmp.o)
- .debug_frame   0x00007a98       0x38 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-reent.o)
- .debug_frame   0x00007ad0       0x2c D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-sbrkr.o)
- .debug_frame   0x00007afc       0x20 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-errno.o)
- .debug_frame   0x00007b1c       0x2c D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-init.o)
- .debug_frame   0x00007b48       0xb0 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-lock.o)
- .debug_frame   0x00007bf8       0x20 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-strcmp.o)
- .debug_frame   0x00007c18       0x28 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-memcpy-stub.o)
- .debug_frame   0x00007c40       0x20 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-strlen.o)
- .debug_frame   0x00007c60       0x38 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-freer.o)
- .debug_frame   0x00007c98       0x90 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-nano-svfprintf.o)
- .debug_frame   0x00007d28       0x60 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-nano-vfprintf_i.o)
- .debug_frame   0x00007d88       0x4c D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-memchr.o)
- .debug_frame   0x00007dd4       0x3c D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-reallocr.o)
- .debug_frame   0x00007e10       0x20 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-msizer.o)
+ .debug_frame   0x00005618      0x5b8 CMakeFiles/SIZU_TASK.dir/APP/action/action.c.obj
+ .debug_frame   0x00005bd0       0x2c CMakeFiles/SIZU_TASK.dir/BSP/bsp_init.c.obj
+ .debug_frame   0x00005bfc      0x180 CMakeFiles/SIZU_TASK.dir/BSP/can/bsp_can.c.obj
+ .debug_frame   0x00005d7c      0x174 CMakeFiles/SIZU_TASK.dir/BSP/dwt/bsp_dwt.c.obj
+ .debug_frame   0x00005ef0       0x8c CMakeFiles/SIZU_TASK.dir/BSP/log/bsp_log.c.obj
+ .debug_frame   0x00005f7c      0x138 CMakeFiles/SIZU_TASK.dir/BSP/pwm/bsp_pwm.c.obj
+ .debug_frame   0x000060b4      0x21c CMakeFiles/SIZU_TASK.dir/BSP/tim/bsp_tim.c.obj
+ .debug_frame   0x000062d0       0xf4 CMakeFiles/SIZU_TASK.dir/BSP/usart/bsp_usart.c.obj
+ .debug_frame   0x000063c4      0x19c CMakeFiles/SIZU_TASK.dir/Modules/motor/DJImotor/dji_motor.c.obj
+ .debug_frame   0x00006560       0x6c CMakeFiles/SIZU_TASK.dir/Modules/algorithm/coordinate_system/coordinate_system.c.obj
+ .debug_frame   0x000065cc      0x1c4 CMakeFiles/SIZU_TASK.dir/Modules/algorithm/pid/controller.c.obj
+ .debug_frame   0x00006790       0xe0 CMakeFiles/SIZU_TASK.dir/Modules/imu/IMU.c.obj
+ .debug_frame   0x00006870      0x1bc CMakeFiles/SIZU_TASK.dir/Modules/unicomm/unicomm.c.obj
+ .debug_frame   0x00006a2c       0xa8 CMakeFiles/SIZU_TASK.dir/Modules/daemon/daemon.c.obj
+ .debug_frame   0x00006ad4      0x118 CMakeFiles/SIZU_TASK.dir/TASK/MotorControl_task/MotorControl_task.c.obj
+ .debug_frame   0x00006bec      0x210 CMakeFiles/SIZU_TASK.dir/TASK/PostureControl_task/PostureControl_task.c.obj
+ .debug_frame   0x00006dfc       0x4c D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-w_acos.o)
+ .debug_frame   0x00006e48       0x4c D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-w_asin.o)
+ .debug_frame   0x00006e94       0x44 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-w_fmod.o)
+ .debug_frame   0x00006ed8       0x48 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-w_pow.o)
+ .debug_frame   0x00006f20       0x48 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-w_sqrt.o)
+ .debug_frame   0x00006f68       0x20 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-s_fabs.o)
+ .debug_frame   0x00006f88       0x40 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-s_sin.o)
+ .debug_frame   0x00006fc8       0x28 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-s_finite.o)
+ .debug_frame   0x00006ff0       0x20 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-s_nan.o)
+ .debug_frame   0x00007010       0x20 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-sf_lround.o)
+ .debug_frame   0x00007030       0x38 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-e_sqrt.o)
+ .debug_frame   0x00007068       0x68 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-k_cos.o)
+ .debug_frame   0x000070d0       0x68 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-k_sin.o)
+ .debug_frame   0x00007138       0x64 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-e_acos.o)
+ .debug_frame   0x0000719c       0x50 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-e_asin.o)
+ .debug_frame   0x000071ec       0x40 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-e_fmod.o)
+ .debug_frame   0x0000722c       0x80 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-e_pow.o)
+ .debug_frame   0x000072ac       0x48 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-e_rem_pio2.o)
+ .debug_frame   0x000072f4       0x2c D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-s_scalbn.o)
+ .debug_frame   0x00007320      0x148 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-math_err.o)
+ .debug_frame   0x00007468       0x58 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-k_rem_pio2.o)
+ .debug_frame   0x000074c0       0x30 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a(libm_a-s_floor.o)
+ .debug_frame   0x000074f0       0x20 C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/Middlewares/ST/ARM/DSP/Lib/libarm_cortexM4lf_math.a(arm_sin_f32.o)
+ .debug_frame   0x00007510       0x20 C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/Middlewares/ST/ARM/DSP/Lib/libarm_cortexM4lf_math.a(arm_cos_f32.o)
+ .debug_frame   0x00007530       0xac D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_addsubdf3.o)
+ .debug_frame   0x000075dc       0x50 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_muldivdf3.o)
+ .debug_frame   0x0000762c       0xc4 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_cmpdf2.o)
+ .debug_frame   0x000076f0       0x20 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_unorddf2.o)
+ .debug_frame   0x00007710       0x24 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_fixdfsi.o)
+ .debug_frame   0x00007734       0x24 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_truncdfsf2.o)
+ .debug_frame   0x00007758       0x2c D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard\libgcc.a(_aeabi_uldivmod.o)
+ .debug_frame   0x00007784       0x44 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m+fp/hard\libgcc.a(_udivmoddi4.o)
+ .debug_frame   0x000077c8       0x30 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-malloc.o)
+ .debug_frame   0x000077f8       0x50 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-mallocr.o)
+ .debug_frame   0x00007848       0x30 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-mlock.o)
+ .debug_frame   0x00007878      0x144 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-findfp.o)
+ .debug_frame   0x000079bc       0x7c D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-snprintf.o)
+ .debug_frame   0x00007a38       0x28 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-memcmp.o)
+ .debug_frame   0x00007a60       0x28 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-memmove.o)
+ .debug_frame   0x00007a88       0x20 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-memset.o)
+ .debug_frame   0x00007aa8       0x28 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-strncmp.o)
+ .debug_frame   0x00007ad0       0x38 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-reent.o)
+ .debug_frame   0x00007b08       0x2c D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-sbrkr.o)
+ .debug_frame   0x00007b34       0x20 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-errno.o)
+ .debug_frame   0x00007b54       0x2c D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-init.o)
+ .debug_frame   0x00007b80       0xb0 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-lock.o)
+ .debug_frame   0x00007c30       0x20 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-strcmp.o)
+ .debug_frame   0x00007c50       0x28 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-memcpy-stub.o)
+ .debug_frame   0x00007c78       0x20 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-strlen.o)
+ .debug_frame   0x00007c98       0x38 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-freer.o)
+ .debug_frame   0x00007cd0       0x90 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-nano-svfprintf.o)
+ .debug_frame   0x00007d60       0x60 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-nano-vfprintf_i.o)
+ .debug_frame   0x00007dc0       0x4c D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-memchr.o)
+ .debug_frame   0x00007e0c       0x3c D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-reallocr.o)
+ .debug_frame   0x00007e48       0x20 D:/worktools/arm-none-eabi-gdb/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libg_nano.a(libc_a-msizer.o)
 
 .debug_line_str
                 0x00000000      0x27a
