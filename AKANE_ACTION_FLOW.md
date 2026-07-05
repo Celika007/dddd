@@ -39,9 +39,12 @@ UART8 DMA + IDLE
             ├─ debug:left_turn    -> state = LEFT_TURN
             ├─ debug:right_turn   -> state = RIGHT_TURN
             ├─ debug:in_place     -> state = IN_PLACE
+            ├─ debug:jumpupstairs -> state = JUMP_UPSTAIRS
             ├─ debug:stand        -> state = STAND
             ├─ debug:realse       -> state = REALSE
             ├─ debug:*+ / debug:*- -> 调整 state_detached_params[state]
+            ├─ debug:frontstretch/frontlean/rightlean +/- -> 调整 STAND 姿态参数
+            ├─ debug:jump_length/jump_ready/jump_land/jt7/jt6 +/- -> 调整 jumpupstairs 参数
             └─ debug:clear        -> 重置 walk_done 和 IMU 增量基准
 ```
 
@@ -70,8 +73,15 @@ PostureControl_task()
       ├─ IN_PLACE
       │  ├─ state_detached_params[IN_PLACE]
       │  └─ gait_detached()
+      ├─ JUMP_UPSTAIRS
+      │  ├─ 仅 UART8 debug 进入，ACTIONING 不直接启用
+      │  ├─ 使用 jump_length / jt7 / jt6 等调试参数
+      │  ├─ 复用 CartesianToTheta()
+      │  ├─ 叠加 frontstretch / frontlean / rightlean
+      │  └─ SetCoupledPosition()
       ├─ STAND
-      │  └─ StandByStartPosition()
+      │  ├─ StandByStartPosition()
+      │  └─ 叠加 frontstretch / frontlean / rightlean
       ├─ REALSE
       │  └─ osDelay(50)
       └─ GRAB
@@ -108,3 +118,24 @@ ACTION_RECORD_UART8_ENABLE = 0
 └─ AKANE 自动模式
    └─ UART7 MEASURING/ACTIONING 驱动 ActionProcessSerialState()
 ```
+
+## Jump 与 Action Code
+
+```text
+UART8 debug
+└─ debug:jumpupstairs
+   └─ JUMP_UPSTAIRS
+      ├─ ready: jump_ready + jt7
+      ├─ takeoff: jump_length + jt7
+      ├─ landing prepare: jump_land + jt7
+      ├─ landing buffer: jump_land + jt6
+      └─ STAND
+
+UART7 ACTIONING
+├─ SAND_PIT
+│  └─ 代码中保留第一步 jumpupstairs 注释占位，不直接进入 JUMP_UPSTAIRS
+└─ STEPS
+   └─ 代码中保留第一步 jumpupstairs 注释占位，不直接进入 JUMP_UPSTAIRS
+```
+
+`frontstretch/frontlean/rightlean` 是可叠加的 STAND 姿态调参。`STAND` 下 ALOG 以 2 Hz 返回这三个值；其他 debug 状态会持续返回 `sp`、`adj`、`jp` 和 IMU 信息，便于把物理验证结果填回正式 action 脚本。

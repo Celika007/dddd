@@ -41,8 +41,10 @@ enum States
     LEFT_TURN=3,
     RIGHT_TURN=4,
     IN_PLACE=5,
-    STOP=6,
-    REALSE=7,
+    /* AKANE obstacle-course jump debug only. ACTIONING scripts do not enter this state directly. */
+    JUMP_UPSTAIRS=6,
+    STOP=7,
+    REALSE=8,
 };
 
 typedef struct  {		// 腿部参数结构体
@@ -68,6 +70,18 @@ typedef struct
     GaitParams detached_params_3;//右后
 }DetachedParam;
 
+typedef struct
+{
+    float front_stretch_deg;
+    float front_lean_deg;
+    float right_lean_deg;
+    float jump_length;
+    float jump_ready_height;
+    float jump_land_height;
+    float jump_theta_7;
+    float jump_theta_6;
+} ActionJumpDebugParams_s;
+
 extern DetachedParam detached_params;
 extern DetachedParam state_detached_params[];
 extern enum States state;
@@ -80,6 +94,9 @@ void ActionProcessNavigation(void);
 void ActionProcessSerialState(void);
 void ActionProcessDebugControl(void);
 void Action_ApplyRunYawCorrection(DetachedParam *run_params);
+void Action_ApplyStandDebugAdjustment(float *theta_1, float *theta_2, float *theta_3, float *theta_4,
+                                      float *theta_5, float *theta_6, float *theta_7, float *theta_8);
+const ActionJumpDebugParams_s *ActionDebug_GetJumpParams(void);
 void ActionDebug_UpdateWalkPhase(float base_phase);
 void ActionDebug_ResetWalkRecord(void);
 uint8_t ActionDebug_ShouldHoldRealse(void);

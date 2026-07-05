@@ -50,11 +50,14 @@ static TickType_t startup_tick = 0;
 static uint8_t startup_tick_initialized = 0;
 static float gait_phase_accumulator = 0.0f;
 static float gait_phase_prev_t = 0.0f;
+static uint8_t jump_debug_active = 0U;
+static TickType_t jump_debug_start_tick = 0U;
 
 DJIMotorInstance* _g_left_motor[4]={0};
 DJIMotorInstance* _g_right_motor[4]={0};
 
 static void StandByStartPosition(void);
+static void JumpUpstairsDebug(void);
 
 static int IsMotionState(enum States current_state)
 {
@@ -62,7 +65,8 @@ static int IsMotionState(enum States current_state)
            current_state == GRAB ||
            current_state == LEFT_TURN ||
            current_state == RIGHT_TURN ||
-           current_state == IN_PLACE;
+           current_state == IN_PLACE ||
+           current_state == JUMP_UPSTAIRS;
 }
 
 static void UpdateStartupState(void)
@@ -182,6 +186,7 @@ void PostureControl()
         gait_detached(detached_params,0.0,0.5,0.0,0.5);
         break;
     case STAND:
+        jump_debug_active = 0U;
         StandByStartPosition();
         break;
     case GRAB:
@@ -209,6 +214,11 @@ void PostureControl()
         detached_params = state_detached_params[state];
         gait_detached(detached_params,0.0,0.5,0.0,0.5);
         break;
+    case JUMP_UPSTAIRS:
+
+        /* AKANE obstacle-course UART8 debug only. ACTIONING scripts do not enter this state. */
+        JumpUpstairsDebug();
+        break;
     case STOP:
 
         DOWN();
@@ -224,16 +234,116 @@ void PostureControl()
 
 static void StandByStartPosition(void)
 {
-    DJIMotorSetRef(RightGetMotor(0), START_POS1 * ReductionAndAngleRatio);
-    DJIMotorSetRef(RightGetMotor(1), START_POS2 * ReductionAndAngleRatio);
-    DJIMotorSetRef(LeftGetMotor(0), START_POS3 * ReductionAndAngleRatio);
-    DJIMotorSetRef(LeftGetMotor(1), START_POS4 * ReductionAndAngleRatio);
-    DJIMotorSetRef(LeftGetMotor(2), START_POS5 * ReductionAndAngleRatio);
-    DJIMotorSetRef(LeftGetMotor(3), START_POS6 * ReductionAndAngleRatio);
-    DJIMotorSetRef(RightGetMotor(2), START_POS7 * ReductionAndAngleRatio);
-    DJIMotorSetRef(RightGetMotor(3), START_POS8 * ReductionAndAngleRatio);
+    float stand_theta1 = START_POS1;
+    float stand_theta2 = START_POS2;
+    float stand_theta3 = START_POS3;
+    float stand_theta4 = START_POS4;
+    float stand_theta5 = START_POS5;
+    float stand_theta6 = START_POS6;
+    float stand_theta7 = START_POS7;
+    float stand_theta8 = START_POS8;
+
+    Action_ApplyStandDebugAdjustment(&stand_theta1, &stand_theta2, &stand_theta3, &stand_theta4,
+                                     &stand_theta5, &stand_theta6, &stand_theta7, &stand_theta8);
+
+    DJIMotorSetRef(RightGetMotor(0), stand_theta1 * ReductionAndAngleRatio);
+    DJIMotorSetRef(RightGetMotor(1), stand_theta2 * ReductionAndAngleRatio);
+    DJIMotorSetRef(LeftGetMotor(0), stand_theta3 * ReductionAndAngleRatio);
+    DJIMotorSetRef(LeftGetMotor(1), stand_theta4 * ReductionAndAngleRatio);
+    DJIMotorSetRef(LeftGetMotor(2), stand_theta5 * ReductionAndAngleRatio);
+    DJIMotorSetRef(LeftGetMotor(3), stand_theta6 * ReductionAndAngleRatio);
+    DJIMotorSetRef(RightGetMotor(2), stand_theta7 * ReductionAndAngleRatio);
+    DJIMotorSetRef(RightGetMotor(3), stand_theta8 * ReductionAndAngleRatio);
 
     IsMotoReadyOrNot = IsReady;
+}
+
+static void ApplyJumpTiltToTheta(float jump_tilt_deg, uint8_t landing_buffer)
+{
+    if (landing_buffer)
+    {
+        theta1 += jump_tilt_deg;
+        theta2 -= jump_tilt_deg;
+        theta3 += jump_tilt_deg;
+        theta4 -= jump_tilt_deg;
+        theta5 += jump_tilt_deg;
+        theta6 -= jump_tilt_deg;
+        theta7 += jump_tilt_deg;
+        theta8 -= jump_tilt_deg;
+    }
+    else
+    {
+        theta1 -= jump_tilt_deg;
+        theta2 += jump_tilt_deg;
+        theta3 -= jump_tilt_deg;
+        theta4 += jump_tilt_deg;
+        theta5 -= jump_tilt_deg;
+        theta6 += jump_tilt_deg;
+        theta7 -= jump_tilt_deg;
+        theta8 += jump_tilt_deg;
+    }
+}
+
+static void SetAllCoupledPositions(void)
+{
+    SetCoupledPosition(0);
+    SetCoupledPosition(1);
+    SetCoupledPosition(2);
+    SetCoupledPosition(3);
+    IsMotoReadyOrNot = IsReady;
+}
+
+static void JumpUpstairsDebug(void)
+{
+    const ActionJumpDebugParams_s *jump_params = ActionDebug_GetJumpParams();
+    TickType_t now = xTaskGetTickCount();
+    float elapsed_s;
+    uint8_t landing_buffer = 0U;
+    float jump_tilt;
+
+    if (!jump_debug_active)
+    {
+        jump_debug_start_tick = now;
+        jump_debug_active = 1U;
+    }
+
+    elapsed_s = (float)(now - jump_debug_start_tick) * (float)portTICK_PERIOD_MS / 1000.0f;
+
+    foot_x = 0.0f;
+    if (elapsed_s < 0.5f)
+    {
+        foot_y = jump_params->jump_ready_height;
+        jump_tilt = jump_params->jump_theta_7;
+    }
+    else if (elapsed_s < 0.68f)
+    {
+        foot_y = jump_params->jump_length;
+        jump_tilt = jump_params->jump_theta_7;
+    }
+    else if (elapsed_s < 0.8f)
+    {
+        foot_y = jump_params->jump_land_height;
+        jump_tilt = jump_params->jump_theta_7;
+    }
+    else if (elapsed_s < 1.0f)
+    {
+        foot_y = jump_params->jump_land_height;
+        jump_tilt = jump_params->jump_theta_6;
+        landing_buffer = 1U;
+    }
+    else
+    {
+        jump_debug_active = 0U;
+        state = STAND;
+        StandByStartPosition();
+        return;
+    }
+
+    CartesianToTheta();
+    ApplyJumpTiltToTheta(jump_tilt, landing_buffer);
+    Action_ApplyStandDebugAdjustment(&theta1, &theta2, &theta3, &theta4,
+                                     &theta5, &theta6, &theta7, &theta8);
+    SetAllCoupledPositions();
 }
 
 void gait_detached(DetachedParam d_params, float leg0_offset, float leg1_offset, float leg2_offset, float leg3_offset)

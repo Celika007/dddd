@@ -1,0 +1,371 @@
+
+void jumpupstairs()
+{
+    station_adjustment_flag=1;
+    if (flag_6 == 0)
+    {
+        //start_time_ = HAL_GetTick();
+        start_time_ =GetSystemTimeSeconds();
+        flag_6 = 1;
+    }
+    t = GetSystemTimeSeconds() - start_time_ ;
+
+    /***********************************************************************************/
+
+    if (t < 0.5)
+    {
+        jump_flag=7;//第一级跳跃
+        for (int i = 0; i < 8; i++)
+        {
+            pid_spd[i].MaxOutput = 12000;
+            pid_pos[i].MaxOutput = 5000;
+        }
+
+        LegGain gains = {8, 0.00, 15, 0.00};
+        //	x = -1;
+        x = 0;
+        y = 12;
+        x1 = x;
+        y1 = y;
+        CartesianToTheta();
+        CommandAllLegs(gains);
+        flag = 1;
+    }
+    /***********************************************************************************/
+    /***********************************************************************************/
+    else if ((t >= 0.5) && (t < 0.68))
+    {
+        for (int i = 0; i < 8; i++)
+        {
+            pid_spd[i].MaxOutput = 30000;
+            pid_pos[i].MaxOutput = 30000;
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            if (angle1 == 22)
+            {
+
+                // x = -2.15;
+                // y = 28;
+                x = 0;
+                y = y_7;
+
+                LegGain gains = {50.0, 0.00, 40.0, 0.00};
+                CartesianToTheta();
+
+                leg_data(gains, i);
+                flag = 2;
+            }
+        }
+    }
+    else if ((t >= 0.68) && (t < 0.8))
+    {
+        jump_flag = 7;
+        x = 0;
+        y = 13;
+        CartesianToTheta();
+        for (int i = 0; i < 8; i++)
+        {
+            pid_spd[i].MaxOutput = 16000;
+            pid_pos[i].MaxOutput = 12000;
+            pid_spd[i].i = 0.01;
+            pid_pos[i].i = 0.01;
+        }
+        for (int i = 0; i < 4; i++)
+        {
+            LegGain gains = {8.0, 0.00, 15.0, 0.00};
+
+            leg_data(gains, i);
+        }
+    }
+    else
+    {
+       jump_flag=6;
+       for (int i = 0; i < 8; i++)
+        {
+            pid_spd[i].MaxOutput = 12000;
+            pid_pos[i].MaxOutput = 12000;
+           
+        }
+         LegGain gains = {8.0, 0.00, 15.0, 0.00};
+        x = 0;
+            y = 13;
+
+            CartesianToTheta();
+              CommandAllLegs(gains);
+
+        // flag_6=0;
+        flag_1 = 0;
+        
+    }
+}
+
+
+
+
+// jump
+float jump_theta = 27;
+float jump_theta_1 = 25;
+float jump_theta_2 = 27;
+float jump_theta_7=12;
+float jump_theta_8=22;
+float jump_theta_9=22;
+float jump_theta_10=-15;
+float upleaning = 0;
+
+
+
+void CartesianToTheta(void)
+{
+    float l = 0;
+    double r1 = 0;
+    float r2 = 0;
+    float n = 0;
+    float a1 = 0;
+    float a2 = 0;
+
+    l = sqrt(pow(x, 2) + pow(y, 2));
+
+    r1 = acos((pow(l, 2) + pow(L1, 2) - pow(L2, 2)) / (2 * L1 * l)) * 180.0 / PI;
+    r2 = acos((pow(l, 2) + pow(L1, 2) - pow(L2, 2)) / (2 * L1 * l)) * 180.0 / PI;
+
+    n = asin(x / l) * 180.0 / PI;
+
+    a1 = r1 - n;
+    a2 = r2 + n;
+
+    if (jump_flag == 1) // 前跳
+    {
+        theta1 = 90 - a1 + start_pos1 - jump_theta+5 ;
+        theta2 = 90 - a2 + start_pos2 + jump_theta -5;
+        theta3 = -90 + a2 + start_pos3 - jump_theta;
+        theta4 = -90 + a1 + start_pos4 + jump_theta;
+        theta5 = -90 + a2 + start_pos5 - jump_theta +5;
+        theta6 = -90 + a1 + start_pos6 + jump_theta -5;
+        theta7 = 90 - a1 + start_pos7 - jump_theta;
+        theta8 = 90 - a2 + start_pos8 + jump_theta;
+    }
+    else if (jump_flag == 0 || jump_flag == 4)
+    {
+        theta1 = 90 - a1 + start_pos1;
+        theta2 = 90 - a2 + start_pos2;
+        theta3 = -90 + a2 + start_pos3;
+        theta4 = -90 + a1 + start_pos4;
+        theta5 = -90 + a2 + start_pos5;
+        theta6 = -90 + a1 + start_pos6;
+        theta7 = 90 - a1 + start_pos7;
+        theta8 = 90 - a2 + start_pos8;
+    }
+    else if (jump_flag == 7) // 第一级跳跃
+    {
+        theta1 = 90 - a1 + start_pos1 - jump_theta_7;
+        theta2 = 90 - a2 + start_pos2 + jump_theta_7;
+        theta3 = -90 + a2 + start_pos3 - jump_theta_7;
+        theta4 = -90 + a1 + start_pos4 + jump_theta_7;
+        theta5 = -90 + a2 + start_pos5 - jump_theta_7;
+        theta6 = -90 + a1 + start_pos6 + jump_theta_7;
+        theta7 = 90 - a1 + start_pos7 - jump_theta_7;
+        theta8 = 90 - a2 + start_pos8 + jump_theta_7;
+    }
+    else if (jump_flag == 8) // 第二级跳跃
+    {
+        theta1 = 90 - a1 + start_pos1 - jump_theta_8;
+        theta2 = 90 - a2 + start_pos2 + jump_theta_8;
+        theta3 = -90 + a2 + start_pos3 - jump_theta_8;
+        theta4 = -90 + a1 + start_pos4 + jump_theta_8;
+        theta5 = -90 + a2 + start_pos5 - jump_theta_8;
+        theta6 = -90 + a1 + start_pos6 + jump_theta_8;
+        theta7 = 90 - a1 + start_pos7 - jump_theta_8;
+        theta8 = 90 - a2 + start_pos8 + jump_theta_8;
+    }
+    else if (jump_flag == 9) //    斜坡跳跃
+    {
+        theta1 = 90 - a1 + start_pos1 - jump_theta_9;
+        theta2 = 90 - a2 + start_pos2 + jump_theta_9;
+        theta3 = -90 + a2 + start_pos3 - jump_theta_9;
+        theta4 = -90 + a1 + start_pos4 + jump_theta_9;
+        theta5 = -90 + a2 + start_pos5 - jump_theta_9;
+        theta6 = -90 + a1 + start_pos6 + jump_theta_9;
+        theta7 = 90 - a1 + start_pos7 - jump_theta_9;
+        theta8 = 90 - a2 + start_pos8 + jump_theta_9;
+    }
+    else if (jump_flag == 10) //    斜坡跳跃
+    {
+        theta1 = 90 - a1 + start_pos1 - jump_theta_10;
+        theta2 = 90 - a2 + start_pos2 + jump_theta_10;
+        theta3 = -90 + a2 + start_pos3 - jump_theta_10;
+        theta4 = -90 + a1 + start_pos4 + jump_theta_10;
+        theta5 = -90 + a2 + start_pos5 - jump_theta_10;
+        theta6 = -90 + a1 + start_pos6 + jump_theta_10;
+        theta7 = 90 - a1 + start_pos7 - jump_theta_10;
+        theta8 = 90 - a2 + start_pos8 + jump_theta_10;
+    }
+    else if (jump_flag == 5) // 前跳腾空
+    {
+        theta1 = 90 - a1 + start_pos1 + jump_theta_2;
+        theta2 = 90 - a2 + start_pos2 - jump_theta_2;
+        theta3 = -90 + a2 + start_pos3 - jump_theta_2;
+        theta4 = -90 + a1 + start_pos4 + jump_theta_2;
+        theta5 = -90 + a2 + start_pos5 + jump_theta_2;
+        theta6 = -90 + a1 + start_pos6 - jump_theta_2;
+        theta7 = 90 - a1 + start_pos7 - jump_theta_2;
+        theta8 = 90 - a2 + start_pos8 + jump_theta_2;
+    }
+    else if (jump_flag == 6) // 前跳缓震
+    {
+        theta1 = 90 - a1 + start_pos1 + jump_theta_1;
+        theta2 = 90 - a2 + start_pos2 - jump_theta_1;
+        theta3 = -90 + a2 + start_pos3 + jump_theta_1;
+        theta4 = -90 + a1 + start_pos4- jump_theta_1;
+        theta5 = -90 + a2 + start_pos5 + jump_theta_1;
+        theta6 = -90 + a1 + start_pos6 - jump_theta_1;
+        theta7 = 90 - a1 + start_pos7+ jump_theta_1  ;
+        theta8 = 90 - a2 + start_pos8 - jump_theta_1 ;
+    }
+    else if (backlegsjumpflag == 1)
+    {
+        if ((upstairs_process == 2) || (upstairs_process == 3))
+        {
+            upstairs = 13 - ROLL;
+
+            theta1 = 90 - a1 + start_pos1 + ROLL;
+            theta2 = 90 - a2 + start_pos2 - ROLL;
+            theta3 = -90 + a2 + start_pos3 - upstairs;
+            theta4 = -90 + a1 + start_pos4 + upstairs;
+            theta5 = -90 + a2 + start_pos5 + ROLL;
+            theta6 = -90 + a1 + start_pos6 - ROLL;
+            theta7 = 90 - a1 + start_pos7 - upstairs;
+            theta8 = 90 - a2 + start_pos8 + upstairs;
+        }
+        else if ((upstairs_process == 4) || (upstairs_process == 5))
+        {
+            if (fabs(ROLL) < 70.0)
+            {
+                upstairs = -ROLL;
+            }
+
+            theta1 = 90 - a1 + start_pos1 - upstairs;
+            theta2 = 90 - a2 + start_pos2 + upstairs;
+            theta3 = -90 + a2 + start_pos3 - upstairs;
+            theta4 = -90 + a1 + start_pos4 + upstairs;
+            theta5 = -90 + a2 + start_pos5 - upstairs;
+            theta6 = -90 + a1 + start_pos6 + upstairs;
+            theta7 = 90 - a1 + start_pos7 - upstairs;
+            theta8 = 90 - a2 + start_pos8 + upstairs;
+        }
+        else
+        {
+            upstairs = 0;
+        }
+    }
+    else if (frontlegsjumpflag == 1)
+    {
+        if ((upstairs_process == 2) || (upstairs_process == 3))
+        {
+            upstairs = 13;
+
+            theta1 = 90 - a1 + start_pos1 - upstairs;
+            theta2 = 90 - a2 + start_pos2 + upstairs;
+            theta3 = -90 + a2 + start_pos3 + ROLL;
+            theta4 = -90 + a1 + start_pos4 - ROLL;
+            theta5 = -90 + a2 + start_pos5 - upstairs;
+            theta6 = -90 + a1 + start_pos6 + upstairs;
+            theta7 = 90 - a1 + start_pos7 + ROLL;
+            theta8 = 90 - a2 + start_pos8 - ROLL;
+        }
+        else if ((upstairs_process == 4) || (upstairs_process == 5))
+        {
+            if (fabs(ROLL) < 70.0)
+            {
+                upstairs = -ROLL;
+            }
+
+            theta1 = 90 - a1 + start_pos1 - upstairs;
+            theta2 = 90 - a2 + start_pos2 + upstairs;
+            theta3 = -90 + a2 + start_pos3 - upstairs;
+            theta4 = -90 + a1 + start_pos4 + upstairs;
+            theta5 = -90 + a2 + start_pos5 - upstairs;
+            theta6 = -90 + a1 + start_pos6 + upstairs;
+            theta7 = 90 - a1 + start_pos7 - upstairs;
+            theta8 = 90 - a2 + start_pos8 + upstairs;
+        }
+    }
+    else if (backlegstepflag)
+    {
+
+        if (upstairs_process == 2 || upstairs_process == 3)
+        {
+            if (fabs(ROLL) < 70.0)
+            {
+                Saber_ROLL = ROLL;
+            }
+            else
+            {
+                Saber_ROLL = 0;
+            }
+            theta1 = 90 - a1 + start_pos1 + Saber_ROLL;
+            theta2 = 90 - a2 + start_pos2 - Saber_ROLL;
+            theta3 = start_pos3 + Saber_ROLL;
+            theta4 = start_pos4 - Saber_ROLL;
+            theta5 = -90 + a2 + start_pos5 + Saber_ROLL;
+            theta6 = -90 + a1 + start_pos6 - Saber_ROLL;
+            theta7 = start_pos7 + Saber_ROLL;
+            theta8 = start_pos8 - Saber_ROLL;
+        }
+        else if (upstairs_process == 4 || upstairs_process == 5)
+        {
+            if (fabs(ROLL) < 70.0)
+            {
+                Saber_ROLL = ROLL;
+            }
+            else
+            {
+                Saber_ROLL = 0;
+            }
+            theta1 = 90 - a1 + start_pos1 + Saber_ROLL;
+            theta2 = 90 - a2 + start_pos2 - Saber_ROLL;
+            theta3 = start_pos3 + Saber_ROLL + 24;
+            theta4 = start_pos4 - Saber_ROLL - 24;
+            theta5 = -90 + a2 + start_pos5 + Saber_ROLL;
+            theta6 = -90 + a1 + start_pos6 - Saber_ROLL;
+            theta7 = start_pos7 + Saber_ROLL + 24;
+            theta8 = start_pos8 - Saber_ROLL - 24;
+        }
+    }
+}
+
+/*台阶机身姿态调整函数--保持腿部垂直*/
+void robot_station_adjustment(void)
+{
+   if(ROLL<70&&ROLL>-70)
+   {
+        start_pos1 = START_POS1 + overturn_offset + ROLL;
+        start_pos2 = START_POS2 - overturn_offset - ROLL;
+        start_pos5 = START_POS5 + overturn_offset + ROLL;
+        start_pos6 = START_POS6 - overturn_offset - ROLL;
+
+        start_pos3 = START_POS3 - overturn_offset + ROLL;
+        start_pos4 = START_POS4 + overturn_offset - ROLL;
+        start_pos7 = START_POS7 - overturn_offset + ROLL;
+        start_pos8 = START_POS8 + overturn_offset - ROLL;
+   }
+   else
+   {
+        start_pos1 = START_POS1 + overturn_offset ;
+        start_pos2 = START_POS2 - overturn_offset ;
+        start_pos5 = START_POS5 + overturn_offset ;
+        start_pos6 = START_POS6 - overturn_offset ;
+
+        start_pos3 = START_POS3 - overturn_offset ;
+        start_pos4 = START_POS4 + overturn_offset ;
+        start_pos7 = START_POS7 - overturn_offset ;
+        start_pos8 = START_POS8 + overturn_offset ;
+   }
+       //if(yaw<50&&yaw>-50){
+        
+
+
+       //} 
+   
+}

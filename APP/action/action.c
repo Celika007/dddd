@@ -27,6 +27,11 @@
 #define ACTION_DEBUG_STANCE_HEIGHT_DELTA 1.0f
 #define ACTION_DEBUG_FREQ_DELTA 0.1f
 #define ACTION_DEBUG_FLIGHT_PERCENT_DELTA 0.05f
+#define ACTION_DEBUG_STAND_ADJUST_DELTA 1.0f
+#define ACTION_DEBUG_JUMP_LENGTH_DELTA 1.0f
+#define ACTION_DEBUG_JUMP_THETA_DELTA 1.0f
+#define ACTION_DEBUG_JUMP_HEIGHT_DELTA 1.0f
+#define ACTION_DEBUG_STAND_LOG_INTERVAL_MS 500U
 
 typedef enum
 {
@@ -54,6 +59,22 @@ typedef enum
     ACTION_DEBUG_PARAM_FREQ,
     ACTION_DEBUG_PARAM_FLIGHT_PERCENT,
 } ActionDebugParam_e;
+
+typedef enum
+{
+    ACTION_DEBUG_STAND_FRONT_STRETCH = 0,
+    ACTION_DEBUG_STAND_FRONT_LEAN,
+    ACTION_DEBUG_STAND_RIGHT_LEAN,
+} ActionDebugStandParam_e;
+
+typedef enum
+{
+    ACTION_DEBUG_JUMP_LENGTH = 0,
+    ACTION_DEBUG_JUMP_READY_HEIGHT,
+    ACTION_DEBUG_JUMP_LAND_HEIGHT,
+    ACTION_DEBUG_JUMP_THETA_7,
+    ACTION_DEBUG_JUMP_THETA_6,
+} ActionDebugJumpParam_e;
 
 typedef struct
 {
@@ -87,6 +108,16 @@ static uint8_t action_debug_hold_realse = 0U;
 static float action_imu_base_roll = 0.0f;
 static float action_imu_base_pitch = 0.0f;
 static float action_imu_base_yaw = 0.0f;
+static ActionJumpDebugParams_s action_jump_debug_params = {
+    .front_stretch_deg = 0.0f,
+    .front_lean_deg = 0.0f,
+    .right_lean_deg = 0.0f,
+    .jump_length = 28.0f,
+    .jump_ready_height = 12.0f,
+    .jump_land_height = 13.0f,
+    .jump_theta_7 = 12.0f,
+    .jump_theta_6 = 25.0f,
+};
 #endif
 
 static const ActionScriptStep_s action_script_weave[] = {
@@ -153,6 +184,12 @@ DetachedParam state_detached_params[] =
         {18, 0, 6, 0.0, 0.5, 2.0},
         {18, 0, 6, 0.0, 0.5, 2.0}
     },
+    { // JUMP_UPSTAIRS, AKANE obstacle-course debug state only
+        {18, 0, 6, 0.0, 0.5, 2.0},
+        {18, 0, 6, 0.0, 0.5, 2.0},
+        {18, 0, 6, 0.0, 0.5, 2.0},
+        {18, 0, 6, 0.0, 0.5, 2.0}
+    },
 };
 
 static int Action_IsWithinThreshold(float delta, float threshold)
@@ -176,6 +213,8 @@ static const char *Action_StateName(enum States action_state)
         return "RIGHT_TURN";
     case IN_PLACE:
         return "IN_PLACE";
+    case JUMP_UPSTAIRS:
+        return "JUMP_UPSTAIRS";
     case STOP:
         return "STOP";
     case REALSE:
@@ -192,7 +231,8 @@ static uint8_t Action_IsGaitParamState(enum States action_state)
            action_state == GRAB ||
            action_state == LEFT_TURN ||
            action_state == RIGHT_TURN ||
-           action_state == IN_PLACE;
+           action_state == IN_PLACE ||
+           action_state == JUMP_UPSTAIRS;
 }
 
 static uint8_t Action_IsAkaneMotionState(enum States action_state)
@@ -200,7 +240,8 @@ static uint8_t Action_IsAkaneMotionState(enum States action_state)
     return action_state == RUN ||
            action_state == LEFT_TURN ||
            action_state == RIGHT_TURN ||
-           action_state == IN_PLACE;
+           action_state == IN_PLACE ||
+           action_state == JUMP_UPSTAIRS;
 }
 
 static enum States Action_GetParamState(void)
@@ -239,6 +280,7 @@ static void ActionDebug_FormatFloat(char *buffer, size_t buffer_size, float valu
     int32_t scaled_value;
     int32_t integer_part;
     int32_t decimal_part;
+    const char *sign = "";
     uint8_t i;
 
     if (buffer == NULL || buffer_size == 0U)
@@ -252,24 +294,26 @@ static void ActionDebug_FormatFloat(char *buffer, size_t buffer_size, float valu
     }
 
     scaled_value = (int32_t)lroundf(value * (float)scale);
+    if (scaled_value < 0)
+    {
+        sign = "-";
+        scaled_value = -scaled_value;
+    }
+
     integer_part = scaled_value / scale;
     decimal_part = scaled_value % scale;
-    if (decimal_part < 0)
-    {
-        decimal_part = -decimal_part;
-    }
 
     if (decimals == 0U)
     {
-        (void)snprintf(buffer, buffer_size, "%ld", (long)integer_part);
+        (void)snprintf(buffer, buffer_size, "%s%ld", sign, (long)integer_part);
     }
     else if (decimals == 1U)
     {
-        (void)snprintf(buffer, buffer_size, "%ld.%01ld", (long)integer_part, (long)decimal_part);
+        (void)snprintf(buffer, buffer_size, "%s%ld.%01ld", sign, (long)integer_part, (long)decimal_part);
     }
     else
     {
-        (void)snprintf(buffer, buffer_size, "%ld.%02ld", (long)integer_part, (long)decimal_part);
+        (void)snprintf(buffer, buffer_size, "%s%ld.%02ld", sign, (long)integer_part, (long)decimal_part);
     }
 }
 
@@ -338,6 +382,48 @@ static void ActionDebug_AdjustCurrentStateParam(ActionDebugParam_e param, float 
     ActionDebug_AdjustOneParam(&params->detached_params_3, param, delta);
 }
 
+static void ActionDebug_AdjustStandParam(ActionDebugStandParam_e param, float delta)
+{
+    switch (param)
+    {
+    case ACTION_DEBUG_STAND_FRONT_STRETCH:
+        action_jump_debug_params.front_stretch_deg = ActionDebug_ClampFloat(action_jump_debug_params.front_stretch_deg + delta, -45.0f, 45.0f);
+        break;
+    case ACTION_DEBUG_STAND_FRONT_LEAN:
+        action_jump_debug_params.front_lean_deg = ActionDebug_ClampFloat(action_jump_debug_params.front_lean_deg + delta, -45.0f, 45.0f);
+        break;
+    case ACTION_DEBUG_STAND_RIGHT_LEAN:
+        action_jump_debug_params.right_lean_deg = ActionDebug_ClampFloat(action_jump_debug_params.right_lean_deg + delta, -30.0f, 30.0f);
+        break;
+    default:
+        break;
+    }
+}
+
+static void ActionDebug_AdjustJumpParam(ActionDebugJumpParam_e param, float delta)
+{
+    switch (param)
+    {
+    case ACTION_DEBUG_JUMP_LENGTH:
+        action_jump_debug_params.jump_length = ActionDebug_ClampFloat(action_jump_debug_params.jump_length + delta, 5.0f, 40.0f);
+        break;
+    case ACTION_DEBUG_JUMP_READY_HEIGHT:
+        action_jump_debug_params.jump_ready_height = ActionDebug_ClampFloat(action_jump_debug_params.jump_ready_height + delta, 5.0f, 30.0f);
+        break;
+    case ACTION_DEBUG_JUMP_LAND_HEIGHT:
+        action_jump_debug_params.jump_land_height = ActionDebug_ClampFloat(action_jump_debug_params.jump_land_height + delta, 5.0f, 30.0f);
+        break;
+    case ACTION_DEBUG_JUMP_THETA_7:
+        action_jump_debug_params.jump_theta_7 = ActionDebug_ClampFloat(action_jump_debug_params.jump_theta_7 + delta, -45.0f, 45.0f);
+        break;
+    case ACTION_DEBUG_JUMP_THETA_6:
+        action_jump_debug_params.jump_theta_6 = ActionDebug_ClampFloat(action_jump_debug_params.jump_theta_6 + delta, -45.0f, 45.0f);
+        break;
+    default:
+        break;
+    }
+}
+
 static void ActionDebug_SetState(enum States next_state)
 {
     uint8_t was_motion = Action_IsAkaneMotionState(state);
@@ -384,6 +470,60 @@ static uint8_t ActionDebug_ProcessParamCommand(const char *cmd,
     return 0U;
 }
 
+static uint8_t ActionDebug_ProcessStandCommand(const char *cmd,
+                                               const char *name,
+                                               ActionDebugStandParam_e param,
+                                               float delta)
+{
+    size_t name_len = strlen(name);
+
+    if (strncmp(cmd, name, name_len) != 0)
+    {
+        return 0U;
+    }
+
+    if (cmd[name_len] == '+')
+    {
+        ActionDebug_AdjustStandParam(param, delta);
+        return 1U;
+    }
+
+    if (cmd[name_len] == '-')
+    {
+        ActionDebug_AdjustStandParam(param, -delta);
+        return 1U;
+    }
+
+    return 0U;
+}
+
+static uint8_t ActionDebug_ProcessJumpCommand(const char *cmd,
+                                              const char *name,
+                                              ActionDebugJumpParam_e param,
+                                              float delta)
+{
+    size_t name_len = strlen(name);
+
+    if (strncmp(cmd, name, name_len) != 0)
+    {
+        return 0U;
+    }
+
+    if (cmd[name_len] == '+')
+    {
+        ActionDebug_AdjustJumpParam(param, delta);
+        return 1U;
+    }
+
+    if (cmd[name_len] == '-')
+    {
+        ActionDebug_AdjustJumpParam(param, -delta);
+        return 1U;
+    }
+
+    return 0U;
+}
+
 static uint8_t ActionDebug_HandleCommand(const char *line)
 {
     const char *cmd;
@@ -419,6 +559,12 @@ static uint8_t ActionDebug_HandleCommand(const char *line)
         return 1U;
     }
 
+    if (Action_StringEquals(cmd, "jumpupstairs"))
+    {
+        ActionDebug_SetState(JUMP_UPSTAIRS);
+        return 1U;
+    }
+
     if (Action_StringEquals(cmd, "stand"))
     {
         ActionDebug_SetState(STAND);
@@ -434,6 +580,22 @@ static uint8_t ActionDebug_HandleCommand(const char *line)
     if (Action_StringEquals(cmd, "clear"))
     {
         ActionDebug_ResetWalkRecord();
+        return 1U;
+    }
+
+    if (ActionDebug_ProcessStandCommand(cmd, "frontstretch", ACTION_DEBUG_STAND_FRONT_STRETCH, ACTION_DEBUG_STAND_ADJUST_DELTA) ||
+        ActionDebug_ProcessStandCommand(cmd, "frontlean", ACTION_DEBUG_STAND_FRONT_LEAN, ACTION_DEBUG_STAND_ADJUST_DELTA) ||
+        ActionDebug_ProcessStandCommand(cmd, "rightlean", ACTION_DEBUG_STAND_RIGHT_LEAN, ACTION_DEBUG_STAND_ADJUST_DELTA))
+    {
+        return 1U;
+    }
+
+    if (ActionDebug_ProcessJumpCommand(cmd, "jump_length", ACTION_DEBUG_JUMP_LENGTH, ACTION_DEBUG_JUMP_LENGTH_DELTA) ||
+        ActionDebug_ProcessJumpCommand(cmd, "jump_ready", ACTION_DEBUG_JUMP_READY_HEIGHT, ACTION_DEBUG_JUMP_HEIGHT_DELTA) ||
+        ActionDebug_ProcessJumpCommand(cmd, "jump_land", ACTION_DEBUG_JUMP_LAND_HEIGHT, ACTION_DEBUG_JUMP_HEIGHT_DELTA) ||
+        ActionDebug_ProcessJumpCommand(cmd, "jt7", ACTION_DEBUG_JUMP_THETA_7, ACTION_DEBUG_JUMP_THETA_DELTA) ||
+        ActionDebug_ProcessJumpCommand(cmd, "jt6", ACTION_DEBUG_JUMP_THETA_6, ACTION_DEBUG_JUMP_THETA_DELTA))
+    {
         return 1U;
     }
 
@@ -509,13 +671,37 @@ static void Action_SelectScript(const char *action_code)
         return;
     }
 
-    if (Action_StringEquals(action_code, "SAND_PIT") ||
-        Action_StringEquals(action_code, "DUCK") ||
+    if (Action_StringEquals(action_code, "SAND_PIT"))
+    {
+        /*
+         * AKANE obstacle-course placeholder:
+         * first action should be tuned jumpupstairs() for sand pit landing buffer.
+         * Do not enter JUMP_UPSTAIRS here; that state is UART8 debug only.
+         * Fill this script after recording frontstretch/frontlean/rightlean and y7/jt7/jt6 from ALOG.
+         */
+        action_script = action_script_default;
+        action_script_len = (uint8_t)(sizeof(action_script_default) / sizeof(action_script_default[0]));
+        return;
+    }
+
+    if (Action_StringEquals(action_code, "STEPS"))
+    {
+        /*
+         * AKANE obstacle-course placeholder:
+         * first action should be tuned jumpupstairs() for steps.
+         * Do not enter JUMP_UPSTAIRS here; that state is UART8 debug only.
+         * Fill this script after recording frontlean and y7/jt7/jt6 from ALOG.
+         */
+        action_script = action_script_default;
+        action_script_len = (uint8_t)(sizeof(action_script_default) / sizeof(action_script_default[0]));
+        return;
+    }
+
+    if (Action_StringEquals(action_code, "DUCK") ||
         Action_StringEquals(action_code, "CLIMB") ||
         Action_StringEquals(action_code, "CROSS_A") ||
         Action_StringEquals(action_code, "CROSS_B") ||
-        Action_StringEquals(action_code, "RAMP") ||
-        Action_StringEquals(action_code, "STEPS"))
+        Action_StringEquals(action_code, "RAMP"))
     {
         action_script = action_script_default;
         action_script_len = (uint8_t)(sizeof(action_script_default) / sizeof(action_script_default[0]));
@@ -608,6 +794,66 @@ uint8_t ActionDebug_ShouldHoldRealse(void)
 #endif
 }
 
+const ActionJumpDebugParams_s *ActionDebug_GetJumpParams(void)
+{
+#if ACTION_RECORD_UART8_ENABLE
+    return &action_jump_debug_params;
+#else
+    static const ActionJumpDebugParams_s disabled_jump_params = {0};
+
+    return &disabled_jump_params;
+#endif
+}
+
+void Action_ApplyStandDebugAdjustment(float *theta_1, float *theta_2, float *theta_3, float *theta_4,
+                                      float *theta_5, float *theta_6, float *theta_7, float *theta_8)
+{
+#if ACTION_RECORD_UART8_ENABLE
+    float front_stretch = action_jump_debug_params.front_stretch_deg;
+    float front_lean = action_jump_debug_params.front_lean_deg;
+    float right_lean = action_jump_debug_params.right_lean_deg;
+
+    if (theta_1 == NULL || theta_2 == NULL || theta_3 == NULL || theta_4 == NULL ||
+        theta_5 == NULL || theta_6 == NULL || theta_7 == NULL || theta_8 == NULL)
+    {
+        return;
+    }
+
+    /* AKANE obstacle-course stand tuning. These offsets are intentionally stackable. */
+    *theta_1 += front_stretch;
+    *theta_2 -= front_stretch;
+    *theta_3 += front_stretch;
+    *theta_4 -= front_stretch;
+
+    *theta_1 -= front_lean;
+    *theta_2 += front_lean;
+    *theta_3 -= front_lean;
+    *theta_4 += front_lean;
+    *theta_5 -= front_lean;
+    *theta_6 += front_lean;
+    *theta_7 -= front_lean;
+    *theta_8 += front_lean;
+
+    *theta_1 += right_lean;
+    *theta_2 -= right_lean;
+    *theta_7 += right_lean;
+    *theta_8 -= right_lean;
+    *theta_3 -= right_lean;
+    *theta_4 += right_lean;
+    *theta_5 -= right_lean;
+    *theta_6 += right_lean;
+#else
+    (void)theta_1;
+    (void)theta_2;
+    (void)theta_3;
+    (void)theta_4;
+    (void)theta_5;
+    (void)theta_6;
+    (void)theta_7;
+    (void)theta_8;
+#endif
+}
+
 void ActionDebug_UpdateWalkPhase(float base_phase)
 {
 #if ACTION_RECORD_UART8_ENABLE
@@ -639,11 +885,26 @@ void ActionDebug_UpdateWalkPhase(float base_phase)
 }
 
 #if ACTION_RECORD_UART8_ENABLE
+static uint8_t ActionDebug_ShouldAutoLog(void)
+{
+    return state != STOP;
+}
+
 static uint32_t ActionDebug_GetLogIntervalMs(void)
 {
     GaitParams *params = Action_GetPrimaryGaitParams(Action_GetParamState());
     float freq = params->freq + params->freq_offset;
     float interval_ms;
+
+    if (state == STAND)
+    {
+        return ACTION_DEBUG_STAND_LOG_INTERVAL_MS;
+    }
+
+    if (!Action_IsAkaneMotionState(state))
+    {
+        return ACTION_DEBUG_STAND_LOG_INTERVAL_MS;
+    }
 
     if (freq < 0.1f)
     {
@@ -684,10 +945,16 @@ static void ActionDebug_TrySendRecord(uint8_t force_send)
     char delta_roll_text[16];
     char delta_pitch_text[16];
     char delta_yaw_text[16];
+    char front_stretch_text[16];
+    char front_lean_text[16];
+    char right_lean_text[16];
+    char jump_length_text[16];
+    char jump_theta_7_text[16];
+    char jump_theta_6_text[16];
     int len;
     uint16_t tx_len;
 
-    if (!force_send && !Action_IsAkaneMotionState(state))
+    if (!force_send && !ActionDebug_ShouldAutoLog())
     {
         return;
     }
@@ -720,11 +987,18 @@ static void ActionDebug_TrySendRecord(uint8_t force_send)
     ActionDebug_FormatFloat(delta_roll_text, sizeof(delta_roll_text), Saber_DATA.Saber_imu_eluer.ELUER_ROLL - action_imu_base_roll, 2U);
     ActionDebug_FormatFloat(delta_pitch_text, sizeof(delta_pitch_text), Saber_DATA.Saber_imu_eluer.ELUER_PITCH - action_imu_base_pitch, 2U);
     ActionDebug_FormatFloat(delta_yaw_text, sizeof(delta_yaw_text), Saber_DATA.Saber_imu_eluer.ELUER_YAW_now - action_imu_base_yaw, 2U);
+    ActionDebug_FormatFloat(front_stretch_text, sizeof(front_stretch_text), action_jump_debug_params.front_stretch_deg, 1U);
+    ActionDebug_FormatFloat(front_lean_text, sizeof(front_lean_text), action_jump_debug_params.front_lean_deg, 1U);
+    ActionDebug_FormatFloat(right_lean_text, sizeof(right_lean_text), action_jump_debug_params.right_lean_deg, 1U);
+    ActionDebug_FormatFloat(jump_length_text, sizeof(jump_length_text), action_jump_debug_params.jump_length, 1U);
+    ActionDebug_FormatFloat(jump_theta_7_text, sizeof(jump_theta_7_text), action_jump_debug_params.jump_theta_7, 1U);
+    ActionDebug_FormatFloat(jump_theta_6_text, sizeof(jump_theta_6_text), action_jump_debug_params.jump_theta_6, 1U);
 
     len = snprintf(action_record_tx_buffer,
                    sizeof(action_record_tx_buffer),
                    "ALOG,mode=AKANE_DEBUG,state=%s,walk_done=%lu,freq=%s,"
                    "sp=%s/%s/%s/%s/%s/%s,"
+                   "adj=%s/%s/%s,jp=%s/%s/%s,"
                    "imu_r=%s,imu_p=%s,imu_y=%s,"
                    "dr=%s,dp=%s,dy=%s\r\n",
                    Action_StateName(state),
@@ -736,6 +1010,12 @@ static void ActionDebug_TrySendRecord(uint8_t force_send)
                    down_amp_text,
                    flight_percent_text,
                    param_freq_text,
+                   front_stretch_text,
+                   front_lean_text,
+                   right_lean_text,
+                   jump_length_text,
+                   jump_theta_7_text,
+                   jump_theta_6_text,
                    imu_roll_text,
                    imu_pitch_text,
                    imu_yaw_text,

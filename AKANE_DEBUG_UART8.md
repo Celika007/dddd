@@ -32,6 +32,7 @@ debug:run
 debug:left_turn
 debug:right_turn
 debug:in_place
+debug:jumpupstairs
 debug:stand
 debug:realse
 ```
@@ -53,6 +54,27 @@ debug:flight_percent+
 debug:flight_percent-
 ```
 
+STAND 姿态和 jumpupstairs 调试参数：
+
+```text
+debug:frontstretch+
+debug:frontstretch-
+debug:frontlean+
+debug:frontlean-
+debug:rightlean+
+debug:rightlean-
+debug:jump_length+
+debug:jump_length-
+debug:jump_ready+
+debug:jump_ready-
+debug:jump_land+
+debug:jump_land-
+debug:jt7+
+debug:jt7-
+debug:jt6+
+debug:jt6-
+```
+
 记录重置：
 
 ```text
@@ -70,20 +92,28 @@ down_amp        +/- 0.1
 stance_height   +/- 1.0
 freq            +/- 0.1
 flight_percent  +/- 0.05
+frontstretch     +/- 1.0 deg
+frontlean        +/- 1.0 deg
+rightlean        +/- 1.0 deg
+jump_length      +/- 1.0 cm
+jump_ready       +/- 1.0 cm
+jump_land        +/- 1.0 cm
+jt7              +/- 1.0 deg
+jt6              +/- 1.0 deg
 ```
 
 命令作用于 `state_detached_params[state]`。由于 AKANE 调试命令会同时调节四条腿，返回日志中只包含一个 `sp` 字段，而不是 `sp0/sp1/sp2/sp3`。
 
 ## UART8 日志格式
 
-只有当状态为 `RUN`、`LEFT_TURN`、`RIGHT_TURN` 或 `IN_PLACE` 时才会发送日志。
+`STAND` 状态以 2 Hz 发送日志，用于记录 `frontstretch/frontlean/rightlean` 三种姿态参数。
 
-发送频率约为 `2 * freq`，发送接口使用 `HAL_UART_Transmit_DMA()`。如果 UART8 TX 正忙，本条记录会被跳过，而不会阻塞控制流程。
+`RUN`、`LEFT_TURN`、`RIGHT_TURN`、`IN_PLACE`、`JUMP_UPSTAIRS` 等调试状态会持续发送日志。步态运动状态的发送频率约为 `2 * freq`，发送接口使用 `HAL_UART_Transmit_DMA()`。如果 UART8 TX 正忙，本条记录会被跳过，而不会阻塞控制流程。
 
 示例：
 
 ```text
-ALOG,mode=AKANE_DEBUG,state=RUN,walk_done=12,freq=1.80,sp=18.0/12.0/6.0/0.0/0.40/1.80,imu_r=1.20,imu_p=-0.40,imu_y=35.60,dr=0.30,dp=-0.10,dy=12.50
+ALOG,mode=AKANE_DEBUG,state=RUN,walk_done=12,freq=1.80,sp=18.0/12.0/6.0/0.0/0.40/1.80,adj=0.0/2.0/-1.0,jp=28.0/12.0/25.0,imu_r=1.20,imu_p=-0.40,imu_y=35.60,dr=0.30,dp=-0.10,dy=12.50
 ```
 
 字段：
@@ -93,9 +123,15 @@ state      当前运动状态
 walk_done  根据 CycloidTrajectory() 基准相位回绕统计的步态周期数
 freq       当前 freq + freq_offset
 sp         stance_height/step_length/up_amp/down_amp/flight_percent/freq
+adj        frontstretch/frontlean/rightlean
+jp         jump_length/jt7/jt6
 imu_r/p/y  当前 IMU roll/pitch/yaw
 dr/dp/dy   相对上一次 debug:clear 或进入运动状态时的 IMU 增量
 ```
+
+`debug:jumpupstairs` 会进入 `JUMP_UPSTAIRS` 调试状态，按参考 `jumpupstairs()` 的阶段顺序执行一次约 1 秒的跳台阶调试动作，然后回到 `STAND`。这个状态只用于 UART8 物理验证，不会被 UART7 `ACTIONING` 自动启用。
+
+`SAND_PIT` 和 `STEPS` 的 `ACTIONING` 第一段动作目前保留为代码注释占位：调试者记录 `frontstretch/frontlean/rightlean` 和 `jump_length/jt7/jt6` 后，再把验证过的参数填回对应 action_code 的正式脚本。
 
 ## 典型调试流程
 
