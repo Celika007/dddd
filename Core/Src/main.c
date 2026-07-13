@@ -32,6 +32,7 @@
 #include "action.h"
 #include "unicomm.h"
 #include "bsp_init.h"
+#include "gimbal_motor_monitor.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -109,9 +110,14 @@ int main(void)
   BSPInit();
   (void)LeftMotorInit();
   (void)RightMotorInit();
+  GimbalMotorMonitor_Init();
   IMU_USART6_Init();
   UniComm_UART7_Init();
   Action_UART8DebugInit();
+
+__HAL_TIM_SetCompare(&htim2, TIM_CHANNEL_1, 700);
+HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
+
   /* USER CODE END 2 */
 
   /* Call init function for freertos objects (in cmsis_os2.c) */

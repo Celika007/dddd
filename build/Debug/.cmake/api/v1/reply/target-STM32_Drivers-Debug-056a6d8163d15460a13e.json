@@ -77,19 +77,19 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 146,
+				"line" : 148,
 				"parent" : 0
 			},
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 148,
+				"line" : 150,
 				"parent" : 0
 			},
 			{
 				"command" : 2,
 				"file" : 0,
-				"line" : 147,
+				"line" : 149,
 				"parent" : 0
 			}
 		]
@@ -171,6 +171,10 @@
 				{
 					"backtrace" : 2,
 					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../APP/action"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "C:/Users/34828/Desktop/sizu_ywj/SIZU_TASK/SIZU_TASK/cmake/stm32cubemx/../../APP/gimbal"
 				},
 				{
 					"backtrace" : 2,

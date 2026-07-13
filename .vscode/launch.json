@@ -23,50 +23,47 @@
                 "samplesPerSecond": 4
             }
         },
-        // {
-        //     "name": "Debug with ST-Link",
-        //     "type": "cortex-debug",
-        //     "request": "launch",
-        //     "servertype": "openocd",
-        //     "cwd": "${workspaceFolder}",
-        //     "executable": "${workspaceFolder}/build/Debug/SIZU_TASK.elf",
-        //     "configFiles": [
-        //         "${workspaceFolder}/openocd_stlink.cfg"
-        //     ],
-        //     "device": "STM32F427II",
-        //     "interface": "swd",
-        //     "runToEntryPoint": "main",
-        //     "svdFile": "${workspaceFolder}/STM32F427.svd",
-        //     "showDevDebugOutput": "none",
-        //     "rtos": "FreeRTOS",
-        //     "preLaunchTask": "Download ST-Link",
-        //     "liveWatch": {
-        //         "enabled": true,
-        //         "samplesPerSecond": 4
-        //     }
-        // },
-//         {
-//             "name": "Debug with J-Link",
-//             "type": "cortex-debug",
-//             "request": "launch",
-//             "servertype": "jlink",
-//             "cwd": "${workspaceFolder}",
-//             "executable": "${workspaceFolder}/build/Debug/SIZU.elf",
-//             "device": "STM32F427II",
-//             "interface": "swd",
-//             "runToEntryPoint": "main",
-//             // "svdFile": "${workspaceFolder}/STM32F427.svd",
-//             "svdFile": "E:/four_leg_dog/SIZU/STM32F427.svd",
-//             "serverpath": "D:/JLink/JLink_V872a/JLinkGDBServerCL.exe",
-//             "preLaunchTask": "Download J-Link",
-//             "showDevDebugOutput": "none",
-//             "liveWatch": {
-//                 "enabled": false,
-//                 "samplesPerSecond": 4
-//             },
-//             "overrideRestartCommands": [
-//                 "monitor reset halt"
-// ]
-//         }
+        {
+            "name": "Debug with ST-Link",
+            "type": "cortex-debug",
+            "request": "launch",
+            "servertype": "openocd",
+            "cwd": "${workspaceFolder}",
+            "executable": "${workspaceFolder}/build/Debug/SIZU_TASK.elf",
+            "configFiles": [
+                "${workspaceFolder}/openocd_stlink.cfg"
+            ],
+            "device": "STM32F427II",
+            "interface": "swd",
+            "runToEntryPoint": "main",
+            "svdFile": "${workspaceFolder}/STM32F427.svd",
+            "showDevDebugOutput": "none",
+            "rtos": "FreeRTOS",
+            "preLaunchTask": "Download ST-Link",
+            "liveWatch": {
+                "enabled": true,
+                "samplesPerSecond": 4
+            }
+        },
+        {
+            "name": "Debug with J-Link",
+            "type": "cortex-debug",
+            "request": "launch",
+            "servertype": "jlink",
+            "cwd": "${workspaceFolder}",
+            "executable": "${workspaceFolder}/build/Debug/SIZU_TASK.elf",
+            "device": "STM32F427II",
+            "interface": "swd",
+            "runToEntryPoint": "main",
+            "svdFile": "${workspaceFolder}/STM32F427.svd",
+            "serverpath": "D:/JLINK/JLinkGDBServerCL.exe",
+            "preLaunchTask": "Download J-Link",
+            "showDevDebugOutput": "none",
+            "rtos": "FreeRTOS",
+            "liveWatch": {
+                "enabled": true,
+                "samplesPerSecond": 4
+            },
+        }
     ]
 }

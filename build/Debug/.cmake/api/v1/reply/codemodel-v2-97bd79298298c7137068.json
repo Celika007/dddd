@@ -62,21 +62,21 @@
 				{
 					"directoryIndex" : 1,
 					"id" : "FreeRTOS::@768a070a0fe75716b479",
-					"jsonFile" : "target-FreeRTOS-Debug-b2c6d79049a4013c924c.json",
+					"jsonFile" : "target-FreeRTOS-Debug-58e775783ee486ca1ba4.json",
 					"name" : "FreeRTOS",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
 					"id" : "SIZU_TASK::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-SIZU_TASK-Debug-b6d9bf2a926c9d0f075a.json",
+					"jsonFile" : "target-SIZU_TASK-Debug-d47c9ef37df80c69ca09.json",
 					"name" : "SIZU_TASK",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 1,
 					"id" : "STM32_Drivers::@768a070a0fe75716b479",
-					"jsonFile" : "target-STM32_Drivers-Debug-e85d32a1cbd87fdb5193.json",
+					"jsonFile" : "target-STM32_Drivers-Debug-056a6d8163d15460a13e.json",
 					"name" : "STM32_Drivers",
 					"projectIndex" : 0
 				}

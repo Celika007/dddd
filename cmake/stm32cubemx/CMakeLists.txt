@@ -23,6 +23,7 @@ set(MX_Include_Dirs
     ${CMAKE_CURRENT_SOURCE_DIR}/../../Drivers/CMSIS/Device/ST/STM32F4xx/Include
     ${CMAKE_CURRENT_SOURCE_DIR}/../../Drivers/CMSIS/Include
     ${CMAKE_CURRENT_SOURCE_DIR}/../../APP/action
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../APP/gimbal
     ${CMAKE_CURRENT_SOURCE_DIR}/../../BSP
     ${CMAKE_CURRENT_SOURCE_DIR}/../../BSP/can
     ${CMAKE_CURRENT_SOURCE_DIR}/../../BSP/dwt
@@ -61,6 +62,7 @@ set(MX_Application_Src
     ${CMAKE_CURRENT_SOURCE_DIR}/../../Core/Src/syscalls.c
     ${CMAKE_CURRENT_SOURCE_DIR}/../../startup_stm32f427xx.s
     ${CMAKE_CURRENT_SOURCE_DIR}/../../APP/action/action.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../APP/gimbal/gimbal_motor_monitor.c
     ${CMAKE_CURRENT_SOURCE_DIR}/../../BSP/bsp_init.c
     ${CMAKE_CURRENT_SOURCE_DIR}/../../BSP/can/bsp_can.c
     ${CMAKE_CURRENT_SOURCE_DIR}/../../BSP/dwt/bsp_dwt.c

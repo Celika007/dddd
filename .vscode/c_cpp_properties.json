@@ -3,51 +3,18 @@
         {
             "name": "Win32",
             "includePath": [
-                "${workspaceFolder}/Core/Inc",
-                "${workspaceFolder}/Drivers/STM32F4xx_HAL_Driver/Inc",
-                "${workspaceFolder}/Drivers/STM32F4xx_HAL_Driver/Inc/Legacy",
-                "${workspaceFolder}/Drivers/CMSIS/Device/ST/STM32F4xx/Include",
-                "${workspaceFolder}/Drivers/CMSIS/Include",
-                "${workspaceFolder}/Middlewares/Third_Party/FreeRTOS/Source/include",
-                "${workspaceFolder}/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS",
-                "${workspaceFolder}/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F",
-                "${workspaceFolder}/Middlewares/Third_Party/SEGGRE/RTT",
-                "${workspaceFolder}/Middlewares/Third_Party/SEGGRE/RTT/Config",
-                "${workspaceFolder}/Middlewares/ST/ARM/DSP/Inc",
-                "${workspaceFolder}/APP/action",
-                "${workspaceFolder}/BSP",
-                "${workspaceFolder}/BSP/**",
-                "${workspaceFolder}/Modules",
-                "${workspaceFolder}/Modules/**",
-                "${workspaceFolder}/TASK/MotorControl_task",
-                "${workspaceFolder}/TASK/PostureControl_task"
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/APP/catch"
             ],
-            "compileCommands": "${workspaceFolder}/build/Debug/compile_commands.json",
             "defines": [
                 "_DEBUG",
                 "UNICODE",
                 "_UNICODE"
             ],
-            "windowsSdkVersion": "10.0.26100.0",
-            "compilerArgs": [
-                "-mcpu=cortex-m4",
-                "-mthumb",
-                "-mfloat-abi=hard",
-                "-mfpu=fpv4-sp-d16",
-                "-DUSE_HAL_DRIVER",
-                "-DSTM32F427xx",
-                "-DARM_MATH_CM4"
-            ],
-            "cStandard": "gnu11",
+            "cStandard": "c17",
             "cppStandard": "gnu++17",
-            "intelliSenseMode": "windows-gcc-arm",
-            "mergeConfigurations": false,
-            "recursiveIncludes": {},
-            "compilerPathInCppPropertiesJson": "D:/worktools/arm-none-eabi-gdb/bin/arm-none-eabi-gcc.exe",
-            "compilerPath": "D:/worktools/arm-none-eabi-gdb/bin/arm-none-eabi-gcc.exe",
-            "browse": {
-                "limitSymbolsToIncludedHeaders": true
-            }
+            "intelliSenseMode": "windows-gcc-x64",
+            "configurationProvider": "ms-vscode.cmake-tools"
         }
     ],
     "version": 4

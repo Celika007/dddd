@@ -8,6 +8,9 @@
 #include "FreeRTOS.h"
 #include "IMU.h"
 #include "cmsis_os.h"
+#include "gimbal_motor_monitor.h"
+#include "gpio.h"
+#include "tim.h"
 #include "unicomm.h"
 #include "usart.h"
 
@@ -32,6 +35,12 @@
 #define ACTION_DEBUG_JUMP_THETA_DELTA 1.0f
 #define ACTION_DEBUG_JUMP_HEIGHT_DELTA 1.0f
 #define ACTION_DEBUG_STAND_LOG_INTERVAL_MS 500U
+#define ACTION_DEBUG_ANGLE_CMD_PREFIX "angle"
+#define ACTION_DEBUG_ANGLE_MAX 999U
+#define ACTION_DEBUG_ANGLE_PWM_MIN_COMPARE 500U
+#define ACTION_SERVO_COMPARE_MIN 500U
+#define ACTION_SERVO_COMPARE_MAX 1667U
+#define ACTION_RAD_TO_DEG (180.0f / 3.14159265358979323846f)
 
 typedef enum
 {
@@ -84,6 +93,51 @@ typedef struct
 
 DetachedParam detached_params;
 float target_yaw = 0.0f;
+float servo_max = 135.0f;
+float servo_min = 26.3f;
+
+uint32_t Action_CalculateArmCompare(uint8_t arm_final)
+{
+    float arm3 = (float)arm_final - ARM0;
+    float cosine;
+    float servo_angle;
+    float compare;
+
+    if (fabsf(arm3) < 0.0001f)
+    {
+        return ACTION_SERVO_COMPARE_MIN;
+    }
+
+    cosine = ((ARM1 * ARM1) + (arm3 * arm3) - (ARM2 * ARM2)) /
+             (2.0f * arm3 * ARM1);
+    if (cosine > 1.0f)
+    {
+        cosine = 1.0f;
+    }
+    else if (cosine < -1.0f)
+    {
+        cosine = -1.0f;
+    }
+
+    servo_angle = acosf(cosine) * ACTION_RAD_TO_DEG;
+    if (servo_max <= servo_min)
+    {
+        return ACTION_SERVO_COMPARE_MIN;
+    }
+    if (servo_angle <= servo_min)
+    {
+        return ACTION_SERVO_COMPARE_MIN;
+    }
+    if (servo_angle >= servo_max)
+    {
+        return ACTION_SERVO_COMPARE_MAX;
+    }
+    compare = (float)ACTION_SERVO_COMPARE_MIN +
+              ((servo_angle - servo_min) *
+               (float)(ACTION_SERVO_COMPARE_MAX - ACTION_SERVO_COMPARE_MIN) /
+               (servo_max - servo_min));
+    return (uint32_t)(compare + 0.5f);
+}
 
 static ActionSerialPhase_e action_serial_phase = ACTION_SERIAL_BOOT_STAND;
 static uint32_t action_seen_frame_seq = 0U;
@@ -524,6 +578,142 @@ static uint8_t ActionDebug_ProcessJumpCommand(const char *cmd,
     return 0U;
 }
 
+static uint8_t ActionDebug_HandleAngleCommand(const char *cmd)
+{
+    const char *digits;
+    uint32_t angle = 0U;
+    size_t i;
+
+    if (strlen(cmd) != (strlen(ACTION_DEBUG_ANGLE_CMD_PREFIX) + 3U) ||
+        strncmp(cmd, ACTION_DEBUG_ANGLE_CMD_PREFIX, strlen(ACTION_DEBUG_ANGLE_CMD_PREFIX)) != 0)
+    {
+        return 0U;
+    }
+
+    digits = cmd + strlen(ACTION_DEBUG_ANGLE_CMD_PREFIX);
+    for (i = 0U; i < 3U; ++i)
+    {
+        if (digits[i] < '0' || digits[i] > '9')
+        {
+            return 1U;
+        }
+
+        angle = (angle * 10U) + (uint32_t)(digits[i] - '0');
+        if (angle > ACTION_DEBUG_ANGLE_MAX)
+        {
+            return 1U;
+        }
+    }
+
+    __HAL_TIM_SET_COMPARE(&htim2,
+                          TIM_CHANNEL_1,
+                          ACTION_DEBUG_ANGLE_PWM_MIN_COMPARE + angle);
+    HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
+    return 1U;
+}
+
+static uint8_t ActionDebug_HandleGpioCommand(const char *cmd)
+{
+    GPIO_TypeDef *port;
+    uint16_t pin;
+
+    if (strlen(cmd) != 2U)
+    {
+        return 0U;
+    }
+
+    if (cmd[0] == 'A')
+    {
+        port = GPIOI;
+        pin = GPIO_PIN_0;
+    }
+    else if (cmd[0] == 'B')
+    {
+        port = GPIOH;
+        pin = GPIO_PIN_12;
+    }
+    else if (cmd[0] == 'C')
+    {
+        port = GPIOH;
+        pin = GPIO_PIN_11;
+    }
+    else if (cmd[0] == 'D')
+    {
+        port = GPIOH;
+        pin = GPIO_PIN_10;
+    }
+    else
+    {
+        return 0U;
+    }
+
+    if (cmd[1] != '0' && cmd[1] != '1')
+    {
+        return 0U;
+    }
+
+    HAL_GPIO_WritePin(port, pin, (cmd[1] == '1') ? GPIO_PIN_RESET : GPIO_PIN_SET);
+    return 1U;
+}
+
+static uint8_t ActionDebug_HandleArmFinalCommand(const char *cmd)
+{
+    uint8_t arm_final;
+
+    if (strlen(cmd) != 11U || strncmp(cmd, "arm_final", 9U) != 0)
+    {
+        return 0U;
+    }
+    if (cmd[9] < '0' || cmd[9] > '9' ||
+        cmd[10] < '0' || cmd[10] > '9')
+    {
+        return 0U;
+    }
+
+    arm_final = (uint8_t)(((cmd[9] - '0') * 10) + (cmd[10] - '0'));
+    __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, Action_CalculateArmCompare(arm_final));
+    HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
+    return 1U;
+}
+
+static uint8_t ActionDebug_HandleServoLimitCommand(const char *cmd)
+{
+    float *limit;
+    const char *digits;
+
+    if (strlen(cmd) != 12U)
+    {
+        return 0U;
+    }
+
+    if (strncmp(cmd, "servo_max", 9U) == 0)
+    {
+        limit = &servo_max;
+        digits = cmd + 9U;
+    }
+    else if (strncmp(cmd, "servo_min", 9U) == 0)
+    {
+        limit = &servo_min;
+        digits = cmd + 9U;
+    }
+    else
+    {
+        return 0U;
+    }
+
+    if (digits[0] < '0' || digits[0] > '9' ||
+        digits[1] < '0' || digits[1] > '9' ||
+        digits[2] < '0' || digits[2] > '9')
+    {
+        return 0U;
+    }
+
+    *limit = (float)(((digits[0] - '0') * 100) +
+                     ((digits[1] - '0') * 10) +
+                     (digits[2] - '0'));
+    return 1U;
+}
+
 static uint8_t ActionDebug_HandleCommand(const char *line)
 {
     const char *cmd;
@@ -534,6 +724,18 @@ static uint8_t ActionDebug_HandleCommand(const char *line)
     }
 
     cmd = line + 6U;
+
+    if (ActionDebug_HandleGpioCommand(cmd) ||
+        ActionDebug_HandleArmFinalCommand(cmd) ||
+        ActionDebug_HandleServoLimitCommand(cmd))
+    {
+        return 1U;
+    }
+
+    if (ActionDebug_HandleAngleCommand(cmd))
+    {
+        return 1U;
+    }
 
     if (Action_StringEquals(cmd, "run"))
     {
@@ -951,6 +1153,13 @@ static void ActionDebug_TrySendRecord(uint8_t force_send)
     char jump_length_text[16];
     char jump_theta_7_text[16];
     char jump_theta_6_text[16];
+    char gimbal_angle_text[16];
+    uint8_t gimbal_has_feedback;
+    uint32_t servo_compare;
+    uint8_t gpio_a_state;
+    uint8_t gpio_b_state;
+    uint8_t gpio_c_state;
+    uint8_t gpio_d_state;
     int len;
     uint16_t tx_len;
 
@@ -993,12 +1202,31 @@ static void ActionDebug_TrySendRecord(uint8_t force_send)
     ActionDebug_FormatFloat(jump_length_text, sizeof(jump_length_text), action_jump_debug_params.jump_length, 1U);
     ActionDebug_FormatFloat(jump_theta_7_text, sizeof(jump_theta_7_text), action_jump_debug_params.jump_theta_7, 1U);
     ActionDebug_FormatFloat(jump_theta_6_text, sizeof(jump_theta_6_text), action_jump_debug_params.jump_theta_6, 1U);
+    gimbal_has_feedback = GimbalMotorMonitor_HasFeedback();
+    if (gimbal_has_feedback)
+    {
+        ActionDebug_FormatFloat(gimbal_angle_text,
+                                sizeof(gimbal_angle_text),
+                                GimbalMotorMonitor_GetAngleDeg(),
+                                2U);
+    }
+    else
+    {
+        (void)snprintf(gimbal_angle_text, sizeof(gimbal_angle_text), "NA");
+    }
+    servo_compare = __HAL_TIM_GET_COMPARE(&htim2, TIM_CHANNEL_1);
+    gpio_a_state = (HAL_GPIO_ReadPin(GPIOI, GPIO_PIN_0) == GPIO_PIN_RESET) ? 1U : 0U;
+    gpio_b_state = (HAL_GPIO_ReadPin(GPIOH, GPIO_PIN_12) == GPIO_PIN_RESET) ? 1U : 0U;
+    gpio_c_state = (HAL_GPIO_ReadPin(GPIOH, GPIO_PIN_11) == GPIO_PIN_RESET) ? 1U : 0U;
+    gpio_d_state = (HAL_GPIO_ReadPin(GPIOH, GPIO_PIN_10) == GPIO_PIN_RESET) ? 1U : 0U;
 
     len = snprintf(action_record_tx_buffer,
                    sizeof(action_record_tx_buffer),
                    "ALOG,mode=AKANE_DEBUG,state=%s,walk_done=%lu,freq=%s,"
                    "sp=%s/%s/%s/%s/%s/%s,"
                    "adj=%s/%s/%s,jp=%s/%s/%s,"
+                   "compare=%lu,abcd=%u/%u/%u/%u,"
+                   "gimbal_id=5,gimbal_has=%u,gimbal_angle=%s,gimbal_ecd=%u,"
                    "imu_r=%s,imu_p=%s,imu_y=%s,"
                    "dr=%s,dp=%s,dy=%s\r\n",
                    Action_StateName(state),
@@ -1016,6 +1244,14 @@ static void ActionDebug_TrySendRecord(uint8_t force_send)
                    jump_length_text,
                    jump_theta_7_text,
                    jump_theta_6_text,
+                   (unsigned long)servo_compare,
+                   (unsigned int)gpio_a_state,
+                   (unsigned int)gpio_b_state,
+                   (unsigned int)gpio_c_state,
+                   (unsigned int)gpio_d_state,
+                   (unsigned int)gimbal_has_feedback,
+                   gimbal_angle_text,
+                   (unsigned int)GimbalMotorMonitor_GetEcd(),
                    imu_roll_text,
                    imu_pitch_text,
                    imu_yaw_text,

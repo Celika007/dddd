@@ -83,6 +83,34 @@ debug:clear
 
 `debug:clear` 会重置 `walk_done`，并把 IMU 增量基准设置为当前 IMU 姿态。
 
+GPIO 调试命令（`1` 输出 RESET，`0` 输出 SET）：
+
+```text
+debug:A1 / debug:A0    PI0
+debug:B1 / debug:B0    PH12
+debug:C1 / debug:C0    PH11
+debug:D1 / debug:D0    PH10
+```
+
+PWM compare 调试命令：
+
+```text
+debug:angle000    compare = 500
+debug:angle999    compare = 1499
+```
+
+`angle` 后必须为三位十进制数字 `000-999`，写入 `TIM2 CH1` 的 compare 为 `500 + 输入值`。
+
+臂长和舵机标定命令：
+
+```text
+debug:arm_final22
+debug:servo_max127
+debug:servo_min038
+```
+
+`arm_final` 后必须为两位十进制整数。该命令根据臂长解算角度，并立即更新 `TIM2 CH1` 的 compare；compare 被限制在 `500-1667`。`servo_max` 和 `servo_min` 后必须为三位十进制角度，命令只更新全局标定值，并从下一条 `arm_final` 命令开始生效。
+
 ## 参数步进值
 
 ```text
@@ -125,6 +153,8 @@ freq       当前 freq + freq_offset
 sp         stance_height/step_length/up_amp/down_amp/flight_percent/freq
 adj        frontstretch/frontlean/rightlean
 jp         jump_length/jt7/jt6
+compare    TIM2 CH1 当前 compare
+abcd       A/B/C/D 当前逻辑状态；1 表示引脚 RESET，0 表示引脚 SET
 imu_r/p/y  当前 IMU roll/pitch/yaw
 dr/dp/dy   相对上一次 debug:clear 或进入运动状态时的 IMU 增量
 ```

@@ -23,6 +23,10 @@
 #define ACTION_RECORD_RATE_MULTIPLIER 2.0f
 #define ACTION_RECORD_TX_BUF_SIZE 384U
 
+#define ARM1 8.86f
+#define ARM2 19.5f
+#define ARM0 27.0f
+
 extern float  temp_theta1;
 extern float  temp_theta2;
 extern float  temp_theta3;
@@ -87,6 +91,8 @@ extern DetachedParam state_detached_params[];
 extern enum States state;
 extern int start_flag;
 extern float target_yaw;
+extern float servo_max;
+extern float servo_min;
 
 void DOWN(void);
 void Action_UART8DebugInit(void);
@@ -100,5 +106,6 @@ const ActionJumpDebugParams_s *ActionDebug_GetJumpParams(void);
 void ActionDebug_UpdateWalkPhase(float base_phase);
 void ActionDebug_ResetWalkRecord(void);
 uint8_t ActionDebug_ShouldHoldRealse(void);
+uint32_t Action_CalculateArmCompare(uint8_t arm_final);
 
 #endif 
